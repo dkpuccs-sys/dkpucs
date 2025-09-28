@@ -6,10 +6,47 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+  output   = "../node_modules/prisma/generated/"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Textbook {
+  id        String   @id @default(cuid())
+  title     String
+  author    String?
+  hyperlink String
+  section   String // e.g., "Semester 1", "Semester 2"
+  subject   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Syllabus {
+  id        String   @id @default(cuid())
+  course    String
+  content   String // Can be markdown or plain text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuestionPaper {
+  id        String   @id @default(cuid())
+  year      Int
+  subject   String
+  hyperlink String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  author    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
