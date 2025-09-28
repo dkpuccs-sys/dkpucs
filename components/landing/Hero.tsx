@@ -38,7 +38,7 @@ const Hero = () => {
     });
   });
 
-  const videoUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  const videoUrl = "/videos/home.mp4";
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">

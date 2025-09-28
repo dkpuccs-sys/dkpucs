@@ -8,7 +8,7 @@ import { TiLocationArrow } from "react-icons/ti";
 
 import Button from "@/components/landing/Button";
 
-const navItems = ["About", "Blogs", "Contact", "Discussion", "Practicals", "QPs", "Syllabus"];
+const navItems = ["About", "Blogs", "Contact", "Discussion", "Practicals", "QPs", "Syllabus", "Textbooks"];
 
 const NavBar = () => {
   const navContainerRef = useRef<HTMLDivElement>(null);

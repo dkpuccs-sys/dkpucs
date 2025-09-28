@@ -30,21 +30,18 @@ const About = () => {
 
   return (
     <div id="about" className="min-h-screen w-screen">
-      <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
+      <div className="relative mb-8 mt-2 flex flex-col items-center gap-5">
         <p className="font-general text-sm uppercase md:text-[10px]">
-          Welcome to the DKPUCS Club
+          DKPUCS Official Portal
         </p>
 
         <AnimatedTitle
-          title="Discover everything <br /> about our college"
+          title="Your College Reimagined"
           containerClass="mt-5 !text-black text-center"
         />
 
         <div className="about-subtext">
-          <p>Your one-stop portal for all things related to our college.</p>
-          <p className="text-gray-500">
-            Find resources, connect with peers, and stay updated with the latest news and events.
-          </p>
+          <p>Your one-stop portal for resources, news, and events.</p>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import NavBar from "@/components/landing/Navbar";
 import "./globals.css";
 
 export const metadata = {
@@ -14,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="overflow-x-hidden">{children}</body>
+      <body className="overflow-x-hidden">
+        <NavBar />
+        {children}
+      </body>
     </html>
   );
 }
