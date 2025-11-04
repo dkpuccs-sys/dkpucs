@@ -1,4 +1,3 @@
-
 'use client';
 import AnimatedTitle from "@/components/landing/AnimatedTitle";
 import Button from "@/components/landing/Button";

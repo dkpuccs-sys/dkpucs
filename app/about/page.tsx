@@ -1,4 +1,3 @@
-
 import AnimatedTitle from "@/components/landing/AnimatedTitle";
 
 export default function AboutPage() {

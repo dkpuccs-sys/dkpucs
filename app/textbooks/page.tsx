@@ -1,4 +1,3 @@
-
 import { getTextbooks } from '@/lib/data';
 
 export default async function TextbooksPage() {

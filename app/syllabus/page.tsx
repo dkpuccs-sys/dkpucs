@@ -1,4 +1,3 @@
-
 import { getSyllabus } from '@/lib/data';
 
 export default async function SyllabusPage() {

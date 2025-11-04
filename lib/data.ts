@@ -1,42 +1,61 @@
-
-import prisma from './prisma';
+import prisma from "./prisma"
 
 export async function getTextbooks() {
   try {
-    const textbooks = await prisma.textbook.findMany();
-    return textbooks;
+    const textbooks = await prisma.textbook.findMany()
+    return textbooks
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch textbooks.');
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch textbooks.")
   }
 }
 
 export async function getSyllabus() {
   try {
-    const syllabus = await prisma.syllabus.findMany();
-    return syllabus;
+    const syllabus = await prisma.syllabus.findMany()
+    return syllabus
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch syllabus.');
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch syllabus.")
   }
 }
 
 export async function getQuestionPapers() {
   try {
-    const questionPapers = await prisma.questionPaper.findMany();
-    return questionPapers;
+    const questionPapers = await prisma.questionPaper.findMany()
+    return questionPapers
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch question papers.');
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch question papers.")
   }
 }
 
 export async function getBlogs() {
   try {
-    const blogs = await prisma.blog.findMany();
-    return blogs;
+    const blogs = await prisma.blog.findMany()
+    return blogs
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch blogs.');
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch blogs.")
+  }
+}
+
+export async function getPracticals() {
+  try {
+    const practicals = await prisma.practical.findMany()
+    return practicals
+  } catch (error) {
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch practicals.")
+  }
+}
+
+export async function getDiscussions() {
+  try {
+    const discussions = await prisma.discussion.findMany()
+    return discussions
+  } catch (error) {
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch discussions.")
   }
 }

@@ -1,85 +1,75 @@
+"use client"
+import { useState } from "react"
+import Link from "next/link"
 
-'use client';
-import clsx from "clsx";
-import gsap from "gsap";
-import { useWindowScroll } from "react-use";
-import { useEffect, useRef, useState } from "react";
-import { TiLocationArrow } from "react-icons/ti";
-
-import Button from "@/components/landing/Button";
-
-const navItems = ["About", "Blogs", "Contact", "Discussion", "Practicals", "QPs", "Syllabus", "Textbooks"];
+const navItems = [
+  { name: "About", href: "/about" },
+  { name: "Blogs", href: "/blogs" },
+  { name: "Practicals", href: "/practicals" },
+  { name: "QPs", href: "/qps" },
+  { name: "Syllabus", href: "/syllabus" },
+  { name: "Discussion", href: "/discussion" },
+  { name: "Runner", href: "/runner" },
+]
 
 const NavBar = () => {
-  const navContainerRef = useRef<HTMLDivElement>(null);
-
-  const { y: currentScrollY } = useWindowScroll();
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    if (currentScrollY === 0) {
-      // Topmost position: show navbar without floating-nav
-      setIsNavVisible(true);
-      navContainerRef.current?.classList.remove("floating-nav");
-    } else if (currentScrollY > lastScrollY) {
-      // Scrolling down: hide navbar and apply floating-nav
-      setIsNavVisible(false);
-      navContainerRef.current?.classList.add("floating-nav");
-    } else if (currentScrollY < lastScrollY) {
-      // Scrolling up: show navbar with floating-nav
-      setIsNavVisible(true);
-      navContainerRef.current?.classList.add("floating-nav");
-    }
-
-    setLastScrollY(currentScrollY);
-  }, [currentScrollY, lastScrollY]);
-
-  useEffect(() => {
-    gsap.to(navContainerRef.current, {
-      y: isNavVisible ? 0 : -100,
-      opacity: isNavVisible ? 1 : 0,
-      duration: 0.2,
-    });
-  }, [isNavVisible]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div
-      ref={navContainerRef}
-      className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6"
-    >
-      <header className="absolute top-1/2 w-full -translate-y-1/2">
-        <nav className="flex size-full items-center justify-between p-4">
-          {/* Logo and Product button */}
-          <div className="flex items-center gap-7">
-            <img src="https://picsum.photos/40/40" alt="logo" className="w-10" />
-
-            <Button
-              id="product-button"
-              title="Products"
-              rightIcon={<TiLocationArrow />}
-              containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
-            />
+    <nav className="fixed top-0 w-full bg-background border-b border-border z-50">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-primary-foreground font-bold">C</span>
           </div>
+          <span className="font-semibold text-foreground hidden sm:inline">CodingClub</span>
+        </Link>
 
-          {/* Navigation Links */}
-          <div className="flex h-full items-center">
-            <div className="hidden md:block">
-              {navItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={`/${item.toLowerCase()}`}
-                  className="nav-hover-btn"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-foreground hover:text-primary transition-colors text-sm font-medium"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button className="md:hidden flex flex-col gap-1.5 w-6 h-6" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <span
+            className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
+          ></span>
+          <span className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "opacity-0" : ""}`}></span>
+          <span
+            className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+          ></span>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-card border-t border-border">
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-foreground hover:text-primary transition-colors font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
-        </nav>
-      </header>
-    </div>
-  );
-};
+        </div>
+      )}
+    </nav>
+  )
+}
 
-export default NavBar;
+export default NavBar

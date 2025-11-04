@@ -1,4 +1,3 @@
-
 import { getBlogs } from '@/lib/data';
 
 export default async function BlogsPage() {
