@@ -23,10 +23,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={null}>
-            {children}
-          </Suspense>
-          <PageViewTracker />
+          <div className="flex flex-col min-h-screen">
+            <Suspense fallback={null}>
+              {children}
+            </Suspense>
+            <PageViewTracker />
+          </div>
         </ThemeProvider>
       </body>
     </html>

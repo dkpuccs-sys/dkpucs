@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Play, Copy, Trash2 } from "lucide-react"
+import { Play, Copy, Trash2, Check } from "lucide-react"
 
 declare global {
   interface Window {
@@ -20,6 +20,8 @@ print("Hello, World!")`)
   const [error, setError] = useState("")
   const [isPyodideReady, setIsPyodideReady] = useState(false)
   const [isPyodideLoading, setIsPyodideLoading] = useState(true)
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedOutput, setCopiedOutput] = useState(false);
 
   const pyodideRef = useRef<any | null>(null)
 
@@ -130,7 +132,15 @@ _output` as string
   }
 
   const copyCode = () => {
-    navigator.clipboard.writeText(code)
+    navigator.clipboard.writeText(code);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  }
+
+  const copyOutput = () => {
+    navigator.clipboard.writeText(output);
+    setCopiedOutput(true);
+    setTimeout(() => setCopiedOutput(false), 2000);
   }
 
   const resetCode = () => {
@@ -154,10 +164,10 @@ _output` as string
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-foreground">Code Editor</h2>
             <div className="flex gap-2">
-              <button onClick={copyCode} className="p-2 hover:bg-muted rounded transition-colors" title="Copy code">
-                <Copy size={20} className="text-muted-foreground" />
+              <button onClick={copyCode} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Copy code">
+                {copiedCode ? <Check size={20} className="text-green-500" /> : <Copy size={20} className="text-muted-foreground" />}
               </button>
-              <button onClick={resetCode} className="p-2 hover:bg-muted rounded transition-colors" title="Clear code">
+              <button onClick={resetCode} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Clear code">
                 <Trash2 size={20} className="text-muted-foreground" />
               </button>
             </div>
@@ -174,7 +184,7 @@ _output` as string
           <button
             onClick={executePythonCode}
             disabled={isRunning || !code.trim()}
-            className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="mt-4 w-full flex items-center justify-center cursor-pointer gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             <Play size={20} />
             {isRunning ? "Running..." : "Run Code"}
@@ -182,7 +192,12 @@ _output` as string
         </div>
 
         <div className="flex flex-col h-full min-h-96">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Output</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-foreground">Output</h2>
+            <button onClick={copyOutput} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Copy output">
+              {copiedOutput ? <Check size={20} className="text-green-500" /> : <Copy size={20} className="text-muted-foreground" />}
+            </button>
+          </div>
 
           {error && (
             <div className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
@@ -191,13 +206,13 @@ _output` as string
           )}
 
           <div className="flex-1 p-4 bg-card border border-border rounded-lg">
-            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap wrap-break-words">
+            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap wrap-wrap-break-word">
               {output || (
                 <span className="text-muted-foreground">{isRunning ? "Executing..." : "Output will appear here"}</span>
               )}
             </pre>
           </div>
-=
+
           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-blue-800 dark:text-blue-200 text-sm">
               Simplified Python runner supporting basic syntax, functions, and data types. Complex libraries and imports
@@ -206,7 +221,7 @@ _output` as string
           </div>
         </div>
       </div>
-=
+
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-foreground mb-6">Examples</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

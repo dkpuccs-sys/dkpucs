@@ -1,6 +1,6 @@
 import type React from "react"
 import NavBar from "@/components/landing/Navbar"
-import { ChatBot } from "@/components/chat-bot"
+// import { ChatBot } from "@/components/chat-bot"
 import Footer from "@/components/landing/Footer"
 import { PageViewTracker } from "@/components/page-view-tracker"
 
@@ -17,9 +17,11 @@ export default function RootLayout({
   return (
     <div className="overflow-x-hidden">
       <PageViewTracker />
-      <NavBar />
-      <div className="pt-18">{children}</div>
-      {/* <ChatBot /> */}
+      <div className="min-h-[calc(100vh-18vh)]">
+        <NavBar />
+        <div className="pt-18 grow">{children}</div>
+        {/* <ChatBot /> */}
+      </div>
       <Footer />
     </div>
   )

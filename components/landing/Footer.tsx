@@ -9,7 +9,7 @@ const Footer = () => {
   const links = {
     Resources: [
       { name: "Blogs", href: "/blogs" },
-      { name: "Practicals", href: "/practicals" },
+      { name: "Lab Manuals", href: "/lab-manuals" },
       { name: "Question Papers", href: "/qps" },
       { name: "Syllabus", href: "/syllabus" },
     ],

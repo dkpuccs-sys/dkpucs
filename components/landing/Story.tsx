@@ -1,9 +1,10 @@
 "use client"
+
 import Button from "@/components/landing/Button"
 
 const Story = () => {
   return (
-    <div id="story" className="min-h-dvh w-screen bg-card py-16 px-5 sm:px-10">
+    <div id="story" className="w-screen bg-card py-16 px-5 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
           <p className="text-sm uppercase text-muted-foreground mb-4">Our College Community</p>

@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Format date helper
+
 function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",

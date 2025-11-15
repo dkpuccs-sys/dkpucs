@@ -7,16 +7,16 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = React.useState(false) // Add mounted state
+  const [mounted, setMounted] = React.useState(false) 
   const { theme, setTheme } = useTheme()
 
-  // useEffect only runs on the client, so now we can safely show the UI
+  
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
   if (!mounted) {
-    return null // Render nothing on the server or until mounted on client
+    return null 
   }
 
   const toggleTheme = () => {

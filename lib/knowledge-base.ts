@@ -1,44 +1,44 @@
-// lib/knowledge-base.ts
+
 export const knowledgeBase = [
-  // About the Club
+  
   "About Us: The DKPUCS Club is dedicated to fostering a vibrant and inclusive community for students of our district. We aim to provide a platform for academic growth, skill development, and social engagement, preparing our members for future success. Our Vision: To be the leading student organization that empowers individuals to achieve their full potential, promotes collaborative learning, and contributes positively to the college environment and beyond. What We Do: We organize a variety of events including workshops, seminars, coding competitions, study groups, and social gatherings. Our activities are designed to enhance technical skills, encourage critical thinking, and build strong interpersonal connections among students.",
   
-  // Website Overview and Navigation
+  
   "Website Overview: The DKPUCS website is a comprehensive platform offering various resources for students. The main sections include: Home (landing page with hero, about, features, story, and contact sections), Blogs (educational articles and posts), Syllabus (course syllabi with PDF downloads), Question Papers (QPs - past year question papers organized by subject and year), Practicals (coding practicals and lab exercises with difficulty levels and languages), Textbooks (recommended textbooks organized by section and subject), Announcements (important updates and news), Runner (online code runner for testing code), About Us, Contact, Privacy Policy, and Terms of Service.",
   
-  // Blogs Section
+  
   "Blogs: The website has a comprehensive blog section where students can find educational articles and posts. Blogs can be filtered by level (1st PU, 2nd PU, Other). Each blog has a title, author, content, and optional level classification. Users can view blog details by clicking on individual blog posts. Blogs are paginated with 10 items per page.",
   
-  // Syllabus Section
+  
   "Syllabus: The syllabus page provides access to course syllabi for different subjects and levels. Syllabi can be filtered by level (1st PU, 2nd PU, Other). Each syllabus item includes the course name, content description, and PDF download links when available. Subjects include Computer Science and Mathematics for both 1st PU and 2nd PU levels.",
   
-  // Question Papers (QPs)
+  
   "Question Papers: The QPs (Question Papers) section contains past year question papers organized by subject and year. Users can filter papers by subject and year, and search by subject name. Papers are available for subjects like Computer Science, Mathematics, and Physics. Each paper has a download link to access the PDF.",
   
-  // Practicals Section
+  
   "Practicals: The Practicals section contains coding practicals and lab exercises. Each practical includes a title, description, difficulty level, programming language, and hyperlink. Practicals can be filtered by level (1st PU, 2nd PU, Other) and are paginated. Each practical includes metadata like language (e.g., Python, Java, C++), difficulty (e.g., Easy, Intermediate, Hard), and level classification.",
   
-  // Textbooks Section
+  
   "Textbooks: The Textbooks section lists recommended textbooks organized by section (e.g., Science, Commerce, Arts). Each textbook entry includes the title, author (if available), subject, section, and a hyperlink to access or purchase the book. Textbooks are grouped by their respective sections for easy navigation.",
   
-  // Announcements
+  
   "Announcements: The Announcements section displays important updates and news from the club. Announcements can be filtered to show active or inactive posts. Each announcement has a title, content, creation date, and update date. Active announcements are prominently displayed on the website.",
   
-  // Code Runner
+  
   "Code Runner: The Runner page provides an online code execution environment where students can write, test, and run code snippets. This feature allows students to practice programming without setting up a local development environment. It supports multiple programming languages and provides immediate feedback on code execution.",
   
-  // Features and Resources
+  
   "Website Features: The DKPUCS website offers several key features: 1) Comprehensive resource library (blogs, syllabus, question papers, practicals, textbooks), 2) Code Runner for online code testing, 3) AI Chatbot for instant assistance, 4) Responsive design for mobile and desktop, 5) Dark mode support, 6) Search and filtering capabilities, 7) Admin panel for content management, 8) Analytics dashboard for tracking page views and user engagement.",
   
-  // Contact Information
+  
   "Contact Information: Have questions or feedback? We'd love to hear from you. Send us a message through the Contact page and we'll respond as soon as possible. Email: contact@DKPUCS.com. Location: College Campus, Building A. Response Time: Within 24 hours. The contact form allows users to send messages directly from the website.",
   
-  // How to Navigate
+  
   "How to Navigate the Website: The website has a navigation bar at the top with links to all major sections. Use the search functionality to quickly find content. Filter options are available on resource pages (Blogs, Syllabus, QPs, Practicals) to narrow down results by level, subject, or year. The floating chat button in the bottom-right corner provides instant access to the AI assistant for help with navigation or questions.",
   
-  // Privacy Policy
+  
   "Privacy Policy (Last updated: November 15, 2025): Your privacy is important to us. It is our policy to respect your privacy regarding any information we may collect from you across our website. Information we collect: We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we're collecting it and how it will be used. How we use your information: We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we'll protect within commercially acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use or modification. Cookies: We use cookies to help improve your experience of our website. This cookie policy is part of our privacy policy, and covers the use of cookies between your device and our site. Third-party services: We may employ third-party companies and individuals on our websites - for example, analytics providers and content partners. These third parties have access to your personal information only to perform specific tasks on our behalf, and are obligated not to disclose or use it for any other purpose. Changes to our Privacy Policy: We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. Contact Us: If you have any questions about this Privacy Policy, please contact us.",
   
-  // Terms of Service
+  
   "Terms of Service (Last updated: November 15, 2025): By accessing this website, you are agreeing to be bound by these Terms of Service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. Use License: Permission is granted to temporarily download one copy of the materials (information or software) on this website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose, or for any public display (commercial or non-commercial); attempt to decompile or reverse engineer any software contained on this website; remove any copyright or other proprietary notations from the materials; or transfer the materials to another person or \"mirror\" the materials on any other server. Disclaimer: The materials on this website are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights. Limitations: In no event shall we be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on this website, even if we or an authorized representative has been notified orally or in writing of the possibility of such damage. Governing Law: These terms and conditions are governed by and construed in accordance with the laws of our country and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location."
 ];

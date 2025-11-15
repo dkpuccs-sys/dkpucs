@@ -1,12 +1,13 @@
 {
   "name": "dkpucs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "College coding club community for learning and competitive programming",
   "private": true,
   "scripts": {
     "build": "prisma generate && next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.32",
@@ -32,6 +33,7 @@
     "react-day-picker": "^9.11.1",
     "react-dom": "^19.2.0",
     "react-icons": "latest",
+    "react-syntax-highlighter": "^16.1.0",
     "react-use": "^17.6.0",
     "recharts": "^2.15.4",
     "tailwind-merge": "^2.5.5"
@@ -41,6 +43,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "class-variance-authority": "^0.7.1",
     "postcss": "^8.5",
     "prisma": "^6.19.0",

@@ -12,7 +12,6 @@ interface ChatMessage {
   content: string
 }
 
-
 function retrieveContext(query: string): string {
   const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 2);
   let relevantContext = [];
@@ -29,7 +28,6 @@ function retrieveContext(query: string): string {
     }
   }
 
-  
   relevantContext.sort((a, b) => b.score - a.score);
   return relevantContext.slice(0, 2).map(item => item.doc).join("\n\n");
 }
@@ -49,7 +47,6 @@ export async function POST(req: NextRequest) {
     return new Response("No valid messages with content provided.", { status: 400 });
   }
 
-  
   const latestUserMessage = filteredMessages.filter(m => m.role === "user").pop();
   
   
@@ -113,7 +110,6 @@ Always provide accurate, helpful information based on the website structure and 
       system:systemInstruction,
     })
 
-    
     return result.toTextStreamResponse()
   } catch (error: any) {
     console.error("Chat API error:", error)

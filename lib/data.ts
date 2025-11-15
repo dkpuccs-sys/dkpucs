@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "./prisma"
+import { SectionEnum } from "@prisma/client"
 
 export async function getTextbooks() {
   try {
@@ -12,13 +13,97 @@ export async function getTextbooks() {
   }
 }
 
+export async function createTextbook(data: { title: string; author?: string; hyperlink: string; section: SectionEnum; subject: string }) {
+  try {
+    const textbook = await prisma.textbook.create({ data });
+    return textbook;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create textbook.");
+  }
+}
+
+export async function getTextbookById(id: string) {
+  try {
+    const textbook = await prisma.textbook.findUnique({ where: { id } });
+    return textbook;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to fetch textbook with ID ${id}.`);
+  }
+}
+
+export async function updateTextbook(id: string, data: { title?: string; author?: string; hyperlink?: string; section?: SectionEnum; subject?: string }) {
+  try {
+    const textbook = await prisma.textbook.update({ where: { id }, data });
+    return textbook;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to update textbook with ID ${id}.`);
+  }
+}
+
+export async function deleteTextbook(id: string) {
+  try {
+    const textbook = await prisma.textbook.delete({ where: { id } });
+    return textbook;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to delete textbook with ID ${id}.`);
+  }
+}
+
 export async function getSyllabus() {
   try {
-    const syllabus = await prisma.syllabus.findMany()
+    const syllabus = await prisma.syllabus.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
     return syllabus
   } catch (error) {
     console.error("Database Error:", error)
     throw new Error("Failed to fetch syllabus.")
+  }
+}
+
+export async function createSyllabus(data: { title: string; description: string; pdfUrl: string; level?: string }) {
+  try {
+    const syllabus = await prisma.syllabus.create({ data });
+    return syllabus;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create syllabus.");
+  }
+}
+
+export async function getSyllabusById(id: string) {
+  try {
+    const syllabus = await prisma.syllabus.findUnique({ where: { id } });
+    return syllabus;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to fetch syllabus with ID ${id}.`);
+  }
+}
+
+export async function updateSyllabus(id: string, data: { title?: string; description?: string; pdfUrl?: string; level?: string }) {
+  try {
+    const syllabus = await prisma.syllabus.update({ where: { id }, data });
+    return syllabus;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to update syllabus with ID ${id}.`);
+  }
+}
+
+export async function deleteSyllabus(id: string) {
+  try {
+    const syllabus = await prisma.syllabus.delete({ where: { id } });
+    return syllabus;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to delete syllabus with ID ${id}.`);
   }
 }
 
@@ -29,6 +114,46 @@ export async function getQuestionPapers() {
   } catch (error) {
     console.error("Database Error:", error)
     throw new Error("Failed to fetch question papers.")
+  }
+}
+
+export async function createQuestionPaper(data: { year: number; subject: string; hyperlink: string }) {
+  try {
+    const questionPaper = await prisma.questionPaper.create({ data });
+    return questionPaper;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create question paper.");
+  }
+}
+
+export async function getQuestionPaperById(id: string) {
+  try {
+    const questionPaper = await prisma.questionPaper.findUnique({ where: { id } });
+    return questionPaper;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to fetch question paper with ID ${id}.`);
+  }
+}
+
+export async function updateQuestionPaper(id: string, data: { year?: number; subject?: string; hyperlink?: string }) {
+  try {
+    const questionPaper = await prisma.questionPaper.update({ where: { id }, data });
+    return questionPaper;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to update question paper with ID ${id}.`);
+  }
+}
+
+export async function deleteQuestionPaper(id: string) {
+  try {
+    const questionPaper = await prisma.questionPaper.delete({ where: { id } });
+    return questionPaper;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to delete question paper with ID ${id}.`);
   }
 }
 
@@ -61,48 +186,65 @@ export async function getTotalBlogsCount(levelFilter: string = "") {
   }
 }
 
-export async function getPracticals(skip: number = 0, take: number = 10, levelFilter: string = "") {
+export async function getLabManuals(skip: number = 0, take: number = 10, levelFilter: string = "") {
   try {
     const whereClause = levelFilter ? { level: levelFilter } : {};
-    const practicals = await prisma.practical.findMany({
+    const labManuals = await prisma.labManual.findMany({
       where: whereClause,
       orderBy: { createdAt: "desc" },
       skip,
       take,
     });
-    return practicals;
+    return labManuals;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch practicals.");
+    throw new Error("Failed to fetch lab manuals.");
   }
 }
 
-export async function getTotalPracticalsCount(levelFilter: string = "") {
+export async function getTotalLabManualsCount(levelFilter: string = "") {
   try {
     const whereClause = levelFilter ? { level: levelFilter } : {};
-    const count = await prisma.practical.count({
+    const count = await prisma.labManual.count({
       where: whereClause,
     });
     return count;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch total practicals count.");
+    throw new Error("Failed to fetch total lab manuals count.");
   }
 }
 
-export async function getDiscussions() {
+export async function getLabManualById(id: string) {
   try {
-    const discussions = await prisma.discussion.findMany()
-    return discussions
+    const labManual = await prisma.labManual.findUnique({
+      where: { id },
+    });
+    return labManual;
   } catch (error) {
-    console.error("Database Error:", error)
-    throw new Error("Failed to fetch discussions.")
+    console.error("Database Error:", error);
+    throw new Error(`Failed to fetch lab manual with ID ${id}.`);
   }
 }
 
 export async function getPageViewStats(startDate?: Date, endDate?: Date) {
   try {
-    // Build where clause for date filtering
+    const ARCHIVE_THRESHOLD = 500;
+
+    
+    const currentLivePageViewCount = await prisma.pageView.count();
+
+    
+    if (currentLivePageViewCount >= ARCHIVE_THRESHOLD) {
+      await prisma.archivedPageViewCount.create({
+        data: {
+          count: currentLivePageViewCount,
+          archivedAt: new Date(),
+        },
+      });
+      await prisma.pageView.deleteMany({}); 
+    }
+
     const whereClause: any = {};
     if (startDate || endDate) {
       whereClause.timestamp = {};
@@ -116,11 +258,21 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
       }
     }
 
-    const totalViews = await prisma.pageView.count({
+    
+    const liveTotalViews = await prisma.pageView.count({
       where: whereClause,
     });
+
     
-    // Get unique users (count distinct sessionIds)
+    const archivedCounts = await prisma.archivedPageViewCount.aggregate({
+      _sum: {
+        count: true,
+      },
+    });
+    const totalArchivedViews = archivedCounts._sum.count || 0;
+
+    const totalViews = liveTotalViews + totalArchivedViews;
+    
     const uniqueUsersResult = await prisma.pageView.groupBy({
       by: ["sessionId"],
       where: {
@@ -130,7 +282,7 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
     });
     const uniqueUsers = uniqueUsersResult.length;
 
-    // Get device type stats
+    
     const deviceStats = await prisma.pageView.groupBy({
       by: ["deviceType"],
       where: {
@@ -145,7 +297,7 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
     const mobileViews = deviceStats.find(d => d.deviceType === "mobile")?._count.deviceType || 0;
     const desktopViews = deviceStats.find(d => d.deviceType === "desktop")?._count.deviceType || 0;
     
-    // Get views by path
+    
     const viewsByPath = await prisma.pageView.groupBy({
       by: ["path"],
       where: whereClause,
@@ -159,15 +311,15 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
       },
     });
 
-    // Calculate date range for daily views
+    
     const start = startDate ? new Date(startDate) : new Date();
-    start.setDate(start.getDate() - 6); // Default to last 7 days
+    start.setDate(start.getDate() - 6); 
     start.setHours(0, 0, 0, 0);
     
     const end = endDate ? new Date(endDate) : new Date();
     end.setHours(23, 59, 59, 999);
 
-    // Get views by day
+    
     const dailyViews: { date: string; count: number }[] = [];
     const current = new Date(start);
     
@@ -196,13 +348,13 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
       current.setDate(current.getDate() + 1);
     }
 
-    // Get top 10 most viewed pages
+    
     const topPages = viewsByPath.slice(0, 10).map((item) => ({
       path: item.path,
       views: item._count.path,
     }));
 
-    // Calculate views for different periods if no date filter
+    
     let viewsLast7Days = 0;
     let viewsLast30Days = 0;
 
@@ -233,12 +385,12 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
     return {
       totalViews,
       uniqueUsers,
-      viewsLast7Days,
-      viewsLast30Days,
+      viewsLast7Days, 
+      viewsLast30Days, 
       mobileViews,
       desktopViews,
-      dailyViews,
-      topPages,
+      dailyViews, 
+      topPages, 
       viewsByPath: viewsByPath.map((item) => ({
         path: item.path,
         views: item._count.path,

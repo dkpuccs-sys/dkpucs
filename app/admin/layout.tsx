@@ -31,13 +31,16 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/blogs", label: "Blogs" },
-    { href: "/admin/practicals", label: "Practicals" },
+    { href: "/admin/lab-manuals", label: "Lab Manuals" },
+    { href: "/admin/qps", label: "Question Papers" },
+    { href: "/admin/textbooks", label: "Textbooks" },
+    { href: "/admin/syllabus", label: "Syllabus" },
     { href: "/admin/announcements", label: "Announcements" },
     { href: "/admin/analytics", label: "Analytics" },
   ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background">
       <div className="border-b border-border bg-card sticky top-0 z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -64,7 +67,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+      <div className="grow container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           <aside
             className={`

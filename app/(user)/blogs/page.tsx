@@ -21,7 +21,7 @@ const ITEMS_PER_PAGE = 10;
 
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const para = await searchParams
-  const currentPage = Number(para?.page) || 1;
+  const currentPage = Math.max(1, Number(para?.page) || 1);
   const levelFilter = para?.level || "";
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -30,7 +30,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const totalPages = Math.ceil(totalBlogs / ITEMS_PER_PAGE);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 flex flex-col grow">
       <h1 className="text-4xl font-bold mb-4">Blogs</h1>
 
       <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
@@ -57,7 +57,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
         </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 grow">
         {blogs.length > 0 ? (
           blogs.map((blog: any) => {
             const createdAt = blog.createdAt ? new Date(blog.createdAt) : new Date()

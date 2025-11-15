@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    
     const aggregatedData: { [key: string]: { [date: string]: number } } = {};
 
     pageViews.forEach(view => {
@@ -24,7 +23,6 @@ export async function GET(req: NextRequest) {
       aggregatedData[view.path][date]++;
     });
 
-    
     const formattedData = Object.entries(aggregatedData).map(([path, dates]) => ({
       path,
       dailyViews: Object.entries(dates).map(([date, count]) => ({ date, count })),

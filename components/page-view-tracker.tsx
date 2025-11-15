@@ -1,4 +1,4 @@
-// components/page-view-tracker.tsx
+
 "use client";
 
 import { useEffect } from "react";
@@ -12,5 +12,5 @@ export function PageViewTracker() {
     trackPageView(pathname);
   }, [pathname]);
 
-  return null; // This component doesn't render anything visible
+  return null; 
 }

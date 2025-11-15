@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div id="about" className="min-h-screen w-screen py-16 px-5 sm:px-10">
+    <div id="about" className="w-screen py-16 px-5 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
           <p className="text-sm uppercase text-muted-foreground mb-4">DKPUCS Official Portal</p>
