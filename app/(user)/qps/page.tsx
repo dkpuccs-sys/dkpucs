@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { getQuestionPapers } from "@/lib/data"
+import { useMemo, useState } from "react"
 
 interface QuestionPaper {
   id: string
@@ -11,28 +10,45 @@ interface QuestionPaper {
   difficulty?: string
 }
 
+
+const STATIC_QPS: QuestionPaper[] = [
+  {
+    id: "cs-2023",
+    subject: "Computer Science",
+    year: 2023,
+    hyperlink: "https://ncert.nic.in/textbook.php?kecs1=0-11",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "cs-2022",
+    subject: "Computer Science",
+    year: 2022,
+    hyperlink: "https://ncert.nic.in/textbook.php?kecs1=0-11",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "math-2023",
+    subject: "Mathematics",
+    year: 2023,
+    hyperlink: "https://ncert.nic.in/textbook.php?kems1=0-11",
+    difficulty: "Standard",
+  },
+  {
+    id: "physics-2023",
+    subject: "Physics",
+    year: 2023,
+    hyperlink: "https://ncert.nic.in/textbook.php?kepy1=0-11",
+    difficulty: "Standard",
+  },
+]
+
+import { EmptyState } from "@/components/ui/empty-state"
+
 export default function QPsPage() {
-  const [qps, setQps] = useState<QuestionPaper[]>([])
-  const [loading, setLoading] = useState(true)
   const [selectedSubject, setSelectedSubject] = useState<string>("")
   const [selectedYear, setSelectedYear] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState<string>("")
-
-  useEffect(() => {
-    const fetchQPs = async () => {
-      try {
-        const data = await getQuestionPapers()
-        setQps(data || [])
-      } catch (error) {
-        console.error("Error fetching question papers:", error)
-        setQps([])
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchQPs()
-  }, [])
+  const qps = STATIC_QPS
 
   const subjects = useMemo(() => [...new Set(qps.map((qp) => qp.subject))].sort(), [qps])
 
@@ -47,21 +63,9 @@ export default function QPsPage() {
     })
   }, [qps, selectedSubject, selectedYear, searchQuery])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-foreground">Loading question papers...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">
-        {/* Header Section */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Question Papers</h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
@@ -69,11 +73,9 @@ export default function QPsPage() {
           </p>
         </div>
 
-        {/* Filters Section */}
         <div className="mb-8 p-6 bg-card border border-border rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            {/* Search Input */}
-            <div>
+            <>
               <label className="block text-sm font-medium text-card-foreground mb-2">Search by Subject</label>
               <input
                 type="text"
@@ -82,10 +84,9 @@ export default function QPsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
-            </div>
+            </>
 
-            {/* Subject Filter */}
-            <div>
+            <>
               <label className="block text-sm font-medium text-card-foreground mb-2">Subject</label>
               <select
                 value={selectedSubject}
@@ -99,10 +100,9 @@ export default function QPsPage() {
                   </option>
                 ))}
               </select>
-            </div>
+            </>
 
-            {/* Year Filter */}
-            <div>
+            <>
               <label className="block text-sm font-medium text-card-foreground mb-2">Year</label>
               <select
                 value={selectedYear}
@@ -116,10 +116,9 @@ export default function QPsPage() {
                   </option>
                 ))}
               </select>
-            </div>
+            </>
           </div>
 
-          {/* Active Filters Display */}
           {(selectedSubject || selectedYear || searchQuery) && (
             <div className="flex flex-wrap gap-2">
               {searchQuery && (
@@ -150,7 +149,6 @@ export default function QPsPage() {
           )}
         </div>
 
-        {/* Question Papers Grid */}
         {filteredQPs.length > 0 ? (
           <>
             <p className="text-sm text-muted-foreground mb-6">
@@ -191,28 +189,14 @@ export default function QPsPage() {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="text-center">
-              <p className="text-lg text-muted-foreground mb-2">No question papers found</p>
-              <p className="text-sm text-muted-foreground">
-                {qps.length === 0
-                  ? "No papers available yet. Check back soon!"
-                  : "Try adjusting your filters to find what you are looking for."}
-              </p>
-              {filteredQPs.length === 0 && qps.length > 0 && (
-                <button
-                  onClick={() => {
-                    setSelectedSubject("")
-                    setSelectedYear("")
-                    setSearchQuery("")
-                  }}
-                  className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity text-sm font-medium"
-                >
-                  Reset Filters
-                </button>
-              )}
-            </div>
-          </div>
+          <EmptyState
+            title="No question papers found"
+            description={
+              qps.length === 0
+                ? "No papers available yet. Check back soon!"
+                : "Try adjusting your filters to find what you are looking for."
+            }
+          />
         )}
       </div>
     </div>

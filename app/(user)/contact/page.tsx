@@ -24,7 +24,7 @@ export default function ContactPage() {
     setIsSubmitting(true)
 
     try {
-      // Simulate form submission - in production, this would call an API route
+      
       await new Promise((resolve) => setTimeout(resolve, 1000))
       setSubmitStatus("success")
       setFormData({ name: "", email: "", subject: "", message: "" })
@@ -40,8 +40,6 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
-          {/* Header Section */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Get in Touch</h1>
             <p className="text-lg text-muted-foreground">
@@ -50,12 +48,11 @@ export default function ContactPage() {
             </p>
           </div>
 
-          {/* Contact Information */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div className="p-6 bg-card border border-border rounded-lg text-center">
               <div className="text-2xl mb-3">📧</div>
               <h3 className="font-semibold text-card-foreground mb-2">Email</h3>
-              <p className="text-muted-foreground text-sm">contact@codingclub.com</p>
+              <p className="text-muted-foreground text-sm">contact@DKPUCS.com</p>
             </div>
             <div className="p-6 bg-card border border-border rounded-lg text-center">
               <div className="text-2xl mb-3">📍</div>
@@ -69,7 +66,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <div className="p-8 bg-card border border-border rounded-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -157,7 +153,6 @@ export default function ContactPage() {
               </button>
             </form>
           </div>
-        </div>
       </div>
     </div>
   )

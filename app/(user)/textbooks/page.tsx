@@ -1,4 +1,5 @@
 import { getTextbooks } from '@/lib/data';
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default async function TextbooksPage() {
   const textbooks = await getTextbooks();
@@ -34,7 +35,7 @@ export default async function TextbooksPage() {
             </div>
           ))
         ) : (
-          <p>No textbooks found.</p>
+          <EmptyState title="No textbooks found" description="Textbook resources will appear here once they are added." />
         )}
       </div>
     </div>
