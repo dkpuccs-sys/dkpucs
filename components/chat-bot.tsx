@@ -15,6 +15,7 @@ export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -42,32 +43,9 @@ export function ChatBot() {
     localStorage.setItem("chatMessages", JSON.stringify(messages))
   }, [messages])
 
-  const generateAIResponse = (userMessage: string): string => {
-    const lowerMessage = userMessage.toLowerCase()
-    const responses: { [key: string]: string } = {
-      hello: "Hello! I'm the Coding Club AI Assistant. How can I help you today?",
-      hi: "Hi there! Welcome to the Coding Club. What would you like to know?",
-      help: "I can help you with:\n- Information about coding club events\n- Programming tips and resources\n- Questions about practicals and question papers\n- General coding guidance",
-      events:
-        "We host regular coding competitions, workshops, and study sessions. Check our blogs and discussion forum for updates!",
-      python: "Python is great for beginners! Try our Python Code Runner to practice.",
-      practice: "You can access practicals and question papers in the respective sections.",
-      about: "We are a college coding club dedicated to helping students improve their programming skills.",
-      syllabus: "You can find the course syllabus in our Syllabus section.",
-      blog: "Check out our Blogs section for programming tutorials and tips!",
-      contact: "You can contact us through the Contact page or our discussion forum!",
-      default: "That's an interesting question! Feel free to explore our platform for more resources.",
-    }
-
-    for (const [key, response] of Object.entries(responses)) {
-      if (lowerMessage.includes(key)) return response
-    }
-    return responses.default
-  }
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!input.trim()) return
+    if (!input.trim() || isLoading) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -76,18 +54,69 @@ export function ChatBot() {
       timestamp: new Date(),
     }
 
+    
     setMessages((prev) => [...prev, userMessage])
     setInput("")
+    setIsLoading(true)
 
-    setTimeout(() => {
+    try {
+      const payloadMessages = [...messages, userMessage].map((msg) => ({
+        role: msg.sender === "user" ? "user" : "model",
+        content: msg.text,
+      }))
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages: payloadMessages }),
+      })
+
+      if (!response.ok || !response.body) {
+        throw new Error("Chat API returned an error")
+      }
+
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+
+      const botMessageId = (Date.now() + 1).toString()
+      let fullText = ""
+
+      
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: botMessageId,
+          text: "",
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ])
+
+      
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        fullText += chunk
+
+        setMessages((prev) =>
+          prev.map((msg) => (msg.id === botMessageId ? { ...msg, text: fullText } : msg)),
+        )
+      }
+    } catch (error) {
+      console.error("Error sending message:", error)
       const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: generateAIResponse(input),
+        id: (Date.now() + 2).toString(),
+        text: "Sorry, something went wrong while contacting the AI service.",
         sender: "bot",
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, botResponse])
-    }, 300)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const clearChat = () => {
@@ -100,7 +129,7 @@ export function ChatBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center hover:opacity-90 z-40"
+          className="fixed bottom-6 cursor-pointer right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center hover:opacity-90 z-40"
           aria-label="Open chat"
         >
           <MessageCircle size={24} />
@@ -108,13 +137,13 @@ export function ChatBot() {
       )}
 
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-96 h-[32rem] bg-card border border-border rounded-lg shadow-xl flex flex-col z-50 max-sm:w-full max-sm:h-full max-sm:right-0 max-sm:bottom-0 max-sm:rounded-none">
+        <div className="fixed bottom-6 right-6 w-96 h-128 bg-card border border-border rounded-lg shadow-xl flex flex-col z-50 max-sm:w-full max-sm:h-full max-sm:right-0 max-sm:bottom-0 max-sm:rounded-none">
           <div className="flex items-center justify-between p-4 border-b border-border">
             <div>
               <h3 className="font-semibold">Coding Club AI</h3>
               <p className="text-xs text-muted-foreground">Always here to help</p>
             </div>
-            <button onClick={() => setIsOpen(false)} className="p-1 hover:opacity-70" aria-label="Close chat">
+            <button onClick={() => setIsOpen(false)} className="p-1 hover:opacity-70 cursor-pointer" aria-label="Close chat">
               <X size={20} />
             </button>
           </div>
@@ -151,10 +180,13 @@ export function ChatBot() {
             {messages.length > 0 && (
               <button
                 onClick={clearChat}
-                className="w-full text-xs text-muted-foreground hover:text-foreground text-center py-1"
+                className="w-full text-xs cursor-pointer text-muted-foreground hover:text-foreground text-center py-1"
               >
                 Clear conversation
               </button>
+            )}
+            {isLoading && (
+              <p className="text-xs text-muted-foreground text-center">AI is thinking...</p>
             )}
             <form onSubmit={handleSendMessage} className="flex gap-2">
               <input
@@ -166,8 +198,8 @@ export function ChatBot() {
               />
               <button
                 type="submit"
-                disabled={!input.trim()}
-                className="px-3 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 disabled:opacity-50"
+                disabled={!input.trim() || isLoading}
+                className="px-3 py-2 cursor-pointer bg-primary text-primary-foreground rounded hover:opacity-90 disabled:opacity-50"
               >
                 <Send size={16} />
               </button>
