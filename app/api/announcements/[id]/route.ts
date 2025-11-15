@@ -1,6 +1,7 @@
 
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const announcement = await prisma.announcement.findUnique({
@@ -22,6 +23,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       content,
     },
   });
+  
+  revalidatePath("/announcements");
+  revalidatePath(`/announcements/${params.id}`);
+  revalidatePath("/admin/announcements");
+  revalidatePath(`/admin/announcements/${params.id}`);
   return NextResponse.json(announcement);
 }
 
@@ -31,5 +37,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       id: params.id,
     },
   });
+  revalidatePath("/announcements");
+  revalidatePath(`/announcements/${params.id}`);
+  revalidatePath("/admin/announcements");
+  revalidatePath(`/admin/announcements/${params.id}`);
   return NextResponse.json(announcement);
 }

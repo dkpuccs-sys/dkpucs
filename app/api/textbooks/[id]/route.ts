@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -33,6 +34,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         subject,
       },
     });
+    revalidatePath("/textbooks");
+    revalidatePath(`/textbooks/${params.id}`);
+    revalidatePath("/admin/textbooks");
+    revalidatePath(`/admin/textbooks/${params.id}`);
     return NextResponse.json(textbook);
   } catch (error) {
     console.error("Error updating textbook:", error);
@@ -47,6 +52,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
         id: params.id,
       },
     });
+    revalidatePath("/textbooks");
+    revalidatePath(`/textbooks/${params.id}`);
+    revalidatePath("/admin/textbooks");
+    revalidatePath(`/admin/textbooks/${params.id}`);
     return NextResponse.json({ message: "Textbook deleted successfully." });
   } catch (error) {
     console.error("Error deleting textbook:", error);

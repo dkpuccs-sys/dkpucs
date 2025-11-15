@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const labManuals = await prisma.labManual.findMany({
@@ -22,5 +23,7 @@ export async function POST(req: Request) {
       content,
     },
   });
+  revalidatePath("/lab-manuals");
+  revalidatePath("/admin/lab-manuals");
   return NextResponse.json(labManual);
 }

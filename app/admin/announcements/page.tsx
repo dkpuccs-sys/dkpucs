@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import AnnouncementCard from "@/components/admin/announcement-card";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default async function AdminAnnouncementsPage() {
   const announcements = await prisma.announcement.findMany({
@@ -19,9 +20,16 @@ export default async function AdminAnnouncementsPage() {
         </Button>
       </div>
       <div className="grid gap-6">
-        {announcements.map((announcement: { id: string; title: string; content: string; isActive: boolean; createdAt: Date; updatedAt: Date; }) => (
-          <AnnouncementCard key={announcement.id} announcement={announcement} />
-        ))}
+        {announcements.length === 0 ? (
+          <EmptyState
+            title="No Announcements Yet"
+            description="Create your first announcement to display here."
+          />
+        ) : (
+          announcements.map((announcement: { id: string; title: string; content: string; isActive: boolean; createdAt: Date; updatedAt: Date; }) => (
+            <AnnouncementCard key={announcement.id} announcement={announcement} />
+          ))
+        )}
       </div>
     </div>
   );

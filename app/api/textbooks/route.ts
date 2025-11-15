@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function GET() {
@@ -27,6 +28,8 @@ export async function POST(req: Request) {
         subject,
       },
     });
+    revalidatePath("/textbooks");
+    revalidatePath("/admin/textbooks");
     return NextResponse.json(textbook, { status: 201 });
   } catch (error) {
     console.error("Error creating textbook:", error);

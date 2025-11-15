@@ -1,8 +1,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import prisma from "@/lib/prisma";
-import Link from "next/link"; 
-import { Button } from "@/components/ui/button"; 
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface AnnouncementsPageProps {
   searchParams?: {
@@ -40,16 +41,23 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
     <div className="container mx-auto px-4 py-16">
       <h1 className="text-3xl font-bold mb-8">Announcements</h1>
       <div className="grid gap-6">
-        {announcements.map((announcement: { id: string; title: string; content: string; isActive: boolean; createdAt: Date; updatedAt: Date; }) => (
-          <Card key={announcement.id} className="shadow-md border-2 rounded-lg hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle>{announcement.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{announcement.content}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {announcements.length === 0 ? (
+          <EmptyState
+            title="No Announcements Yet"
+            description="Stay tuned for updates! Announcements will appear here."
+          />
+        ) : (
+          announcements.map((announcement: { id: string; title: string; content: string; isActive: boolean; createdAt: Date; updatedAt: Date; }) => (
+            <Card key={announcement.id} className="shadow-md border-2 rounded-lg hover:shadow-lg transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle>{announcement.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{announcement.content}</p>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {totalAnnouncements > ITEMS_PER_PAGE && (

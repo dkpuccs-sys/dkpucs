@@ -1,6 +1,7 @@
 
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const blog = await prisma.blog.findUnique({
@@ -24,6 +25,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       level,
     },
   });
+  revalidatePath("/blogs");
+  revalidatePath(`/blogs/${params.id}`);
+  revalidatePath("/admin/blogs");
+  revalidatePath(`/admin/blogs/${params.id}`);
   return NextResponse.json(blog);
 }
 
@@ -33,5 +38,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       id: params.id,
     },
   });
+  revalidatePath("/blogs");
+  revalidatePath(`/blogs/${params.id}`);
+  revalidatePath("/admin/blogs");
+  revalidatePath(`/admin/blogs/${params.id}`);
   return NextResponse.json(blog);
 }

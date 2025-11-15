@@ -1,6 +1,7 @@
 
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const blogs = await prisma.blog.findMany();
@@ -17,5 +18,7 @@ export async function POST(req: Request) {
       level,
     },
   });
+  revalidatePath("/blogs");
+  revalidatePath("/admin/blogs");
   return NextResponse.json(blog);
 }

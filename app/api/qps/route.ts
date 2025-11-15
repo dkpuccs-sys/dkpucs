@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function GET() {
@@ -25,6 +26,8 @@ export async function POST(req: Request) {
         hyperlink,
       },
     });
+    revalidatePath("/qps");
+    revalidatePath("/admin/qps");
     return NextResponse.json(qp, { status: 201 });
   } catch (error) {
     console.error("Error creating question paper:", error);

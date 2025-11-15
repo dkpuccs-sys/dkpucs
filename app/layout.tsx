@@ -2,7 +2,7 @@ import type React from "react"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
-import { PageViewTracker } from "@/components/page-view-tracker"
+import { PathBasedTracker } from "@/components/path-based-tracker"
 
 export const metadata = {
   title: "DKPUCS - Learn, Code, Grow",
@@ -27,7 +27,7 @@ export default function RootLayout({
             <Suspense fallback={null}>
               {children}
             </Suspense>
-            <PageViewTracker />
+            <PathBasedTracker />
           </div>
         </ThemeProvider>
       </body>

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -32,6 +33,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         level,
       },
     });
+    revalidatePath("/syllabus");
+    revalidatePath(`/syllabus/${params.id}`);
+    revalidatePath("/admin/syllabus");
+    revalidatePath(`/admin/syllabus/${params.id}`);
     return NextResponse.json(syllabus);
   } catch (error) {
     console.error("Error updating syllabus:", error);
@@ -46,6 +51,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
         id: params.id,
       },
     });
+    revalidatePath("/syllabus");
+    revalidatePath(`/syllabus/${params.id}`);
+    revalidatePath("/admin/syllabus");
+    revalidatePath(`/admin/syllabus/${params.id}`);
     return NextResponse.json({ message: "Syllabus deleted successfully." });
   } catch (error) {
     console.error("Error deleting syllabus:", error);

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -31,6 +32,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         hyperlink,
       },
     });
+    revalidatePath("/qps");
+    revalidatePath(`/qps/${params.id}`);
+    revalidatePath("/admin/qps");
+    revalidatePath(`/admin/qps/${params.id}`);
     return NextResponse.json(qp);
   } catch (error) {
     console.error("Error updating question paper:", error);
@@ -45,6 +50,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
         id: params.id,
       },
     });
+    revalidatePath("/qps");
+    revalidatePath(`/qps/${params.id}`);
+    revalidatePath("/admin/qps");
+    revalidatePath(`/admin/qps/${params.id}`);
     return NextResponse.json({ message: "Question paper deleted successfully." });
   } catch (error) {
     console.error("Error deleting question paper:", error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,8 +17,13 @@ export default function NewSyllabusPage() {
   const [pdfUrl, setPdfUrl] = useState("");
   const [level, setLevel] = useState(""); 
   const [isCreating, setIsCreating] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast(); 
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +58,10 @@ export default function NewSyllabusPage() {
       setIsCreating(false);
     }
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Card className="border shadow-sm">
