@@ -1,12 +1,12 @@
 import type React from "react"
-import NavBar from "@/components/landing/Navbar"
-import { ChatBot } from "@/components/chat-bot"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import { Suspense } from "react"
+import { PageViewTracker } from "@/components/page-view-tracker"
 
 export const metadata = {
-  title: "CodingClub - Learn, Code, Grow",
+  title: "DKPUCS - Learn, Code, Grow",
   description: "College coding club community for learning and competitive programming",
-    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -15,11 +15,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
       <body className="overflow-x-hidden">
-        <NavBar />
-        <div className="pt-20">{children}</div>
-        <ChatBot />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
+          <PageViewTracker />
+        </ThemeProvider>
       </body>
     </html>
   )
