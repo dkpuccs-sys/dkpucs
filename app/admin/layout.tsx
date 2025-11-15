@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const pathname = usePathname()
 
 
@@ -27,6 +28,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     setSidebarCollapsed(newState)
     localStorage.setItem("admin-sidebar-collapsed", String(newState))
   }
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Sign out error:", error);
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   const navItems = [
     { href: "/admin", label: "Dashboard" },
@@ -57,11 +69,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <Button
-              onClick={() => signOut()}
+              onClick={handleSignOut}
               size="sm"
               className="bg-black text-white hover:bg-black/90 border border-black"
+              disabled={isSigningOut}
             >
-              Sign Out
+              {isSigningOut ? "Signing Out..." : "Sign Out"}
             </Button>
           </div>
         </div>
