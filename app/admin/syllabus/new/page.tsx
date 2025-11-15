@@ -120,7 +120,6 @@ export default function NewSyllabusPage() {
                 <SelectValue placeholder="Select level" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
                 <SelectItem value="1st PU">1st PU</SelectItem>
                 <SelectItem value="2nd PU">2nd PU</SelectItem>
                 <SelectItem value="Other">Other</SelectItem>
