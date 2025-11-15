@@ -38,6 +38,7 @@ export default function NewAnnouncementPage() {
         description: "Announcement created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/announcements");
     } catch (error: any) {
       console.error("Error creating announcement:", error);

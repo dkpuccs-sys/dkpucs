@@ -41,6 +41,7 @@ export default function NewTextbookPage() {
         description: "Textbook created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/textbooks");
     } catch (error: any) {
       console.error("Error creating textbook:", error);

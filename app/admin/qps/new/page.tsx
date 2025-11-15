@@ -38,6 +38,7 @@ export default function NewQPPage() {
         description: "Question paper created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/qps");
     } catch (error: any) {
       console.error("Error creating question paper:", error);

@@ -43,6 +43,7 @@ export default function NewLabManualPage() {
         description: "Lab Manual created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/lab-manuals");
     } catch (error: any) {
       console.error("Error creating lab manual:", error);

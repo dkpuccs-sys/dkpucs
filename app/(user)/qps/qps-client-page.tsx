@@ -78,7 +78,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
 
                     <div className="pt-4 border-t border-border">
                       <a
-                        href={qp.hyperlink}
+                        href={qp.hyperlink.startsWith("http://") ? qp.hyperlink.replace("http://", "https://") : qp.hyperlink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block w-full text-center px-4 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity font-medium"

@@ -46,6 +46,7 @@ export default function NewSyllabusPage() {
         description: "Syllabus created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/syllabus");
     } catch (error: any) {
       console.error("Error creating syllabus:", error);

@@ -149,7 +149,12 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
                     <h3 className="text-xl font-semibold">{book.title}</h3>
                     {book.author && <p className="text-sm text-muted-foreground mt-1">by {book.author}</p>}
                     <p className="text-md text-muted-foreground my-2">Subject: {book.subject}</p>
-                    <a href={book.hyperlink} target="_blank" rel="noopener noreferrer" className="mt-auto text-center bg-primary text-primary-foreground px-4 py-2 rounded hover:opacity-90 transition-colors">
+                    <a 
+                      href={book.hyperlink.startsWith("http://") ? book.hyperlink.replace("http://", "https://") : book.hyperlink} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="mt-auto text-center bg-primary text-primary-foreground px-4 py-2 rounded hover:opacity-90 transition-colors"
+                    >
                       Get Book
                     </a>
                   </div>

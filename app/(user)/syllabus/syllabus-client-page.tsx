@@ -98,7 +98,13 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
               {item.pdfUrl && (
                 <div className="pt-4 border-t border-border">
                   <Button asChild variant="outline" className="w-full sm:w-auto">
-                    <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer" download className="inline-flex items-center gap-2">
+                    <a 
+                      href={item.pdfUrl.startsWith("http://") ? item.pdfUrl.replace("http://", "https://") : item.pdfUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      download 
+                      className="inline-flex items-center gap-2"
+                    >
                       <Download className="size-4" />
                       Download PDF
                     </a>

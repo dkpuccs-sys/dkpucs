@@ -41,6 +41,7 @@ export default function NewBlogPage() {
         description: "Blog post created successfully.",
         variant: "default",
       });
+      router.refresh(); 
       router.push("/admin/blogs");
     } catch (error: any) {
       console.error("Error creating blog:", error);
