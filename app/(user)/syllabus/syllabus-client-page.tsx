@@ -26,6 +26,13 @@ const LEVEL_OPTIONS = [
   { label: "Other", value: "Other" },
 ]
 
+const ensureHttps = (url: string) => {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  }
+  return url;
+};
+
 export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusClientPageProps) {
   const [selectedLevel, setSelectedLevel] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState<string>("")
@@ -99,7 +106,7 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
                 <div className="pt-4 border-t border-border">
                   <Button asChild variant="outline" className="w-full sm:w-auto">
                     <a 
-                      href={item.pdfUrl.startsWith("http://") ? item.pdfUrl.replace("http://", "https://") : item.pdfUrl} 
+                      href={ensureHttps(item.pdfUrl)} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       download 

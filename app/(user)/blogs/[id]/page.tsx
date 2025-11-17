@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import Link from "next/link" 
 import { Button } from "@/components/ui/button" 
+import { Metadata } from "next"
 
 interface BlogDetailPageProps {
   params: {
@@ -9,15 +10,30 @@ interface BlogDetailPageProps {
   }
 }
 
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+  const blog = await prisma.blog.findUnique({ where: { id: params.id } })
+
+  if (!blog) {
+    return {
+      title: "Blog not found",
+    }
+  }
+
+  return {
+    title: blog.title,
+    description: blog.content.substring(0, 150),
+    keywords: blog.author,
+  }
+}
+
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const paramid = await params
-  const blog = await prisma.blog.findUnique({ where: { id: paramid.id } })
+  const blog = await prisma.blog.findUnique({ where: { id: params.id } })
 
   if (!blog) {
     notFound()
   }
 
-  const createdAt = blog.createdAt instanceof Date ? blog.createdAt : new Date(blog.createdAt as any)
+  const createdAt = new Date(blog.createdAt)
 
   return (
     <div className="min-h-screen bg-background">

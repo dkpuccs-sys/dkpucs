@@ -1,6 +1,5 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from "next/cache";
 import prisma from '@/lib/prisma';
 
 function getDeviceType(userAgent: string | null): string {
@@ -38,7 +37,6 @@ export async function POST(req: NextRequest) {
         userAgent,
       },
     });
-    revalidatePath("/admin");
 
     return NextResponse.json({ message: 'Page view tracked successfully' }, { status: 200 });
   } catch (error) {

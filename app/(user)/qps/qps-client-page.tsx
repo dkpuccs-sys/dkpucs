@@ -17,14 +17,14 @@ interface QPsClientPageProps {
   initialQPs: QuestionPaper[];
 }
 
-const LEVEL_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "1st PU", value: "1st PU" },
-  { label: "2nd PU", value: "2nd PU" },
-  { label: "Other", value: "Other" },
-]
-
 const ITEMS_PER_PAGE = 9;
+
+const ensureHttps = (url: string) => {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  }
+  return url;
+};
 
 export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
   const [selectedSubject, setSelectedSubject] = useState<string>("")
@@ -78,7 +78,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
 
                     <div className="pt-4 border-t border-border">
                       <a
-                        href={qp.hyperlink.startsWith("http://") ? qp.hyperlink.replace("http://", "https://") : qp.hyperlink}
+                        href={ensureHttps(qp.hyperlink)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block w-full text-center px-4 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity font-medium"
@@ -108,6 +108,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
               variant="outline"
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              aria-label="Go to previous page"
             >
               Previous
             </Button>
@@ -116,6 +117,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
                 key={i + 1}
                 variant={currentPage === i + 1 ? "default" : "outline"}
                 onClick={() => setCurrentPage(i + 1)}
+                aria-label={`Go to page ${i + 1}`}
               >
                 {i + 1}
               </Button>
@@ -124,6 +126,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
               variant="outline"
               disabled={currentPage === totalFilteredPages}
               onClick={() => setCurrentPage((prev) => Math.min(totalFilteredPages, prev + 1))}
+              aria-label="Go to next page"
             >
               Next
             </Button>

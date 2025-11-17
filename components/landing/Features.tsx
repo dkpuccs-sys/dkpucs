@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-const FeatureCard = ({ title, description, video, link }: { title: string; description: string; video: string, link: string }) => {
+const FeatureCard = ({ title, description, video, link }: { title: string; description: string; video: string, link:string }) => {
   return (
     <Link href={link} className="bg-card border border-border rounded-lg overflow-hidden hover:border-primary transition-colors">
       <video src={video} loop muted autoPlay className="w-full h-48 object-cover" />
@@ -29,21 +29,21 @@ const Features = () => (
         <FeatureCard
           title="Syllabus"
           description="Find the detailed syllabus for all your courses and subjects."
-          video="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+          video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           link="/syllabus"
         />
 
         <FeatureCard
           title="Question Papers"
           description="Access a vast repository of previous year question papers."
-          video="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+          video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           link="/qps"
         />
 
         <FeatureCard
           title="Practicals"
           description="Get access to practical guides and materials for your lab sessions."
-          video="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+          video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
           link="/practicals"
         />
       </div>

@@ -14,13 +14,17 @@ function getOrCreateSessionId(): string {
 export async function trackPageView(path: string) {
   try {
     const sessionId = getOrCreateSessionId();
-    await fetch("/api/track", {
+    const response = await fetch("/api/track", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ path, sessionId }),
     });
+
+    if (!response.ok) {
+      console.error(`Failed to track page view: ${response.status} ${response.statusText}`);
+    }
   } catch (error) {
     console.error("Failed to track page view:", error);
   }
