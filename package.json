@@ -24,6 +24,7 @@
     "@radix-ui/react-toast": "^1.2.15",
     "ai": "^5.0.93",
     "clsx": "^2.1.1",
+    "create-next-quick": "^1.0.7",
     "gsap": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.5.4",
