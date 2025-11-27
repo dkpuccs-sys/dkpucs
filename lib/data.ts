@@ -283,19 +283,7 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
     const uniqueUsers = uniqueUsersResult.length;
 
     
-    const deviceStats = await prisma.pageView.groupBy({
-      by: ["deviceType"],
-      where: {
-        ...whereClause,
-        deviceType: { not: null },
-      },
-      _count: {
-        deviceType: true,
-      },
-    });
 
-    const mobileViews = deviceStats.find(d => d.deviceType === "mobile")?._count.deviceType || 0;
-    const desktopViews = deviceStats.find(d => d.deviceType === "desktop")?._count.deviceType || 0;
     
     
     const viewsByPath = await prisma.pageView.groupBy({
@@ -387,8 +375,7 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
       uniqueUsers,
       viewsLast7Days, 
       viewsLast30Days, 
-      mobileViews,
-      desktopViews,
+
       dailyViews, 
       topPages, 
       viewsByPath: viewsByPath.map((item) => ({

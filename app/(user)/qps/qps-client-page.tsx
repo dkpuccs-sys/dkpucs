@@ -50,7 +50,7 @@ export default function QPsClientPage({ initialQPs }: QPsClientPageProps) {
       <div className="container mx-auto px-4 py-12 flex flex-col grow">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Question Papers</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-lg text-muted-foreground max-w-7xl">
             Access NCERT question papers from various subjects and years to practice and prepare for exams.
           </p>
         </div>

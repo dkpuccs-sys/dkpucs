@@ -41,7 +41,7 @@ export default async function LabManualsPage({ searchParams }: LabManualsPagePro
       <div className="container mx-auto px-4 py-12 flex flex-col grow">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Lab Manuals</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-lg text-muted-foreground max-w-7xl">
             Hands-on coding exercises to strengthen your programming skills and build real-world problem-solving
             abilities.
           </p>

@@ -17,7 +17,7 @@ const Hero = () => {
           <div className="mt-24 px-5 sm:px-10">
             <h1 className="text-5xl sm:text-7xl font-bold text-white">DKPUCS</h1>
 
-            <p className="mb-8 max-w-3xl font-regular text-lg text-white/90">
+            <p className="mb-8 max-w-7xl font-regular text-lg text-white/90">
               Welcome to the official website for the students of DKPUCS
             </p>
           </div>

@@ -16,10 +16,10 @@ const FeatureCard = ({ title, description, video, link }: { title: string; descr
 
 const Features = () => (
   <section className="bg-background py-16 px-5 sm:px-10">
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <div className="mb-16">
         <p className="text-sm uppercase text-muted-foreground mb-4">Explore Our Resources</p>
-        <p className="text-xl max-w-2xl text-muted-foreground">
+        <p className="text-xl max-w-7xl text-muted-foreground">
           Dive into a comprehensive collection of academic materials, past question papers, and practical guides to help
           you excel in your studies.
         </p>

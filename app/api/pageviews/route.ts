@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { path, sessionId, deviceType, userAgent } = await req.json();
+    const { path, sessionId, userAgent } = await req.json();
     
     if (!path) {
       return NextResponse.json({ error: "Path is required" }, { status: 400 });
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       data: {
         path: path,
         sessionId: sessionId || null,
-        deviceType: deviceType || null,
+
         userAgent: userAgent || null,
       },
     });

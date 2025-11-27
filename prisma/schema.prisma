@@ -73,7 +73,7 @@ model PageView {
   path       String
   timestamp  DateTime @default(now())
   sessionId  String?
-  deviceType String?
+
   userAgent  String?
 }
 

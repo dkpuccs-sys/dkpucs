@@ -56,6 +56,7 @@ export default function AdminLoginPage() {
               id="password"
               type="password"
               value={password}
+              placeholder="Enter admin password"
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-border rounded bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             />
@@ -64,7 +65,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={!password || isLoading}
-            className="w-full py-2 bg-primary text-primary-foreground rounded font-medium hover:opacity-90 disabled:opacity-50"
+            className="w-full py-2 bg-primary cursor-pointer text-primary-foreground rounded font-medium hover:opacity-90 disabled:opacity-50"
           >
             {isLoading ? "Signing in..." : "Sign In"}
           </button>

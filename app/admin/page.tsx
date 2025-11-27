@@ -22,8 +22,7 @@ export default async function AdminHomePage() {
       uniqueUsers: 0,
       viewsLast7Days: 0,
       viewsLast30Days: 0,
-      mobileViews: 0,
-      desktopViews: 0,
+
       dailyViews: [],
       topPages: [],
       viewsByPath: [],

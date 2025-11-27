@@ -2,7 +2,9 @@ import { getLabManualById } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CodeBlock } from "@/components/code-block"; 
+import { CodeBlock } from "@/components/code-block";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link"; 
 
 interface LabManualDetailPageProps {
   params: {
@@ -50,6 +52,18 @@ export default async function LabManualDetailPage({ params }: LabManualDetailPag
                   )}
                   {item.code && (
                     <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-medium text-muted-foreground">Program:</h4>
+                        <Link
+                          href={`https://chat.openai.com/?q=${encodeURIComponent(`Explain this ${labManual.language || 'program'} program:\n\n${item.code}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 whitespace-nowrap transition-colors"
+                        >
+                          Explain with ChatGPT
+                          <ExternalLink className="h-4 w-4" />
+                        </Link>
+                      </div>
                       <CodeBlock code={item.code} language={labManual.language || "text"} />
                     </div>
                   )}

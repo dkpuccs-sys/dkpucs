@@ -153,7 +153,7 @@ _output` as string
     <div className="container mx-auto px-4 py-12">
       <div className="mb-12">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Python Code Runner</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
+        <p className="text-lg text-muted-foreground max-w-7xl">
           Write and execute Python code directly in your browser. Perfect for learning, testing snippets, and quick
           experimentation.
         </p>
