@@ -1,78 +1,109 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import DailyViewsChart from "@/components/admin/daily-views-chart";
-import DateRangePicker from "@/components/admin/date-range-picker";
-
-import { Skeleton } from "@/components/ui/skeleton";
-import { Calendar, Eye, TrendingUp, Users } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import { useEffect, useState } from "react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import DailyViewsChart from "@/components/admin/daily-views-chart"
+import DateRangePicker from "@/components/admin/date-range-picker"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Calendar, Eye, TrendingUp, Users } from "lucide-react"
 
 interface AnalyticsStats {
-  totalViews: number;
-  uniqueUsers: number;
-  viewsLast7Days: number;
-  viewsLast30Days: number;
-
-  dailyViews: { date: string; count: number }[];
-  topPages: { path: string; views: number }[];
-  viewsByPath: { path: string; views: number }[];
+  totalViews: number
+  uniqueUsers: number
+  viewsLast7Days: number
+  viewsLast30Days: number
+  dailyViews: { date: string; count: number }[]
+  topPages: { path: string; views: number }[]
+  viewsByPath: { path: string; views: number }[]
+  totalPaths: number
 }
 
-export default function AnalyticsDashboard({ initialStats }: { initialStats: AnalyticsStats }) {
-  const [stats, setStats] = useState<AnalyticsStats>(initialStats);
-  const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<Date | undefined>();
-  const [endDate, setEndDate] = useState<Date | undefined>();
+export default function AnalyticsDashboard({
+  initialStats,
+}: {
+  initialStats: AnalyticsStats
+}) {
+  const [stats, setStats] = useState<AnalyticsStats>(initialStats)
+  const [loading, setLoading] = useState(false)
+  const [startDate, setStartDate] = useState<Date | undefined>()
+  const [endDate, setEndDate] = useState<Date | undefined>()
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
 
-  const fetchStats = async (start?: Date, end?: Date) => {
-    setLoading(true);
+  const fetchStats = async (
+    start?: Date,
+    end?: Date,
+    page: number = 1,
+  ) => {
+    setLoading(true)
     try {
-      const params = new URLSearchParams();
+      const params = new URLSearchParams()
       if (start) {
-        params.append("startDate", start.toISOString());
+        params.append("startDate", start.toISOString())
       }
       if (end) {
-        params.append("endDate", end.toISOString());
+        params.append("endDate", end.toISOString())
       }
-
-      const response = await fetch(`/api/analytics?${params.toString()}`);
+      params.append("skip", ((page - 1) * itemsPerPage).toString())
+      params.append("take", itemsPerPage.toString())
+      const response = await fetch(`/api/analytics?${params.toString()}`)
       if (response.ok) {
-        const data = await response.json();
-        setStats(data);
+        const data = await response.json()
+        setStats(data)
       }
     } catch (error) {
-      console.error("Error fetching stats:", error);
+      console.error("Error fetching stats:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    if (startDate || endDate) {
-      fetchStats(startDate, endDate);
-    } else {
-      setStats(initialStats);
-    }
-  }, [startDate, endDate]);
+    fetchStats(startDate, endDate, currentPage)
+  }, [startDate, endDate, currentPage])
 
   const handleClearDates = () => {
-    setStartDate(undefined);
-    setEndDate(undefined);
-  };
+    setStartDate(undefined)
+    setEndDate(undefined)
+  }
 
-  const chartData = stats.dailyViews.map((item) => ({
-    date: new Date(item.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-    views: item.count,
-  }));
-
-
+  const chartData =
+    stats.dailyViews.map(item => ({
+      date: new Date(item.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+      views: item.count,
+    })) || []
+  const totalPages = Math.ceil(stats.totalPaths / itemsPerPage)
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Analytics Dashboard</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+            Analytics Dashboard
+          </h2>
           <p className="text-sm text-muted-foreground">
             Comprehensive overview of page views and site statistics
           </p>
@@ -97,8 +128,12 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               <Skeleton className="h-8 w-24" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.totalViews.toLocaleString()}</div>
-                <p className="text-xs text-muted-foreground">All time page views</p>
+                <div className="text-2xl font-bold">
+                  {stats.totalViews.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  All time page views
+                </p>
               </>
             )}
           </CardContent>
@@ -114,8 +149,12 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               <Skeleton className="h-8 w-24" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.uniqueUsers.toLocaleString()}</div>
-                <p className="text-xs text-muted-foreground">Distinct sessions</p>
+                <div className="text-2xl font-bold">
+                  {stats.uniqueUsers.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Distinct sessions
+                </p>
               </>
             )}
           </CardContent>
@@ -131,7 +170,9 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               <Skeleton className="h-8 w-24" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.viewsLast7Days.toLocaleString()}</div>
+                <div className="text-2xl font-bold">
+                  {stats.viewsLast7Days.toLocaleString()}
+                </div>
                 <p className="text-xs text-muted-foreground">Recent activity</p>
               </>
             )}
@@ -148,7 +189,9 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               <Skeleton className="h-8 w-24" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.viewsLast30Days.toLocaleString()}</div>
+                <div className="text-2xl font-bold">
+                  {stats.viewsLast30Days.toLocaleString()}
+                </div>
                 <p className="text-xs text-muted-foreground">Monthly views</p>
               </>
             )}
@@ -165,8 +208,10 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               <Skeleton className="h-8 w-24" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.viewsByPath.length}</div>
-                <p className="text-xs text-muted-foreground">Total pages tracked</p>
+                <div className="text-2xl font-bold">{stats.totalPaths}</div>
+                <p className="text-xs text-muted-foreground">
+                  Total pages tracked
+                </p>
               </>
             )}
           </CardContent>
@@ -188,41 +233,59 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
               </div>
             ) : stats.topPages.length > 0 ? (
               <div className="space-y-3">
-                {stats.topPages.slice(0, 8).map((page: { path: string; views: number }, index: number) => {
-                  const maxViews = Math.max(...stats.topPages.map((p: any) => p.views));
-                  const percentage = (page.views / maxViews) * 100;
-                  const colors = [
-                    'bg-blue-500',
-                    'bg-purple-500',
-                    'bg-emerald-500',
-                    'bg-amber-500',
-                    'bg-rose-500',
-                    'bg-cyan-500',
-                    'bg-pink-500',
-                    'bg-teal-500',
-                  ];
+                {stats.topPages
+                  .slice(0, 8)
+                  .map(
+                    (
+                      page: { path: string; views: number },
+                      index: number,
+                    ) => {
+                      const maxViews = Math.max(
+                        ...stats.topPages.map((p: any) => p.views),
+                      )
+                      const percentage = (page.views / maxViews) * 100
+                      const colors = [
+                        "bg-blue-500",
+                        "bg-purple-500",
+                        "bg-emerald-500",
+                        "bg-amber-500",
+                        "bg-rose-500",
+                        "bg-cyan-500",
+                        "bg-pink-500",
+                        "bg-teal-500",
+                      ]
 
-                  return (
-                    <div key={page.path} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium truncate max-w-[60%]" title={page.path}>
-                          {page.path.length > 30 ? `${page.path.substring(0, 30)}...` : page.path}
-                        </span>
-                        <span className="font-bold">{page.views.toLocaleString()}</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-500 ${colors[index % colors.length]}`}
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+                      return (
+                        <div key={page.path} className="space-y-1">
+                          <div className="flex items-center justify-between text-xs">
+                            <span
+                              className="font-medium truncate max-w-[60%]"
+                              title={page.path}
+                            >
+                              {page.path.length > 30
+                                ? `${page.path.substring(0, 30)}...`
+                                : page.path}
+                            </span>
+                            <span className="font-bold">
+                              {page.views.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${colors[index % colors.length]
+                                }`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      )
+                    },
+                  )}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground text-center py-8">
-                No page views recorded yet. Views will appear here once users start visiting pages.
+                No page views recorded yet. Views will appear here once users
+                start visiting pages.
               </p>
             )}
           </CardContent>
@@ -250,22 +313,27 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {stats.topPages.map((page: { path: string; views: number }, index: number) => (
-                    <TableRow key={page.path}>
-                      <TableCell className="font-medium">{index + 1}</TableCell>
-                      <TableCell>
-                        <code className="text-sm bg-muted px-2 py-1 rounded">{page.path}</code>
-                      </TableCell>
-                      <TableCell className="text-right font-medium">
-                        {page.views.toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {stats.topPages.map(
+                    (page: { path: string; views: number }, index: number) => (
+                      <TableRow key={page.path}>
+                        <TableCell className="font-medium">{index + 1}</TableCell>
+                        <TableCell>
+                          <code className="text-sm bg-muted px-2 py-1 rounded">
+                            {page.path}
+                          </code>
+                        </TableCell>
+                        <TableCell className="text-right font-medium">
+                          {page.views.toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ),
+                  )}
                 </TableBody>
               </Table>
             ) : (
               <p className="text-sm text-muted-foreground text-center py-8">
-                No page views recorded yet. Views will appear here once users start visiting pages.
+                No page views recorded yet. Views will appear here once users
+                start visiting pages.
               </p>
             )}
           </CardContent>
@@ -291,48 +359,67 @@ export default function AnalyticsDashboard({ initialStats }: { initialStats: Ana
           </CardContent>
         </Card>
 
-        {stats.viewsByPath.length > 10 && (
-          <Card className="border shadow-sm bg-card">
-            <CardHeader>
-              <CardTitle>All Pages</CardTitle>
-              <CardDescription>Complete list of page views</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="max-h-[400px] overflow-y-auto">
-                {loading ? (
-                  <div className="space-y-2">
-                    {[...Array(10)].map((_, i) => (
-                      <Skeleton key={i} className="h-10 w-full" />
-                    ))}
-                  </div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Page Path</TableHead>
-                        <TableHead className="text-right">Views</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {stats.viewsByPath.map((page: { path: string; views: number }) => (
+        <Card className="border shadow-sm bg-card">
+          <CardHeader>
+            <CardTitle>All Pages</CardTitle>
+            <CardDescription>Complete list of page views</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="max-h-[400px] overflow-y-auto">
+              {loading ? (
+                <div className="space-y-2">
+                  {[...Array(10)].map((_, i) => (
+                    <Skeleton key={i} className="h-10 w-full" />
+                  ))}
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Page Path</TableHead>
+                      <TableHead className="text-right">Views</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stats.viewsByPath.map(
+                      (page: { path: string; views: number }) => (
                         <TableRow key={page.path}>
                           <TableCell>
-                            <code className="text-sm bg-muted px-2 py-1 rounded">{page.path}</code>
+                            <code className="text-sm bg-muted px-2 py-1 rounded">
+                              {page.path}
+                            </code>
                           </TableCell>
                           <TableCell className="text-right font-medium">
                             {page.views.toLocaleString()}
                           </TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                      ),
+                    )}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+            <Pagination className="mt-4">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() =>
+                      setCurrentPage(prev => Math.max(1, prev - 1))
+                    }
+                  />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() =>
+                      setCurrentPage(prev => Math.min(totalPages, prev + 1))
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </CardContent>
+        </Card>
       </div>
     </div>
-  );
+  )
 }
-

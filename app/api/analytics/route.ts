@@ -6,11 +6,15 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const startDateParam = searchParams.get("startDate");
     const endDateParam = searchParams.get("endDate");
+    const skipParam = searchParams.get("skip");
+    const takeParam = searchParams.get("take");
 
     const startDate = startDateParam ? new Date(startDateParam) : undefined;
     const endDate = endDateParam ? new Date(endDateParam) : undefined;
+    const skip = skipParam ? parseInt(skipParam, 10) : undefined;
+    const take = takeParam ? parseInt(takeParam, 10) : undefined;
 
-    const stats = await getPageViewStats(startDate, endDate);
+    const stats = await getPageViewStats(startDate, endDate, skip, take);
 
     return NextResponse.json(stats);
   } catch (error) {

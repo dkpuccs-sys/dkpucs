@@ -296,68 +296,55 @@ export async function getAllLabManuals() {
   }
 }
 
-export async function getPageViewStats(startDate?: Date, endDate?: Date) {
+export async function getPageViewStats(
+  startDate?: Date,
+  endDate?: Date,
+  skip?: number,
+  take?: number,
+) {
   try {
-    const ARCHIVE_THRESHOLD = 500;
-
-
-    
-    const currentLivePageViewCount = await prisma.pageView.count();
-
-
-    
+    const ARCHIVE_THRESHOLD = 500
+    const currentLivePageViewCount = await prisma.pageView.count()
     if (currentLivePageViewCount >= ARCHIVE_THRESHOLD) {
       await prisma.archivedPageViewCount.create({
         data: {
           count: currentLivePageViewCount,
           archivedAt: new Date(),
         },
-      });
-      await prisma.pageView.deleteMany({}); 
+      })
+      await prisma.pageView.deleteMany({})
     }
-
-    const whereClause: any = {};
+    const whereClause: any = {}
     if (startDate || endDate) {
-      whereClause.timestamp = {};
+      whereClause.timestamp = {}
       if (startDate) {
-        whereClause.timestamp.gte = new Date(startDate);
+        whereClause.timestamp.gte = new Date(startDate)
       }
       if (endDate) {
-        const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999);
-        whereClause.timestamp.lte = end;
+        const end = new Date(endDate)
+        end.setHours(23, 59, 59, 999)
+        whereClause.timestamp.lte = end
       }
     }
-
-    
     const liveTotalViews = await prisma.pageView.count({
       where: whereClause,
-    });
-
-    
+    })
     const archivedCounts = await prisma.archivedPageViewCount.aggregate({
       _sum: {
         count: true,
       },
-    });
-    const totalArchivedViews = archivedCounts._sum.count || 0;
-
-    const totalViews = liveTotalViews + totalArchivedViews;
-    
+    })
+    const totalArchivedViews = archivedCounts._sum.count || 0
+    const totalViews = liveTotalViews + totalArchivedViews
     const uniqueUsersResult = await prisma.pageView.groupBy({
       by: ["sessionId"],
       where: {
         ...whereClause,
         sessionId: { not: null },
       },
-    });
-    const uniqueUsers = uniqueUsersResult.length;
-
-    
-
-    
-    
-    const viewsByPath = await prisma.pageView.groupBy({
+    })
+    const uniqueUsers = uniqueUsersResult.length
+    const viewsByPathQuery = {
       by: ["path"],
       where: whereClause,
       _count: {
@@ -368,27 +355,34 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
           path: "desc",
         },
       },
-    });
-
-    
-    const start = startDate ? new Date(startDate) : new Date();
-    start.setDate(start.getDate() - 6); 
-    start.setHours(0, 0, 0, 0);
-    
-    const end = endDate ? new Date(endDate) : new Date();
-    end.setHours(23, 59, 59, 999);
-
-    
-    const dailyViews: { date: string; count: number }[] = [];
-    const current = new Date(start);
-    
+    }
+    const [viewsByPath, totalPathsResult] = await Promise.all([
+      prisma.pageView.groupBy({
+        ...viewsByPathQuery,
+        skip,
+        take,
+      }),
+      prisma.pageView.groupBy({
+        by: ["path"],
+        where: whereClause,
+        _count: {
+          path: true,
+        },
+      }),
+    ])
+    const totalPaths = totalPathsResult.length
+    const start = startDate ? new Date(startDate) : new Date()
+    start.setDate(start.getDate() - 6)
+    start.setHours(0, 0, 0, 0)
+    const end = endDate ? new Date(endDate) : new Date()
+    end.setHours(23, 59, 59, 999)
+    const dailyViews: { date: string; count: number }[] = []
+    const current = new Date(start)
     while (current <= end) {
-      const dayStart = new Date(current);
-      dayStart.setHours(0, 0, 0, 0);
-      
-      const dayEnd = new Date(current);
-      dayEnd.setHours(23, 59, 59, 999);
-      
+      const dayStart = new Date(current)
+      dayStart.setHours(0, 0, 0, 0)
+      const dayEnd = new Date(current)
+      dayEnd.setHours(23, 59, 59, 999)
       const count = await prisma.pageView.count({
         where: {
           ...whereClause,
@@ -397,65 +391,54 @@ export async function getPageViewStats(startDate?: Date, endDate?: Date) {
             lte: dayEnd,
           },
         },
-      });
-      
+      })
       dailyViews.push({
         date: dayStart.toISOString().split("T")[0],
         count,
-      });
-      
-      current.setDate(current.getDate() + 1);
+      })
+      current.setDate(current.getDate() + 1)
     }
-
-    
-    const topPages = viewsByPath.slice(0, 10).map((item) => ({
+    const topPages = viewsByPath.slice(0, 10).map(item => ({
       path: item.path,
       views: item._count.path,
-    }));
-
-    
-    let viewsLast7Days = 0;
-    let viewsLast30Days = 0;
-
+    }))
+    let viewsLast7Days = 0
+    let viewsLast30Days = 0
     if (!startDate && !endDate) {
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      
+      const sevenDaysAgo = new Date()
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
       viewsLast7Days = await prisma.pageView.count({
         where: {
           timestamp: {
             gte: sevenDaysAgo,
           },
         },
-      });
-
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
+      })
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
       viewsLast30Days = await prisma.pageView.count({
         where: {
           timestamp: {
             gte: thirtyDaysAgo,
           },
         },
-      });
+      })
     }
-
     return {
       totalViews,
       uniqueUsers,
-      viewsLast7Days, 
-      viewsLast30Days, 
-
-      dailyViews, 
-      topPages, 
-      viewsByPath: viewsByPath.map((item) => ({
+      viewsLast7Days,
+      viewsLast30Days,
+      dailyViews,
+      topPages,
+      viewsByPath: viewsByPath.map(item => ({
         path: item.path,
         views: item._count.path,
       })),
-    };
+      totalPaths,
+    }
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch page view statistics.");
+    console.error("Database Error:", error)
+    throw new Error("Failed to fetch page view statistics.")
   }
 }
