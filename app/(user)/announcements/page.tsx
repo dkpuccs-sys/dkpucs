@@ -1,9 +1,34 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import prisma from "@/lib/prisma";
+import { getAnnouncements, getTotalAnnouncementsCount } from "@/lib/data";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Announcements",
+  description: "Stay updated with the latest announcements, events, and news from DKPUCS. Get notifications about workshops, seminars, hackathons, and community updates.",
+  keywords: [
+    "DKPUCS announcements",
+    "college announcements",
+    "coding club updates",
+    "events",
+    "workshops",
+    "seminars",
+    "hackathons",
+    "news",
+  ],
+  openGraph: {
+    title: "Announcements - DKPUCS",
+    description: "Stay updated with the latest announcements and events from DKPUCS.",
+    url: "https://dkpucs.vercel.app/announcements",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/announcements",
+  },
+};
 
 interface AnnouncementsPageProps {
   searchParams?: {
@@ -18,22 +43,8 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
   const currentPage = Number(para?.page) || 1;
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
 
-  const announcements = await prisma.announcement.findMany({
-    where: {
-      isActive: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    skip: skip,
-    take: 10,
-  });
-
-  const totalAnnouncements = await prisma.announcement.count({
-    where: {
-      isActive: true,
-    },
-  });
+  const announcements = await getAnnouncements(skip, ITEMS_PER_PAGE);
+  const totalAnnouncements = await getTotalAnnouncementsCount();
 
   const totalPages = Math.ceil(totalAnnouncements / ITEMS_PER_PAGE);
 

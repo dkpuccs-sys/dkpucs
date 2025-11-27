@@ -4,11 +4,6 @@ import NavBar from "@/components/landing/Navbar"
 import Footer from "@/components/landing/Footer"
 import { PageViewTracker } from "@/components/page-view-tracker"
 
-export const metadata = {
-  title: "DKPUCS - Learn, Code, Grow",
-  description: "College coding club community for learning and competitive programming",
-}
-
 export default function RootLayout({
   children,
 }: {

@@ -186,6 +186,18 @@ export async function getTotalBlogsCount(levelFilter: string = "") {
   }
 }
 
+export async function getBlogById(id: string) {
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: { id },
+    });
+    return blog;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to fetch blog with ID ${id}.`);
+  }
+}
+
 export async function getLabManuals(skip: number = 0, take: number = 10, levelFilter: string = "") {
   try {
     const whereClause = levelFilter ? { level: levelFilter } : {};
@@ -227,12 +239,71 @@ export async function getLabManualById(id: string) {
   }
 }
 
+export async function getAnnouncements(skip: number = 0, take: number = 10) {
+  try {
+    const announcements = await prisma.announcement.findMany({
+      where: {
+        isActive: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: skip,
+      take: take,
+    });
+    return announcements;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch announcements.");
+  }
+}
+
+export async function getTotalAnnouncementsCount() {
+  try {
+    const count = await prisma.announcement.count({
+      where: {
+        isActive: true,
+      },
+    });
+    return count;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total announcements count.");
+  }
+}
+
+export async function getAllBlogs() {
+  try {
+    const blogs = await prisma.blog.findMany({
+      select: { id: true, updatedAt: true },
+    });
+    return blogs;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch all blogs.");
+  }
+}
+
+export async function getAllLabManuals() {
+  try {
+    const labManuals = await prisma.labManual.findMany({
+      select: { id: true, updatedAt: true },
+    });
+    return labManuals;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch all lab manuals.");
+  }
+}
+
 export async function getPageViewStats(startDate?: Date, endDate?: Date) {
   try {
     const ARCHIVE_THRESHOLD = 500;
 
+
     
     const currentLivePageViewCount = await prisma.pageView.count();
+
 
     
     if (currentLivePageViewCount >= ARCHIVE_THRESHOLD) {

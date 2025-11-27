@@ -1,3 +1,32 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn about DKPUCS - the central coding community at Venkataramana Swamy College, Bantwal. Discover our mission, vision, and activities including workshops, seminars, coding competitions, and study groups.",
+  keywords: [
+    "DKPUCS",
+    "about DKPUCS",
+    "coding club",
+    "Bantwal",
+    "Karnataka",
+    "computer science club",
+    "student organization",
+    "coding community",
+    "workshops",
+    "seminars",
+    "hackathons",
+  ],
+  openGraph: {
+    title: "About - DKPUCS",
+    description: "Learn about DKPUCS coding community, our mission, vision, and activities.",
+    url: "https://dkpucs.vercel.app/about",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/about",
+  },
+};
+
 export default function AboutPage() {
   return (
     <main className="w-full bg-background text-foreground min-h-screen relative">

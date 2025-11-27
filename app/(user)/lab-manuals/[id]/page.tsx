@@ -5,10 +5,50 @@ import { Badge } from "@/components/ui/badge";
 import { CodeBlock } from "@/components/code-block";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link"; 
+import { Metadata } from "next";
 
 interface LabManualDetailPageProps {
   params: {
     id: string;
+  };
+}
+
+export async function generateMetadata({ params }: LabManualDetailPageProps): Promise<Metadata> {
+  const labManual = await getLabManualById(params.id);
+
+  if (!labManual) {
+    return {
+      title: "Lab Manual not found",
+    };
+  }
+
+  return {
+    title: labManual.title,
+    description: labManual.description,
+    keywords: [
+      "DKPUCS",
+      "lab manual",
+      "programming exercises",
+      "coding practice",
+      labManual.language,
+      labManual.difficulty,
+      labManual.level,
+    ].filter(Boolean) as string[],
+    openGraph: {
+      title: labManual.title,
+      description: labManual.description,
+      type: "article",
+      url: `https://dkpucs.vercel.app/lab-manuals/${params.id}`,
+      section: `${labManual.language || "Programming"} Lab Manual`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: labManual.title,
+      description: labManual.description,
+    },
+    alternates: {
+      canonical: `https://dkpucs.vercel.app/lab-manuals/${params.id}`,
+    },
   };
 }
 

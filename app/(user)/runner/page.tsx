@@ -1,8 +1,33 @@
-"use client"
-
 import { CodeRunner } from "@/components/code-runner"
 import { PythonCompilerCards } from "@/components/python-compiler-cards"
 import Link from "next/link"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Python Compiler",
+  description: "Free online Python compiler and code runner. Write, run, and test your Python code instantly in the browser. Perfect for learning, testing, and practicing Python programming.",
+  keywords: [
+    "Python compiler",
+    "online Python compiler",
+    "Python code runner",
+    "run Python online",
+    "Python IDE",
+    "Python online editor",
+    "DKPUCS",
+    "code runner",
+    "Python practice",
+    "programming online",
+  ],
+  openGraph: {
+    title: "Python Compiler - DKPUCS",
+    description: "Free online Python compiler. Write, run, and test your Python code instantly.",
+    url: "https://dkpucs.vercel.app/runner",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/runner",
+  },
+}
 
 export default function RunnerPage() {
   return (
@@ -18,3 +43,4 @@ export default function RunnerPage() {
     </div>
   )
 }
+

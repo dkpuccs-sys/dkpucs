@@ -1,6 +1,29 @@
-"use client"
-
 import type React from "react"
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with DKPUCS. Have questions or feedback? Contact us via email at dkpucs@gmail.com or visit us at Venkataramana Swamy College, Bantwal, Karnataka. We respond within 24 hours.",
+  keywords: [
+    "contact DKPUCS",
+    "DKPUCS contact",
+    "get in touch",
+    "email DKPUCS",
+    "feedback",
+    "Bantwal college",
+    "student support",
+    "dkpucs@gmail.com",
+  ],
+  openGraph: {
+    title: "Contact - DKPUCS",
+    description: "Get in touch with DKPUCS. Send us your questions or feedback.",
+    url: "https://dkpucs.vercel.app/contact",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/contact",
+  },
+};
 
 export default function ContactPage() {
   return (

@@ -1,4 +1,31 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Read DKPUCS privacy policy to understand how we collect, use, and protect your personal information. Learn about our data practices, cookies, and third-party services.",
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "DKPUCS privacy",
+    "user data",
+    "cookies",
+    "data security",
+  ],
+  openGraph: {
+    title: "Privacy Policy - DKPUCS",
+    description: "Read our privacy policy to understand how we handle your data.",
+    url: "https://dkpucs.vercel.app/privacy-policy",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/privacy-policy",
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
+};
 
 export default function PrivacyPolicyPage() {
   return (

@@ -1,4 +1,31 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Read DKPUCS terms of service to understand the rules, conditions, and guidelines for using our website and services. Learn about your rights and responsibilities.",
+  keywords: [
+    "terms of service",
+    "terms and conditions",
+    "DKPUCS terms",
+    "user agreement",
+    "website rules",
+    "legal terms",
+  ],
+  openGraph: {
+    title: "Terms of Service - DKPUCS",
+    description: "Read our terms of service to understand the rules for using our website.",
+    url: "https://dkpucs.vercel.app/terms-of-service",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/terms-of-service",
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
+};
 
 export default function TermsOfServicePage() {
   return (

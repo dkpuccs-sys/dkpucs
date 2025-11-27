@@ -2,6 +2,31 @@ import { getBlogs, getTotalBlogsCount } from "@/lib/data"
 import { EmptyState } from "@/components/ui/empty-state"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description: "Read the latest blogs, articles, and tutorials on programming, coding, competitive programming, and computer science. Learn from the DKPUCS community.",
+  keywords: [
+    "DKPUCS blogs",
+    "programming blogs",
+    "coding tutorials",
+    "computer science articles",
+    "tech blogs",
+    "coding tips",
+    "programming tutorials",
+    "student blogs",
+  ],
+  openGraph: {
+    title: "Blogs - DKPUCS",
+    description: "Read the latest blogs and articles on programming and computer science.",
+    url: "https://dkpucs.vercel.app/blogs",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/blogs",
+  },
+}
 
 interface BlogsPageProps {
   searchParams?: {

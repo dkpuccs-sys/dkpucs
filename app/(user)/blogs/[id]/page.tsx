@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma"
+import { getBlogById } from "@/lib/data"
 import { notFound } from "next/navigation"
 import Link from "next/link" 
 import { Button } from "@/components/ui/button" 
@@ -11,7 +11,7 @@ interface BlogDetailPageProps {
 }
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const blog = await prisma.blog.findUnique({ where: { id: params.id } })
+  const blog = await getBlogById(params.id)
 
   if (!blog) {
     return {
@@ -19,15 +19,44 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     }
   }
 
+  const description = blog.content.length > 160
+    ? blog.content.substring(0, 157) + "..."
+    : blog.content;
+
   return {
     title: blog.title,
-    description: blog.content.substring(0, 150),
-    keywords: blog.author,
+    description,
+    keywords: [
+      "DKPUCS",
+      "blog",
+      "programming",
+      "coding",
+      blog.author || "DKPUCS Team",
+      blog.level,
+    ].filter(Boolean) as string[],
+    authors: [{ name: blog.author || "DKPUCS Team" }],
+    openGraph: {
+      title: blog.title,
+      description,
+      type: "article",
+      url: `https://dkpucs.vercel.app/blogs/${params.id}`,
+      publishedTime: new Date(blog.createdAt).toISOString(),
+      authors: [blog.author || "DKPUCS Team"],
+      section: blog.level || "Technology",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description,
+    },
+    alternates: {
+      canonical: `https://dkpucs.vercel.app/blogs/${params.id}`,
+    },
   }
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const blog = await prisma.blog.findUnique({ where: { id: params.id } })
+  const blog = await getBlogById(params.id)
 
   if (!blog) {
     notFound()

@@ -1,7 +1,33 @@
-import { getLabManuals, getTotalLabManualsCount } from "@/lib/data" 
+import { getLabManuals, getTotalLabManualsCount } from "@/lib/data"
 import { EmptyState } from "@/components/ui/empty-state"
 import Link from "next/link"
-import { Button } from "@/components/ui/button" 
+import { Button } from "@/components/ui/button"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Lab Manuals",
+  description: "Hands-on coding exercises and practical guides to strengthen your programming skills. Access lab manuals with solutions for Python, Java, C, and more languages.",
+  keywords: [
+    "lab manuals",
+    "programming exercises",
+    "coding practice",
+    "DKPUCS",
+    "hands-on coding",
+    "practical guides",
+    "Python exercises",
+    "Java exercises",
+    "programming lab",
+  ],
+  openGraph: {
+    title: "Lab Manuals - DKPUCS",
+    description: "Hands-on coding exercises and practical guides for programming.",
+    url: "https://dkpucs.vercel.app/lab-manuals",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://dkpucs.vercel.app/lab-manuals",
+  },
+}
 
 interface LabManualsPageProps {
   searchParams?: {
