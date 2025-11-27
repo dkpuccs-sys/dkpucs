@@ -4,6 +4,9 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import { PathBasedTracker } from "@/components/path-based-tracker"
 import { Metadata } from "next"
+import { JetBrains_Mono } from "next/font/google"
+
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
   title: {
@@ -42,10 +45,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
-      <body className="overflow-x-hidden">
+      <body className={`overflow-x-hidden ${jetbrainsMono.variable} font-mono antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

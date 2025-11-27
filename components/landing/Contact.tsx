@@ -2,49 +2,41 @@
 import AnimatedTitle from "@/components/landing/AnimatedTitle";
 import Button from "@/components/landing/Button";
 
-const ImageClipBox = ({ src, clipClass }: { src: string, clipClass: string }) => (
-  <div className={clipClass}>
-    <img src={src} className="hidden md:block" />
-  </div>
-);
-
 const Contact = () => {
   return (
-    <div id="contact" className="py-16 min-h-96 w-full  px-10">
-      <div className="relative rounded-lg bg-black py-24 text-blue-50 sm:overflow-hidden">
-        <div className="absolute -left-20 top-0 hidden h-full w-72 overflow-hidden sm:block lg:left-20 lg:w-96">
-          <ImageClipBox
-            src="https://picsum.photos/400/600?random=1"
-            clipClass="contact-clip-path-1"
-          />
-          <ImageClipBox
-            src="https://picsum.photos/400/600?random=2"
-            clipClass="contact-clip-path-2 lg:translate-y-40 translate-y-60"
-          />
+    <div id="contact" className="py-24 w-full px-5 sm:px-10 bg-background border-t border-border/50 relative overflow-hidden">
+      <div className="absolute inset-0 grid-bg opacity-50 pointer-events-none"></div>
+
+      <div className="relative max-w-5xl mx-auto rounded-none border border-border/50 bg-card/20 backdrop-blur-sm p-8 md:p-16 overflow-hidden">
+        {/* Tech decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+        <div className="absolute bottom-0 right-0 p-4 opacity-30 hidden md:block">
+          <div className="text-[10px] font-mono text-primary uppercase leading-tight">
+            System.Connect<br />
+            Port: 8080<br />
+            Status: Listening
+          </div>
         </div>
 
-        <div className="absolute -top-40 left-20 w-60 sm:top-1/2 md:left-auto md:right-10 lg:top-20 lg:w-80">
-          <ImageClipBox
-            src="https://picsum.photos/300/400?random=3"
-            clipClass="absolute md:scale-125"
-          />
-          <ImageClipBox
-            src="https://picsum.photos/300/400?random=4"
-            clipClass="sword-man-clip-path md:scale-125"
-          />
-        </div>
+        <div className="flex flex-col items-center text-center relative z-10">
+          <div className="inline-block mb-6 px-3 py-1 border border-primary/30 bg-primary/5">
+            <p className="text-xs font-mono uppercase text-primary tracking-widest">Communication Uplink</p>
+          </div>
 
-        <div className="flex flex-col items-center text-center">
-          <p className="mb-10 font-general text-[30px] uppercase">
+          <p className="mb-8 font-mono text-lg md:text-xl uppercase tracking-widest text-muted-foreground">
             Get in Touch
           </p>
 
           <AnimatedTitle
             title="Have questions? <br /> We are here to help."
-            containerClass="special-font !md:text-[6.2rem] w-full font-zentry !text-5xl !font-black !leading-[.9]"
+            containerClass="special-font !md:text-6xl w-full !text-4xl !font-bold !leading-tight tracking-tighter mb-10"
           />
 
-          <Button title="contact us" href="/contact" containerClass="mt-10 bg-blue-500 cursor-pointer" />
+          <Button
+            title="INITIALIZE CONTACT"
+            href="/contact"
+            containerClass="mt-6 bg-primary text-primary-foreground hover:bg-primary/90 border border-transparent hover:border-primary/50"
+          />
         </div>
       </div>
     </div>

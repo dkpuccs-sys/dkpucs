@@ -1,7 +1,3 @@
-"use client"
-
-import Button from "@/components/landing/Button"
-
 const Story = () => {
   return (
     <div id="story" className="w-screen bg-card py-16 px-5 sm:px-10">

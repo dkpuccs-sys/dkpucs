@@ -2,26 +2,38 @@
 
 import Link from "next/link";
 
-const FeatureCard = ({ title, description, video, link }: { title: string; description: string; video: string, link:string }) => {
+const FeatureCard = ({ title, description, video, link }: { title: string; description: string; video: string, link: string }) => {
   return (
-    <Link href={link} className="bg-card border border-border rounded-lg overflow-hidden hover:border-primary transition-colors">
-      <video src={video} loop muted autoPlay className="w-full h-48 object-cover" />
-      <div className="p-6">
-        <h3 className="text-2xl font-bold mb-2">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
+    <Link href={link} className="group relative overflow-hidden bg-card/30 border border-border/50 hover:border-primary/50 transition-all duration-300">
+      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <div className="relative h-48 overflow-hidden border-b border-border/50">
+        <div className="absolute inset-0 bg-primary/20 z-10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <video src={video} loop muted autoPlay className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+      </div>
+      <div className="p-6 relative z-20">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xl font-bold font-mono uppercase tracking-tight group-hover:text-primary transition-colors">{title}</h3>
+          <span className="text-xs font-mono text-muted-foreground border border-border/50 px-2 py-0.5 group-hover:border-primary/50 group-hover:text-primary transition-colors">0{Math.floor(Math.random() * 9) + 1}</span>
+        </div>
+        <p className="text-muted-foreground text-sm leading-relaxed border-l border-border/50 pl-3 group-hover:border-primary/50 transition-colors">{description}</p>
       </div>
     </Link>
   )
 }
 
 const Features = () => (
-  <section className="bg-background py-16 px-5 sm:px-10">
+  <section className="bg-background py-24 px-5 sm:px-10 border-t border-border/50 relative">
+    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
     <div className="max-w-7xl mx-auto">
-      <div className="mb-16">
-        <p className="text-sm uppercase text-muted-foreground mb-4">Explore Our Resources</p>
-        <p className="text-xl max-w-7xl text-muted-foreground">
-          Dive into a comprehensive collection of academic materials, past question papers, and practical guides to help
-          you excel in your studies.
+      <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <div className="inline-block mb-4 px-3 py-1 border border-primary/30 bg-primary/5">
+            <p className="text-xs font-mono uppercase text-primary tracking-widest">System Resources</p>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Explore Modules<span className="text-primary">.</span></h2>
+        </div>
+        <p className="text-lg max-w-xl text-muted-foreground font-light border-l-2 border-primary/20 pl-4">
+          Dive into a comprehensive collection of academic materials, past question papers, and practical guides.
         </p>
       </div>
 

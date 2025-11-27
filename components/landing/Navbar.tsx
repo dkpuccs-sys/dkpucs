@@ -18,13 +18,13 @@ const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="fixed top-0 w-full bg-background border-b border-border z-50">
+    <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold">D</span>
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-none flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <span className="text-primary font-mono font-bold">D</span>
           </div>
-          <span className="font-semibold text-foreground hidden sm:inline">DKPUCS</span>
+          <span className="font-bold font-mono text-foreground hidden sm:inline tracking-tighter group-hover:text-primary transition-colors">DKPUCS</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
@@ -32,7 +32,7 @@ const NavBar = () => {
             <Link
               key={item.href}
               href={item.href}
-              className="text-foreground hover:text-primary transition-colors text-sm font-medium"
+              className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium font-mono uppercase tracking-wide"
             >
               {item.name}
             </Link>
@@ -55,13 +55,13 @@ const NavBar = () => {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-card border-t border-border">
+        <div className="md:hidden bg-background/95 backdrop-blur-xl border-t border-border/50 absolute w-full">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-foreground hover:text-primary transition-colors font-medium"
+                className="text-foreground hover:text-primary transition-colors font-medium font-mono uppercase tracking-wide py-2 border-b border-border/10"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}

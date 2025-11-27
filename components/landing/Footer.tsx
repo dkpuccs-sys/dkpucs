@@ -35,30 +35,32 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-card border-t border-border relative">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+    <footer className="w-full bg-background border-t border-border/50 relative pt-16 pb-8">
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">D</span>
+            <Link href="/" className="flex items-center gap-2 mb-6 group">
+              <div className="w-10 h-10 bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <span className="text-primary font-mono font-bold text-lg">D</span>
               </div>
-              <span className="font-semibold text-foreground">DKPUCS</span>
+              <span className="font-bold font-mono text-foreground tracking-tighter group-hover:text-primary transition-colors">DKPUCS</span>
             </Link>
-            <p className="text-muted-foreground text-sm">
-              A community for college coders to learn, share, and grow together.
+            <p className="text-muted-foreground text-sm leading-relaxed font-light">
+              A community for college coders to learn, share, and grow together. <br />
+              <span className="font-mono text-xs text-primary/70 mt-2 block">System Status: Online</span>
             </p>
           </div>
 
           {Object.entries(links).map(([category, items]) => (
             <div key={category}>
-              <h3 className="font-semibold text-foreground mb-4 text-sm">{category}</h3>
-              <ul className="space-y-2">
+              <h3 className="font-bold font-mono text-foreground mb-6 text-sm uppercase tracking-wider">{category}</h3>
+              <ul className="space-y-3">
                 {items.map((item, index) => (
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+                      className="text-muted-foreground hover:text-primary transition-colors text-sm hover:pl-1 duration-300 block"
                     >
                       {item.name}
                     </Link>
@@ -69,34 +71,24 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="border-t border-border mb-8"></div>
+        <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-muted-foreground text-xs font-mono text-center md:text-left">
+            © {currentYear} DKPUCS. All rights reserved. <br className="md:hidden" />
+            Developed by <Link href={"https://gauresh.is-a.dev"} className="text-primary hover:underline" target="_blank">GP</Link> and <Link className="text-primary hover:underline" href={"https://venjix.kreekarvat.in"} target="_blank">VP</Link>.
+          </p>
 
-        {/* <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.label}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                {link.icon}
-              </a>
-            ))}
+            {/* Social links could go here if uncommented */}
           </div>
-        </div>*/}
-
-        <p className="text-muted-foreground text-sm text-center">© {currentYear} DKPUCS. All rights reserved. Developed by <Link href={"https://gauresh.is-a.dev"} className="underline" target="_blank">GP</Link> and <Link className="underline" href={"https://venjix.kreekarvat.in"} target="_blank">VP</Link>.</p>
+        </div>
       </div>
 
       <button
         onClick={scrollToTop}
-        className="absolute bottom-24 right-8 p-3 cursor-pointer rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors"
+        className="absolute bottom-8 right-8 p-3 cursor-pointer border border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
         aria-label="Scroll to top"
       >
-        <ArrowUp className="h-5 w-5" />
+        <ArrowUp className="h-5 w-5 group-hover:-translate-y-1 transition-transform" />
       </button>
     </footer>
   )
