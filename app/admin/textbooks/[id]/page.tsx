@@ -8,9 +8,23 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+/**
+ * Render the admin page for editing or deleting a textbook identified by the route `id`.
+ *
+ * Fetches the textbook when `id` is present, exposes a form bound to title, author, hyperlink, section, and subject,
+ * and performs update or delete requests that show toast notifications and navigate to `/admin/textbooks` on success.
+ *
+ * @returns A React element rendering the edit textbook page.
+ */
 export default function EditTextbookPage() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -24,17 +38,22 @@ export default function EditTextbookPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
       fetch(`/api/textbooks/${id}`)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to fetch textbook");
+          }
+          return res.json();
+        })
         .then((data) => {
           setTitle(data.title);
           setAuthor(data.author || "");
           setHyperlink(data.hyperlink);
-          setSection(data.section); 
+          setSection(data.section);
           setSubject(data.subject);
           setIsLoading(false);
         })
@@ -48,7 +67,7 @@ export default function EditTextbookPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +78,13 @@ export default function EditTextbookPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, author: author || null, hyperlink, section, subject }),
+        body: JSON.stringify({
+          title,
+          author: author || null,
+          hyperlink,
+          section,
+          subject,
+        }),
       });
 
       if (!response.ok) {
@@ -110,7 +135,7 @@ export default function EditTextbookPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -169,16 +194,20 @@ export default function EditTextbookPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="section">Section</Label>
-            <Select onValueChange={setSection} value={section} disabled={isUpdating || isDeleting}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PU_1">1st PU</SelectItem>
-                <SelectItem value="PU_2">2nd PU</SelectItem>
-                <SelectItem value="OTHER">Other</SelectItem>
-              </SelectContent>
-            </Select>
+              <Select
+                onValueChange={setSection}
+                value={section}
+                disabled={isUpdating || isDeleting}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PU_1">1st PU</SelectItem>
+                  <SelectItem value="PU_2">2nd PU</SelectItem>
+                  <SelectItem value="OTHER">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="subject">Subject</Label>
@@ -193,8 +222,8 @@ export default function EditTextbookPage() {
               />
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -207,9 +236,9 @@ export default function EditTextbookPage() {
                   "Update Textbook"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

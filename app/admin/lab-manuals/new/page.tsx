@@ -7,23 +7,46 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Render the New Lab Manual admin page with a form to create a lab manual.
+ *
+ * The form collects title, description, difficulty, language, level, and a list of code snippets (each containing question, code, and comments).
+ *
+ * @returns The JSX element for the New Lab Manual form page.
+ */
 export default function NewLabManualPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [language, setLanguage] = useState("");
   const [level, setLevel] = useState("");
-  const [content, setContent] = useState<Array<{ question: string; code: string; comments: string }>>([]);
+  const [content, setContent] = useState<
+    Array<{ question: string; code: string; comments: string }>
+  >([]);
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!difficulty || !language || !level) {
+      toast({
+        title: "Missing fields",
+        description: "Please select difficulty, language, and level.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsCreating(true);
     try {
       const response = await fetch("/api/lab-manuals", {
@@ -31,7 +54,14 @@ export default function NewLabManualPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, difficulty, language, level, content }),
+        body: JSON.stringify({
+          title,
+          description,
+          difficulty,
+          language,
+          level,
+          content,
+        }),
       });
 
       if (!response.ok) {
@@ -43,7 +73,7 @@ export default function NewLabManualPage() {
         description: "Lab Manual created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/lab-manuals");
     } catch (error: any) {
       console.error("Error creating lab manual:", error);
@@ -89,7 +119,7 @@ export default function NewLabManualPage() {
               className="border border-border"
             />
           </div>
-          
+
           <div className="grid gap-4">
             <Label>Content (Code Snippets)</Label>
             {content.map((item, index) => (
@@ -99,9 +129,11 @@ export default function NewLabManualPage() {
                   id={`question-${index}`}
                   value={item.question}
                   onChange={(e) => {
-                    const newContent = [...content];
-                    newContent[index].question = e.target.value;
-                    setContent(newContent);
+                    setContent(
+                      content.map((c, i) =>
+                        i === index ? { ...c, question: e.target.value } : c,
+                      ),
+                    );
                   }}
                   placeholder="Enter question for this snippet"
                   disabled={isCreating}
@@ -112,9 +144,11 @@ export default function NewLabManualPage() {
                   id={`code-${index}`}
                   value={item.code}
                   onChange={(e) => {
-                    const newContent = [...content];
-                    newContent[index].code = e.target.value;
-                    setContent(newContent);
+                    setContent(
+                      content.map((c, i) =>
+                        i === index ? { ...c, code: e.target.value } : c,
+                      ),
+                    );
                   }}
                   placeholder="Enter code snippet"
                   rows={5}
@@ -126,9 +160,11 @@ export default function NewLabManualPage() {
                   id={`comments-${index}`}
                   value={item.comments}
                   onChange={(e) => {
-                    const newContent = [...content];
-                    newContent[index].comments = e.target.value;
-                    setContent(newContent);
+                    setContent(
+                      content.map((c, i) =>
+                        i === index ? { ...c, comments: e.target.value } : c,
+                      ),
+                    );
                   }}
                   placeholder="Enter comments for this snippet"
                   rows={3}
@@ -153,7 +189,10 @@ export default function NewLabManualPage() {
               type="button"
               variant="outline"
               onClick={() =>
-                setContent([...content, { question: "", code: "", comments: "" }])
+                setContent([
+                  ...content,
+                  { question: "", code: "", comments: "" },
+                ])
               }
               disabled={isCreating}
             >
@@ -162,9 +201,13 @@ export default function NewLabManualPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="difficulty">Difficulty</Label>
-            <Select onValueChange={setDifficulty} value={difficulty} disabled={isCreating}>
+            <Select
+              onValueChange={setDifficulty}
+              value={difficulty}
+              disabled={isCreating}
+            >
               <SelectTrigger className="border border-border">
-                <SelectValue placeholder="Select difficulty (optional)" />
+                <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Beginner">Beginner</SelectItem>
@@ -175,9 +218,13 @@ export default function NewLabManualPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="language">Language</Label>
-            <Select onValueChange={setLanguage} value={language} disabled={isCreating}>
+            <Select
+              onValueChange={setLanguage}
+              value={language}
+              disabled={isCreating}
+            >
               <SelectTrigger className="border border-border">
-                <SelectValue placeholder="Select language (optional)" />
+                <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="C++">C++</SelectItem>
@@ -190,9 +237,13 @@ export default function NewLabManualPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="level">Level</Label>
-            <Select onValueChange={setLevel} value={level} disabled={isCreating}>
+            <Select
+              onValueChange={setLevel}
+              value={level}
+              disabled={isCreating}
+            >
               <SelectTrigger className="border border-border">
-                <SelectValue placeholder="Select level (optional)" />
+                <SelectValue placeholder="Select level" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="1st PU">1st PU</SelectItem>
@@ -202,8 +253,8 @@ export default function NewLabManualPage() {
             </Select>
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

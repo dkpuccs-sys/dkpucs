@@ -1,6 +1,12 @@
 "use client";
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
 interface DailyViewsChartProps {
@@ -14,6 +20,12 @@ const chartConfig = {
   },
 };
 
+/**
+ * Renders a bar chart of daily view counts.
+ *
+ * @param data - Array of records where each item has a `date` string and a `views` number for that day
+ * @returns The bar chart element for the provided `data`, or `null` if `data` is empty
+ */
 export default function DailyViewsChart({ data }: DailyViewsChartProps) {
   if (data.length === 0) {
     return null;
@@ -32,4 +44,3 @@ export default function DailyViewsChart({ data }: DailyViewsChartProps) {
     </ChartContainer>
   );
 }
-

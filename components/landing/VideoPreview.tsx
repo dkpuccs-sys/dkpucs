@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { gsap } from "gsap";
 import { useState, useRef, useEffect } from "react";
 
@@ -8,26 +8,27 @@ export const VideoPreview = ({ children }: { children: React.ReactNode }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  
-  const handleMouseMove = ({ clientX, clientY, currentTarget }: React.MouseEvent<HTMLElement>) => {
-    const rect = currentTarget.getBoundingClientRect(); 
+  const handleMouseMove = ({
+    clientX,
+    clientY,
+    currentTarget,
+  }: React.MouseEvent<HTMLElement>) => {
+    const rect = currentTarget.getBoundingClientRect();
 
-    const xOffset = clientX - (rect.left + rect.width / 2); 
-    const yOffset = clientY - (rect.top + rect.height / 2); 
+    const xOffset = clientX - (rect.left + rect.width / 2);
+    const yOffset = clientY - (rect.top + rect.height / 2);
 
     if (isHovering) {
-      
       gsap.to(sectionRef.current, {
         x: xOffset,
         y: yOffset,
-        rotationY: xOffset / 2, 
+        rotationY: xOffset / 2,
         rotationX: -yOffset / 2,
-        transformPerspective: 500, 
+        transformPerspective: 500,
         duration: 1,
         ease: "power1.out",
       });
 
-      
       gsap.to(contentRef.current, {
         x: -xOffset,
         y: -yOffset,
@@ -38,7 +39,6 @@ export const VideoPreview = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    
     if (!isHovering) {
       gsap.to(sectionRef.current, {
         x: 0,

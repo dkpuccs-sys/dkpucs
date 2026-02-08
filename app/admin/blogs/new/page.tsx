@@ -7,10 +7,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Render a page containing a form to create a new blog post and handle its submission.
+ *
+ * The form collects title, content, author, and level; submitting the form sends a POST
+ * request to "/api/blogs". On successful creation the component shows a success toast,
+ * refreshes router state, and navigates to "/admin/blogs". On failure it shows an error toast.
+ *
+ * @returns The page's JSX content containing the blog creation form and submission UI.
+ */
 export default function NewBlogPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -18,7 +33,7 @@ export default function NewBlogPage() {
   const [level, setLevel] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +56,7 @@ export default function NewBlogPage() {
         description: "Blog post created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/blogs");
     } catch (error: any) {
       console.error("Error creating blog:", error);
@@ -100,7 +115,11 @@ export default function NewBlogPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="level">Level</Label>
-            <Select onValueChange={setLevel} value={level} disabled={isCreating}>
+            <Select
+              onValueChange={setLevel}
+              value={level}
+              disabled={isCreating}
+            >
               <SelectTrigger className="border border-border">
                 <SelectValue placeholder="Select level (optional)" />
               </SelectTrigger>
@@ -112,8 +131,8 @@ export default function NewBlogPage() {
             </Select>
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

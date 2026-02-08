@@ -1,108 +1,122 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import { Play, Copy, Trash2, Check } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import { Play, Copy, Trash2, Check } from "lucide-react";
 
 declare global {
   interface Window {
-    loadPyodide?: (options: { indexURL?: string }) => Promise<any>
+    loadPyodide?: (options: { indexURL?: string }) => Promise<any>;
   }
 }
 
+/**
+ * Renders an in-browser Python editor and execution environment backed by Pyodide.
+ *
+ * The component provides a code editor, run control, output pane, basic error display,
+ * clipboard copy actions for code and output, and a set of example snippets. It manages
+ * Pyodide loading and the runtime state required to execute user-provided Python code.
+ *
+ * @returns A React element containing the Python code editor, run button, output display, and example snippets.
+ */
 export function CodeRunner() {
   const [code, setCode] = useState(`# Welcome to Python Runner
 # Try writing some Python code here!
 
-print("Hello, World!")`)
+print("Hello, World!")`);
 
-  const [output, setOutput] = useState("")
-  const [isRunning, setIsRunning] = useState(false)
-  const [error, setError] = useState("")
-  const [isPyodideReady, setIsPyodideReady] = useState(false)
-  const [isPyodideLoading, setIsPyodideLoading] = useState(true)
+  const [output, setOutput] = useState("");
+  const [isRunning, setIsRunning] = useState(false);
+  const [error, setError] = useState("");
+  const [isPyodideReady, setIsPyodideReady] = useState(false);
+  const [isPyodideLoading, setIsPyodideLoading] = useState(true);
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedOutput, setCopiedOutput] = useState(false);
 
-  const pyodideRef = useRef<any | null>(null)
+  const pyodideRef = useRef<any | null>(null);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
     const loadPyodideScript = () => {
       return new Promise<void>((resolve, reject) => {
         if (typeof window === "undefined") {
-          reject(new Error("Window is not available"))
-          return
+          reject(new Error("Window is not available"));
+          return;
         }
 
         if (window.loadPyodide) {
-          resolve()
-          return
+          resolve();
+          return;
         }
 
-        const script = document.createElement("script")
-        script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"
-        script.async = true
-        script.onload = () => resolve()
-        script.onerror = () => reject(new Error("Failed to load Pyodide script"))
-        document.body.appendChild(script)
-      })
-    }
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () =>
+          reject(new Error("Failed to load Pyodide script"));
+        document.body.appendChild(script);
+      });
+    };
 
     const initPyodide = async () => {
       try {
-        setIsPyodideLoading(true)
-        setError("")
+        setIsPyodideLoading(true);
+        setError("");
 
-        await loadPyodideScript()
-        if (cancelled) return
+        await loadPyodideScript();
+        if (cancelled) return;
 
         if (!window.loadPyodide) {
-          throw new Error("Pyodide loader is not available on window")
+          throw new Error("Pyodide loader is not available on window");
         }
 
         const pyodide = await window.loadPyodide({
           indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/",
-        })
+        });
 
-        if (cancelled) return
+        if (cancelled) return;
 
-        pyodideRef.current = pyodide
-        setIsPyodideReady(true)
+        pyodideRef.current = pyodide;
+        setIsPyodideReady(true);
       } catch (err: any) {
         if (!cancelled) {
-          console.error("Failed to initialize Pyodide:", err)
-          setError("Failed to initialize Python runtime. Please refresh the page and try again.")
-          setIsPyodideReady(false)
+          console.error("Failed to initialize Pyodide:", err);
+          setError(
+            "Failed to initialize Python runtime. Please refresh the page and try again.",
+          );
+          setIsPyodideReady(false);
         }
       } finally {
         if (!cancelled) {
-          setIsPyodideLoading(false)
+          setIsPyodideLoading(false);
         }
       }
-    }
+    };
 
-    initPyodide()
+    initPyodide();
 
     return () => {
-      cancelled = true
-    }
-  }, [])
+      cancelled = true;
+    };
+  }, []);
 
   const executePythonCode = async () => {
-    if (!code.trim()) return
+    if (!code.trim()) return;
 
     if (!pyodideRef.current) {
-      setError("Python runtime is still loading. Please wait a moment and try again.")
-      return
+      setError(
+        "Python runtime is still loading. Please wait a moment and try again.",
+      );
+      return;
     }
 
-    setIsRunning(true)
-    setOutput("")
-    setError("")
+    setIsRunning(true);
+    setOutput("");
+    setError("");
 
     try {
-      const pyodide = pyodideRef.current
+      const pyodide = pyodideRef.current;
 
       const wrappedCode = `import sys, io, traceback
 _buffer = io.StringIO()
@@ -117,57 +131,86 @@ except Exception:
 finally:
     sys.stdout, sys.stderr = _old_stdout, _old_stderr
 _output = _buffer.getvalue()
-_output` as string
+_output`;
 
-      const result = await pyodide.runPythonAsync(wrappedCode)
-      const textResult = typeof result === "string" ? result : String(result ?? "")
+      const result = await pyodide.runPythonAsync(wrappedCode);
+      const textResult =
+        typeof result === "string" ? result : String(result ?? "");
 
-      setOutput(textResult.trim() || "(no output)")
+      setOutput(textResult.trim() || "(no output)");
     } catch (err: any) {
-      console.error("Python execution error:", err)
-      setError(`Error while executing Python code: ${err?.message || "Unknown error"}`)
+      console.error("Python execution error:", err);
+      setError(
+        `Error while executing Python code: ${err?.message || "Unknown error"}`,
+      );
     } finally {
-      setIsRunning(false)
+      setIsRunning(false);
     }
-  }
+  };
 
   const copyCode = () => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
-  }
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setCopiedCode(true);
+        setTimeout(() => setCopiedCode(false), 2000);
+      })
+      .catch(() => {});
+  };
 
   const copyOutput = () => {
-    navigator.clipboard.writeText(output);
-    setCopiedOutput(true);
-    setTimeout(() => setCopiedOutput(false), 2000);
-  }
+    navigator.clipboard
+      .writeText(output)
+      .then(() => {
+        setCopiedOutput(true);
+        setTimeout(() => setCopiedOutput(false), 2000);
+      })
+      .catch(() => {});
+  };
 
   const resetCode = () => {
-    setCode("")
-    setOutput("")
-    setError("")
-  }
+    setCode("");
+    setOutput("");
+    setError("");
+  };
 
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Python Code Runner</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+          Python Code Runner
+        </h1>
         <p className="text-lg text-muted-foreground max-w-7xl">
-          Write and execute Python code directly in your browser. Perfect for learning, testing snippets, and quick
-          experimentation.
+          Write and execute Python code directly in your browser. Perfect for
+          learning, testing snippets, and quick experimentation.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="flex flex-col h-full min-h-96">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">Code Editor</h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              Code Editor
+            </h2>
             <div className="flex gap-2">
-              <button onClick={copyCode} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Copy code">
-                {copiedCode ? <Check size={20} className="text-green-500" /> : <Copy size={20} className="text-muted-foreground" />}
+              <button
+                onClick={copyCode}
+                className="p-2 hover:bg-muted rounded transition-colors cursor-pointer"
+                title="Copy code"
+                aria-label="Copy code to clipboard"
+              >
+                {copiedCode ? (
+                  <Check size={20} className="text-green-500" />
+                ) : (
+                  <Copy size={20} className="text-muted-foreground" />
+                )}
               </button>
-              <button onClick={resetCode} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Clear code">
+              <button
+                onClick={resetCode}
+                className="p-2 hover:bg-muted rounded transition-colors cursor-pointer"
+                title="Clear code"
+                aria-label="Clear code editor"
+              >
                 <Trash2 size={20} className="text-muted-foreground" />
               </button>
             </div>
@@ -179,12 +222,14 @@ _output` as string
             className="flex-1 p-4 bg-card border border-border rounded-lg font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             placeholder="Write your Python code here..."
             spellCheck="false"
+            aria-label="Python code editor"
           />
 
           <button
             onClick={executePythonCode}
             disabled={isRunning || !code.trim()}
             className="mt-4 w-full flex items-center justify-center cursor-pointer gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity"
+            aria-label={isRunning ? "Running code..." : "Run Python code"}
           >
             <Play size={20} />
             {isRunning ? "Running..." : "Run Code"}
@@ -194,36 +239,57 @@ _output` as string
         <div className="flex flex-col h-full min-h-96">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-foreground">Output</h2>
-            <button onClick={copyOutput} className="p-2 hover:bg-muted rounded transition-colors cursor-pointer" title="Copy output">
-              {copiedOutput ? <Check size={20} className="text-green-500" /> : <Copy size={20} className="text-muted-foreground" />}
+            <button
+              onClick={copyOutput}
+              className="p-2 hover:bg-muted rounded transition-colors cursor-pointer"
+              title="Copy output"
+              aria-label="Copy execution output to clipboard"
+            >
+              {copiedOutput ? (
+                <Check size={20} className="text-green-500" />
+              ) : (
+                <Copy size={20} className="text-muted-foreground" />
+              )}
             </button>
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-red-800 dark:text-red-200 text-sm font-mono">{error}</p>
+            <div
+              className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg"
+              role="alert"
+            >
+              <p className="text-red-800 dark:text-red-200 text-sm font-mono">
+                {error}
+              </p>
             </div>
           )}
 
-          <div className="flex-1 p-4 bg-card border border-border rounded-lg">
-            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap wrap-wrap-break-word">
+          <div
+            className="flex-1 p-4 bg-card border border-border rounded-lg"
+            aria-live="polite"
+          >
+            <pre className="font-mono text-sm text-foreground whitespace-pre-wrap break-words">
               {output || (
-                <span className="text-muted-foreground">{isRunning ? "Executing..." : "Output will appear here"}</span>
+                <span className="text-muted-foreground">
+                  {isRunning ? "Executing..." : "Output will appear here"}
+                </span>
               )}
             </pre>
           </div>
 
           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-blue-800 dark:text-blue-200 text-sm">
-              Simplified Python runner supporting basic syntax, functions, and data types. Complex libraries and imports
-              are not supported.
+              Simplified Python runner supporting basic syntax, functions, and
+              data types. Complex libraries and imports are not supported.
             </p>
           </div>
         </div>
       </div>
 
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold text-foreground mb-6">Examples</h2>
+        <h2 className="text-2xl font-semibold text-foreground mb-6">
+          Examples
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             {
@@ -255,13 +321,18 @@ _output` as string
               key={example.title}
               onClick={() => setCode(example.code)}
               className="p-4 bg-card border border-border rounded-lg hover:border-primary transition-colors text-left"
+              aria-label={`Load example: ${example.title}`}
             >
-              <h3 className="font-semibold text-foreground mb-2">{example.title}</h3>
-              <code className="text-xs text-muted-foreground font-mono line-clamp-3">{example.code}</code>
+              <h3 className="font-semibold text-foreground mb-2">
+                {example.title}
+              </h3>
+              <code className="text-xs text-muted-foreground font-mono line-clamp-3">
+                {example.code}
+              </code>
             </button>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

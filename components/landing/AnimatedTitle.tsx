@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -6,7 +6,13 @@ import clsx from "clsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AnimatedTitle = ({ title, containerClass }: { title: string, containerClass?: string }) => {
+const AnimatedTitle = ({
+  title,
+  containerClass,
+}: {
+  title: string;
+  containerClass?: string;
+}) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -28,11 +34,11 @@ const AnimatedTitle = ({ title, containerClass }: { title: string, containerClas
           ease: "power2.inOut",
           stagger: 0.02,
         },
-        0
+        0,
       );
     }, containerRef);
 
-    return () => ctx.revert(); 
+    return () => ctx.revert();
   }, []);
 
   return (

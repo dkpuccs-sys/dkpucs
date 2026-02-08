@@ -1,75 +1,103 @@
-import { getBlogById } from "@/lib/data"
-import { notFound } from "next/navigation"
-import Link from "next/link" 
-import { Button } from "@/components/ui/button" 
-import { Metadata } from "next"
+import { getBlogById } from "@/lib/data";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 
 interface BlogDetailPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const blog = await getBlogById(params.id)
+/**
+ * Generate page metadata for a blog detail page.
+ *
+ * Populates title, description, keywords, authors, Open Graph, Twitter, and canonical URL using the blog identified by `params`. If the blog is not found, returns metadata with the title "Blog not found".
+ *
+ * @param params - A promise resolving to route parameters containing the blog `id`
+ * @returns A Metadata object populated from the blog data; if the blog does not exist, a Metadata object with title `"Blog not found"`
+ */
+export async function generateMetadata({
+  params,
+}: BlogDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const blog = await getBlogById(id);
 
-  if (!blog) {
-    return {
-      title: "Blog not found",
+    if (!blog) {
+      return {
+        title: "Blog not found",
+      };
     }
-  }
 
-  const description = blog.content.length > 160
-    ? blog.content.substring(0, 157) + "..."
-    : blog.content;
+    const description =
+      blog.content.length > 160
+        ? blog.content.substring(0, 157) + "..."
+        : blog.content;
 
-  return {
-    title: blog.title,
-    description,
-    keywords: [
-      "DKPUCS",
-      "blog",
-      "programming",
-      "coding",
-      blog.author || "DKPUCS Team",
-      blog.level,
-    ].filter(Boolean) as string[],
-    authors: [{ name: blog.author || "DKPUCS Team" }],
-    openGraph: {
+    return {
       title: blog.title,
       description,
-      type: "article",
-      url: `https://dkpucs.vercel.app/blogs/${params.id}`,
-      publishedTime: new Date(blog.createdAt).toISOString(),
-      authors: [blog.author || "DKPUCS Team"],
-      section: blog.level || "Technology",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: blog.title,
-      description,
-    },
-    alternates: {
-      canonical: `https://dkpucs.vercel.app/blogs/${params.id}`,
-    },
+      keywords: [
+        "DKPUCS",
+        "blog",
+        "programming",
+        "coding",
+        blog.author || "DKPUCS Team",
+        blog.level,
+      ].filter(Boolean) as string[],
+      authors: [{ name: blog.author || "DKPUCS Team" }],
+      openGraph: {
+        title: blog.title,
+        description,
+        type: "article",
+        url: `https://dkpucs.vercel.app/blogs/${id}`,
+        publishedTime: new Date(blog.createdAt).toISOString(),
+        authors: [blog.author || "DKPUCS Team"],
+        section: blog.level || "Technology",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: blog.title,
+        description,
+      },
+      alternates: {
+        canonical: `https://dkpucs.vercel.app/blogs/${id}`,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating blog metadata:", error);
+    return {
+      title: "DKPUCS Blog",
+    };
   }
 }
 
+/**
+ * Render the blog detail page for the blog identified by the route `id`.
+ *
+ * @param params - A Promise resolving to an object with an `id` string used to load the blog
+ * @returns The React element representing the blog detail page
+ */
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const blog = await getBlogById(params.id)
+  const { id } = await params;
+  const blog = await getBlogById(id);
 
   if (!blog) {
-    notFound()
+    notFound();
   }
 
-  const createdAt = new Date(blog.createdAt)
+  const createdAt = new Date(blog.createdAt);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         <div className="mb-6 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground">{blog.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+              {blog.title}
+            </h1>
             {blog.level && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs bg-primary/10 text-primary">
                 {blog.level}
@@ -88,5 +116,5 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

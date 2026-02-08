@@ -19,7 +19,18 @@ interface MetadataParams {
 }
 
 /**
- * Generate comprehensive SEO metadata for pages
+ * Builds a Metadata object containing SEO, Open Graph, Twitter, robots, alternates, and application metadata for a page.
+ *
+ * @param keywords - Additional keywords to include; omitted if the array is empty
+ * @param path - Path relative to the site base URL used to construct the canonical URL
+ * @param image - URL for the Open Graph / Twitter image
+ * @param type - Open Graph content type (for example, "website" or "article")
+ * @param publishedTime - ISO 8601 publication timestamp; included in Open Graph when `type` is "article"
+ * @param modifiedTime - ISO 8601 modification timestamp; included in Open Graph when `type` is "article"
+ * @param authors - List of author names; converted to author objects when provided
+ * @param section - Article section or category; included in Open Graph when `type` is "article"
+ * @param noIndex - When true, configures robots to prevent indexing and following
+ * @returns A Metadata object populated with title, description, optional keywords and authors, creator and publisher, robots configuration, Open Graph and Twitter data, canonical alternate, and additional application metadata
  */
 export function generateMetadata({
   title,
@@ -41,7 +52,7 @@ export function generateMetadata({
     title: fullTitle,
     description,
     keywords: keywords.length > 0 ? keywords : undefined,
-    authors: authors ? authors.map(name => ({ name })) : undefined,
+    authors: authors ? authors.map((name) => ({ name })) : undefined,
     creator: SITE_NAME,
     publisher: SITE_NAME,
 
@@ -109,7 +120,16 @@ export function generateMetadata({
 }
 
 /**
- * Generate metadata for blog posts
+ * Generate metadata for a blog post including SEO, Open Graph, Twitter, and article-specific fields.
+ *
+ * @param title - The blog post title
+ * @param content - Full post content used to derive the meta description (trimmed to 160 characters)
+ * @param author - The post author's display name (defaults to "DKPUCS Team")
+ * @param level - Topic/section or difficulty level used as the article section and a keyword
+ * @param createdAt - Publication date used as the article's publishedTime
+ * @param updatedAt - Optional last-modified date used as the article's modifiedTime
+ * @param id - Identifier used to construct the canonical path for the post (`/blogs/{id}`)
+ * @returns Metadata object containing description, keywords, canonical URL, article fields (publishedTime, modifiedTime, authors, section), and social/Open Graph data
  */
 export function generateBlogMetadata({
   title,
@@ -128,7 +148,8 @@ export function generateBlogMetadata({
   updatedAt?: Date;
   id: string;
 }): Metadata {
-  const description = content.length > 160 ? content.substring(0, 157) + "..." : content;
+  const description =
+    content.length > 160 ? content.substring(0, 157) + "..." : content;
   const keywords = [
     "DKPUCS",
     "blog",

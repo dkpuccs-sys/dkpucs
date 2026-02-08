@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { useState } from "react";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { name: "About", href: "/about" },
@@ -12,10 +12,10 @@ const navItems = [
   { name: "QPs", href: "/qps" },
   { name: "Syllabus", href: "/syllabus" },
   { name: "Runner", href: "/runner" },
-]
+];
 
 const NavBar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
@@ -24,7 +24,9 @@ const NavBar = () => {
           <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-none flex items-center justify-center group-hover:bg-primary/20 transition-colors">
             <span className="text-primary font-mono font-bold">D</span>
           </div>
-          <span className="font-bold font-mono text-foreground hidden sm:inline tracking-tighter group-hover:text-primary transition-colors">DKPUCS</span>
+          <span className="font-bold font-mono text-foreground hidden sm:inline tracking-tighter group-hover:text-primary transition-colors">
+            DKPUCS
+          </span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
@@ -42,11 +44,18 @@ const NavBar = () => {
 
         <div className="flex items-center md:hidden">
           <ThemeToggle />
-          <button className="flex flex-col gap-1.5 w-6 h-6 ml-4" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button
+            className="flex flex-col gap-1.5 w-6 h-6 ml-4"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close main menu" : "Open main menu"}
+            aria-expanded={mobileMenuOpen}
+          >
             <span
               className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
             ></span>
-            <span className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "opacity-0" : ""}`}></span>
+            <span
+              className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "opacity-0" : ""}`}
+            ></span>
             <span
               className={`h-0.5 w-full bg-foreground transition-all ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
             ></span>
@@ -71,6 +80,6 @@ const NavBar = () => {
         </div>
       )}
     </nav>
-  )
-}
-export default NavBar
+  );
+};
+export default NavBar;

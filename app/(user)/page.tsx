@@ -7,7 +7,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "DKPUCS - Learn, Code, Grow",
-  description: "Official website for DKPUCS students at Venkataramana Swamy College, Bantwal. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler.",
+  description:
+    "Official website for DKPUCS students at Venkataramana Swamy College, Bantwal. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler.",
   keywords: [
     "DKPUCS",
     "computer science",
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "DKPUCS - Learn, Code, Grow",
-    description: "Official website for DKPUCS students. Access academic resources and join our coding community.",
+    description:
+      "Official website for DKPUCS students. Access academic resources and join our coding community.",
     url: "https://dkpucs.vercel.app",
     type: "website",
   },

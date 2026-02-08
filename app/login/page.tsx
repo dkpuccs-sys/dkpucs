@@ -1,44 +1,75 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
+/**
+ * Render an admin login page that authenticates via NextAuth credentials and redirects on success.
+ *
+ * Displays a password input, shows loading and error states during sign-in, and navigates to the `callbackUrl`
+ * query parameter (or `/admin` if absent) after successful authentication.
+ *
+ * @returns The React element for the admin login page.
+ */
 export default function AdminLoginPage() {
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const callbackUrl = searchParams.get("callbackUrl") || "/admin"
+  const callbackUrl = searchParams.get("callbackUrl") || "/admin";
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
 
     try {
       const result = await signIn("credentials", {
         redirect: false,
         password,
         callbackUrl,
-      })
+      });
 
       if (!result) {
-        setError("Unexpected error. Please try again.")
+        setError("Unexpected error. Please try again.");
       } else if (result.error) {
-        setError("Invalid admin password.")
+        setError("Invalid admin password.");
       } else {
-        router.push(callbackUrl)
+        // Validate callbackUrl to prevent open-redirect vulnerabilities
+        let safeCallbackUrl = callbackUrl;
+        if (
+          !safeCallbackUrl.startsWith("/") ||
+          safeCallbackUrl.startsWith("//") ||
+          safeCallbackUrl.includes("\\")
+        ) {
+          safeCallbackUrl = "/admin";
+        } else {
+          // Ensure no protocol scheme is present before query or fragment
+          const colonIndex = safeCallbackUrl.indexOf(":");
+          const queryIndex = safeCallbackUrl.indexOf("?");
+          const fragmentIndex = safeCallbackUrl.indexOf("#");
+          const endOfPath = Math.min(
+            queryIndex === -1 ? safeCallbackUrl.length : queryIndex,
+            fragmentIndex === -1 ? safeCallbackUrl.length : fragmentIndex,
+          );
+
+          if (colonIndex !== -1 && colonIndex < endOfPath) {
+            safeCallbackUrl = "/admin";
+          }
+        }
+
+        router.push(safeCallbackUrl);
       }
     } catch (err) {
-      console.error("Login error", err)
-      setError("Something went wrong. Please try again.")
+      console.error("Login error", err);
+      setError("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -49,7 +80,10 @@ export default function AdminLoginPage() {
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="password">
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="password"
+            >
               Admin Password
             </label>
             <input
@@ -72,5 +106,5 @@ export default function AdminLoginPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }

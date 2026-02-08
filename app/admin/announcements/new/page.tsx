@@ -8,14 +8,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Render the New Announcement page containing a form to create an announcement.
+ *
+ * The component manages title/content inputs and submission state; submitting the form sends the announcement to the server, displays success or error toasts, refreshes data, and navigates to the announcements list on success.
+ *
+ * @returns The JSX element for the new-announcement page, including the form and submit controls
+ */
 export default function NewAnnouncementPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +45,7 @@ export default function NewAnnouncementPage() {
         description: "Announcement created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/announcements");
     } catch (error: any) {
       console.error("Error creating announcement:", error);
@@ -85,8 +92,8 @@ export default function NewAnnouncementPage() {
             />
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

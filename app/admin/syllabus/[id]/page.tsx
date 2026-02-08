@@ -8,15 +8,30 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+/**
+ * Edit page for an existing syllabus that provides a form to view and modify syllabus fields and to delete the syllabus.
+ *
+ * The component loads syllabus data for the route id, displays a loading state while fetching, and renders form controls
+ * for title, description, PDF URL, and optional level. It handles submitting updates and deleting the syllabus, showing
+ * success or error toasts and navigating back to the syllabus list on success.
+ *
+ * @returns The JSX element for the edit syllabus page.
+ */
 export default function EditSyllabusPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
-  const [level, setLevel] = useState(""); 
+  const [level, setLevel] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -24,7 +39,7 @@ export default function EditSyllabusPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -34,7 +49,7 @@ export default function EditSyllabusPage() {
           setTitle(data.title);
           setDescription(data.description);
           setPdfUrl(data.pdfUrl);
-          setLevel(data.level || ""); 
+          setLevel(data.level || "");
           setIsLoading(false);
         })
         .catch((error) => {
@@ -47,7 +62,7 @@ export default function EditSyllabusPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +73,12 @@ export default function EditSyllabusPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, pdfUrl, level: level || null }), 
+        body: JSON.stringify({
+          title,
+          description,
+          pdfUrl,
+          level: level || null,
+        }),
       });
 
       if (!response.ok) {
@@ -109,7 +129,7 @@ export default function EditSyllabusPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -168,13 +188,19 @@ export default function EditSyllabusPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="level">Level (Optional)</Label>
-              <Select onValueChange={setLevel} value={level} disabled={isUpdating || isDeleting}>
+              <Label htmlFor="level">Level</Label>
+              <Select
+                onValueChange={(val: string) =>
+                  setLevel(val === "none" ? "" : val)
+                }
+                value={level || "none"}
+                disabled={isUpdating || isDeleting}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select level" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   <SelectItem value="1st PU">1st PU</SelectItem>
                   <SelectItem value="2nd PU">2nd PU</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
@@ -182,8 +208,8 @@ export default function EditSyllabusPage() {
               </Select>
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -196,9 +222,9 @@ export default function EditSyllabusPage() {
                   "Update Syllabus"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

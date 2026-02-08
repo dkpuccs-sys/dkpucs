@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Read DKPUCS terms of service to understand the rules, conditions, and guidelines for using our website and services. Learn about your rights and responsibilities.",
+  description:
+    "Read DKPUCS terms of service to understand the rules, conditions, and guidelines for using our website and services. Learn about your rights and responsibilities.",
   keywords: [
     "terms of service",
     "terms and conditions",
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Terms of Service - DKPUCS",
-    description: "Read our terms of service to understand the rules for using our website.",
+    description:
+      "Read our terms of service to understand the rules for using our website.",
     url: "https://dkpucs.vercel.app/terms-of-service",
     type: "website",
   },
@@ -27,6 +29,15 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Renders the Terms of Service page.
+ *
+ * The page displays a card containing the "Terms of Service" title, a
+ * "Last updated" notice, and five legal sections: Terms, Use License,
+ * Disclaimer, Limitations, and Governing Law.
+ *
+ * @returns The JSX element for the Terms of Service page.
+ */
 export default function TermsOfServicePage() {
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
@@ -72,12 +83,12 @@ export default function TermsOfServicePage() {
           </ul>
           <h2>3. Disclaimer</h2>
           <p>
-            The materials on this website are provided on an &apos;as is&apos; basis.
-            We make no warranties, expressed or implied, and hereby disclaim
-            and negate all other warranties including, without limitation,
-            implied warranties or conditions of merchantability, fitness for a
-            particular purpose, or non-infringement of intellectual property or
-            other violation of rights.
+            The materials on this website are provided on an &apos;as is&apos;
+            basis. We make no warranties, expressed or implied, and hereby
+            disclaim and negate all other warranties including, without
+            limitation, implied warranties or conditions of merchantability,
+            fitness for a particular purpose, or non-infringement of
+            intellectual property or other violation of rights.
           </p>
           <h2>4. Limitations</h2>
           <p>

@@ -1,12 +1,11 @@
-"use client"
+"use client";
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 const compilers = [
   {
@@ -39,8 +38,13 @@ const compilers = [
     description: "An online Python compiler.",
     link: "https://www.online-python.com/",
   },
-]
+];
 
+/**
+ * Renders a responsive grid of cards for available Python compilers; each card opens the compiler link in a new tab.
+ *
+ * @returns The JSX element containing the grid of compiler cards
+ */
 export function PythonCompilerCards() {
   return (
     <div className="grid grid-cols-1 max-w-7xl mx-auto gap-4 p-4 md:grid-cols-2">
@@ -61,5 +65,5 @@ export function PythonCompilerCards() {
         </a>
       ))}
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Pagination,
@@ -6,15 +6,15 @@ import {
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useEffect, useState } from "react"
+} from "@/components/ui/pagination";
+import { useCallback, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -22,81 +22,88 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import DailyViewsChart from "@/components/admin/daily-views-chart"
-import DateRangePicker from "@/components/admin/date-range-picker"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Calendar, Eye, TrendingUp, Users } from "lucide-react"
+} from "@/components/ui/table";
+import DailyViewsChart from "@/components/admin/daily-views-chart";
+import DateRangePicker from "@/components/admin/date-range-picker";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Calendar, Eye, TrendingUp, Users } from "lucide-react";
 
 interface AnalyticsStats {
-  totalViews: number
-  uniqueUsers: number
-  viewsLast7Days: number
-  viewsLast30Days: number
-  dailyViews: { date: string; count: number }[]
-  topPages: { path: string; views: number }[]
-  viewsByPath: { path: string; views: number }[]
-  totalPaths: number
+  totalViews: number;
+  uniqueUsers: number;
+  viewsLast7Days: number;
+  viewsLast30Days: number;
+  dailyViews: { date: string; count: number }[];
+  topPages: { path: string; views: number }[];
+  viewsByPath: { path: string; views: number }[];
+  totalPaths: number;
 }
 
+/**
+ * Renders the analytics dashboard with summary cards, charts, and paginated page lists.
+ *
+ * Displays statistics from the provided initial data and automatically refetches stats when the selected date range or page changes.
+ *
+ * @param initialStats - Initial analytics snapshot used to populate cards, charts, and tables before remote data is loaded
+ * @returns The analytics dashboard React element
+ */
 export default function AnalyticsDashboard({
   initialStats,
 }: {
-  initialStats: AnalyticsStats
+  initialStats: AnalyticsStats;
 }) {
-  const [stats, setStats] = useState<AnalyticsStats>(initialStats)
-  const [loading, setLoading] = useState(false)
-  const [startDate, setStartDate] = useState<Date | undefined>()
-  const [endDate, setEndDate] = useState<Date | undefined>()
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10
+  const [stats, setStats] = useState<AnalyticsStats>(initialStats);
+  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const fetchStats = async (
-    start?: Date,
-    end?: Date,
-    page: number = 1,
-  ) => {
-    setLoading(true)
-    try {
-      const params = new URLSearchParams()
-      if (start) {
-        params.append("startDate", start.toISOString())
+  const fetchStats = useCallback(
+    async (start?: Date, end?: Date, page: number = 1) => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (start) {
+          params.append("startDate", start.toISOString());
+        }
+        if (end) {
+          params.append("endDate", end.toISOString());
+        }
+        params.append("skip", ((page - 1) * itemsPerPage).toString());
+        params.append("take", itemsPerPage.toString());
+        const response = await fetch(`/api/analytics?${params.toString()}`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      } finally {
+        setLoading(false);
       }
-      if (end) {
-        params.append("endDate", end.toISOString())
-      }
-      params.append("skip", ((page - 1) * itemsPerPage).toString())
-      params.append("take", itemsPerPage.toString())
-      const response = await fetch(`/api/analytics?${params.toString()}`)
-      if (response.ok) {
-        const data = await response.json()
-        setStats(data)
-      }
-    } catch (error) {
-      console.error("Error fetching stats:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    [],
+  );
 
   useEffect(() => {
-    fetchStats(startDate, endDate, currentPage)
-  }, [startDate, endDate, currentPage])
+    fetchStats(startDate, endDate, currentPage);
+  }, [startDate, endDate, currentPage, fetchStats]);
 
   const handleClearDates = () => {
-    setStartDate(undefined)
-    setEndDate(undefined)
-  }
+    setStartDate(undefined);
+    setEndDate(undefined);
+  };
 
   const chartData =
-    stats.dailyViews.map(item => ({
+    stats.dailyViews.map((item) => ({
       date: new Date(item.date).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       }),
       views: item.count,
-    })) || []
-  const totalPages = Math.ceil(stats.totalPaths / itemsPerPage)
+    })) || [];
+  const totalPages = Math.ceil(stats.totalPaths / itemsPerPage);
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -233,54 +240,58 @@ export default function AnalyticsDashboard({
               </div>
             ) : stats.topPages.length > 0 ? (
               <div className="space-y-3">
-                {stats.topPages
-                  .slice(0, 8)
-                  .map(
-                    (
-                      page: { path: string; views: number },
-                      index: number,
-                    ) => {
-                      const maxViews = Math.max(
-                        ...stats.topPages.map((p: any) => p.views),
-                      )
-                      const percentage = (page.views / maxViews) * 100
-                      const colors = [
-                        "bg-blue-500",
-                        "bg-purple-500",
-                        "bg-emerald-500",
-                        "bg-amber-500",
-                        "bg-rose-500",
-                        "bg-cyan-500",
-                        "bg-pink-500",
-                        "bg-teal-500",
-                      ]
+                {(() => {
+                  const maxViews = Math.max(
+                    ...stats.topPages.map((p: any) => p.views),
+                  );
+                  const colors = [
+                    "bg-blue-500",
+                    "bg-purple-500",
+                    "bg-emerald-500",
+                    "bg-amber-500",
+                    "bg-rose-500",
+                    "bg-cyan-500",
+                    "bg-pink-500",
+                    "bg-teal-500",
+                  ];
 
-                      return (
-                        <div key={page.path} className="space-y-1">
-                          <div className="flex items-center justify-between text-xs">
-                            <span
-                              className="font-medium truncate max-w-[60%]"
-                              title={page.path}
-                            >
-                              {page.path.length > 30
-                                ? `${page.path.substring(0, 30)}...`
-                                : page.path}
-                            </span>
-                            <span className="font-bold">
-                              {page.views.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${colors[index % colors.length]
+                  return stats.topPages
+                    .slice(0, 8)
+                    .map(
+                      (
+                        page: { path: string; views: number },
+                        index: number,
+                      ) => {
+                        const percentage = (page.views / maxViews) * 100;
+
+                        return (
+                          <div key={page.path} className="space-y-1">
+                            <div className="flex items-center justify-between text-xs">
+                              <span
+                                className="font-medium truncate max-w-[60%]"
+                                title={page.path}
+                              >
+                                {page.path.length > 30
+                                  ? `${page.path.substring(0, 30)}...`
+                                  : page.path}
+                              </span>
+                              <span className="font-bold">
+                                {page.views.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all duration-500 ${
+                                  colors[index % colors.length]
                                 }`}
-                              style={{ width: `${percentage}%` }}
-                            />
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      )
-                    },
-                  )}
+                        );
+                      },
+                    );
+                })()}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground text-center py-8">
@@ -316,7 +327,9 @@ export default function AnalyticsDashboard({
                   {stats.topPages.map(
                     (page: { path: string; views: number }, index: number) => (
                       <TableRow key={page.path}>
-                        <TableCell className="font-medium">{index + 1}</TableCell>
+                        <TableCell className="font-medium">
+                          {index + 1}
+                        </TableCell>
                         <TableCell>
                           <code className="text-sm bg-muted px-2 py-1 rounded">
                             {page.path}
@@ -403,15 +416,19 @@ export default function AnalyticsDashboard({
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
+                    className="cursor-pointer"
                     onClick={() =>
-                      setCurrentPage(prev => Math.max(1, prev - 1))
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
                     }
                   />
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationNext
+                    className="cursor-pointer"
                     onClick={() =>
-                      setCurrentPage(prev => Math.min(totalPages, prev + 1))
+                      setCurrentPage((prev) =>
+                        Math.min(totalPages || 1, prev + 1),
+                      )
                     }
                   />
                 </PaginationItem>
@@ -421,5 +438,5 @@ export default function AnalyticsDashboard({
         </Card>
       </div>
     </div>
-  )
+  );
 }

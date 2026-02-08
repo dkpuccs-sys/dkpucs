@@ -7,18 +7,35 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+/**
+ * Render a form for creating a new textbook and handle its submission.
+ *
+ * On submit, sends a POST request to `/api/textbooks` with the form data
+ * (title, author or `null`, hyperlink, section, subject). Shows a success
+ * toast, refreshes the router, and navigates to `/admin/textbooks` on success;
+ * shows an error toast on failure. Disables inputs and shows a loading state
+ * while the creation request is in progress.
+ *
+ * @returns The React element for the "New Textbook" page containing the creation form.
+ */
 export default function NewTextbookPage() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [hyperlink, setHyperlink] = useState("");
-  const [section, setSection] = useState("PU_1"); 
+  const [section, setSection] = useState("PU_1");
   const [subject, setSubject] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +46,13 @@ export default function NewTextbookPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, author: author || null, hyperlink, section, subject }),
+        body: JSON.stringify({
+          title,
+          author: author || null,
+          hyperlink,
+          section,
+          subject,
+        }),
       });
 
       if (!response.ok) {
@@ -41,7 +64,7 @@ export default function NewTextbookPage() {
         description: "Textbook created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/textbooks");
     } catch (error: any) {
       console.error("Error creating textbook:", error);
@@ -99,7 +122,11 @@ export default function NewTextbookPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="section">Section</Label>
-            <Select onValueChange={setSection} value={section} disabled={isCreating}>
+            <Select
+              onValueChange={setSection}
+              value={section}
+              disabled={isCreating}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select section" />
               </SelectTrigger>
@@ -123,8 +150,8 @@ export default function NewTextbookPage() {
             />
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

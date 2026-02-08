@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from "@/hooks/use-toast";
 import {
   Toast,
   ToastClose,
@@ -8,10 +8,17 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@/components/ui/toast'
+} from "@/components/ui/toast";
 
+/**
+ * Renders the current set of toast notifications inside a ToastProvider.
+ *
+ * Each toast may include an optional title, description, an optional action element, and a close control.
+ *
+ * @returns A JSX element containing a ToastProvider with the current toasts and a ToastViewport.
+ */
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
     <ToastProvider>
@@ -27,9 +34,9 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }

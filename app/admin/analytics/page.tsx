@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -24,27 +23,44 @@ interface PageViewData {
   totalViews: number;
 }
 
+/**
+ * Render the admin analytics dashboard showing website page view statistics.
+ *
+ * Fetches page view data on mount; while loading displays a centered spinner, on fetch error displays an error card with the message, and otherwise renders a table of pages with each page's total views and a per-day breakdown (or "N/A" when no daily data).
+ *
+ * @returns The React element for the admin analytics page.
+ */
 export default function AdminAnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<PageViewData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    /**
+     * Fetches page view analytics from "/api/analytics/page-views" and updates component state.
+     *
+     * On success, updates `analyticsData` with the retrieved PageViewData[] and on failure sets `error` with the failure message. If the request is aborted, it returns silently without changing state. Always sets `isLoading` to false when finished.
+     */
     async function fetchAnalytics() {
       try {
-        const response = await fetch("/api/analytics/page-views");
+        const response = await fetch("/api/analytics/page-views", {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch analytics data.");
         }
         const data: PageViewData[] = await response.json();
         setAnalyticsData(data);
       } catch (err: any) {
+        if (err.name === "AbortError") return;
         setError(err.message || "An unknown error occurred.");
       } finally {
         setIsLoading(false);
       }
     }
     fetchAnalytics();
+    return () => controller.abort();
   }, []);
 
   if (isLoading) {
@@ -97,7 +113,9 @@ export default function AdminAnalyticsPage() {
                       {page.dailyViews.length > 0 ? (
                         <ul className="list-disc list-inside">
                           {page.dailyViews.map((daily) => (
-                            <li key={daily.date}>{daily.date}: {daily.count} views</li>
+                            <li key={daily.date}>
+                              {daily.date}: {daily.count} views
+                            </li>
                           ))}
                         </ul>
                       ) : (

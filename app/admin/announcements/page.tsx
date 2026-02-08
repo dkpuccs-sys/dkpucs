@@ -5,6 +5,11 @@ import AnnouncementCard from "@/components/admin/announcement-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
+/**
+ * Renders the admin announcements page with header actions and a list of announcements.
+ *
+ * @returns The page JSX that displays the header controls and either a grid of announcement cards or an empty state when there are no announcements.
+ */
 export default async function AdminAnnouncementsPage() {
   const announcements = await prisma.announcement.findMany({
     orderBy: {
@@ -30,9 +35,21 @@ export default async function AdminAnnouncementsPage() {
             description="Create your first announcement to display here."
           />
         ) : (
-          announcements.map((announcement: { id: string; title: string; content: string; isActive: boolean; createdAt: Date; updatedAt: Date; }) => (
-            <AnnouncementCard key={announcement.id} announcement={announcement} />
-          ))
+          announcements.map(
+            (announcement: {
+              id: string;
+              title: string;
+              content: string;
+              isActive: boolean;
+              createdAt: Date;
+              updatedAt: Date;
+            }) => (
+              <AnnouncementCard
+                key={announcement.id}
+                announcement={announcement}
+              />
+            ),
+          )
         )}
       </div>
     </div>

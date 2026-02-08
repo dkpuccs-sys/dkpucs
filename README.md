@@ -6,13 +6,13 @@ DKPUCS is a college coding club community platform built for learning and compet
 
 ## Features
 
--   **Community Hub:** A central platform for coding club members.
--   **AI Integrations:** Leverages Google Generative AI and Groq for intelligent features, possibly for code generation, problem-solving assistance, or learning resources.
--   **Authentication:** Secure user authentication and management with NextAuth.js.
--   **Competitive Programming Tools:** Features to support competitive programming (e.g., problem tracking, scoreboards, data visualization with Recharts).
--   **Rich User Interface:** Built with Radix UI components for an accessible and visually appealing experience.
--   **Dynamic Animations:** Utilizes GSAP for smooth and engaging animations.
--   **Theming:** Supports theme switching (e.g., dark/light mode) with `next-themes`.
+- **Community Hub:** A central platform for coding club members.
+- **AI Integrations:** Leverages Google Generative AI and Groq for intelligent features, possibly for code generation, problem-solving assistance, or learning resources.
+- **Authentication:** Secure user authentication and management with NextAuth.js.
+- **Competitive Programming Tools:** Features to support competitive programming (e.g., problem tracking, scoreboards, data visualization with Recharts).
+- **Rich User Interface:** Built with Radix UI components for an accessible and visually appealing experience.
+- **Dynamic Animations:** Utilizes GSAP for smooth and engaging animations.
+- **Theming:** Supports theme switching (e.g., dark/light mode) with `next-themes`.
 
 ## Tech Stack
 
@@ -45,10 +45,10 @@ This project is built with the following modern web technologies:
 
 ## Scripts Overview
 
--   `build`: Builds the Next.js application for production and runs `prisma generate`.
--   `dev`: Starts the Next.js development server.
--   `start`: Starts the Next.js production server.
--   `type-check`: Runs TypeScript type checks.
+- `build`: Builds the Next.js application for production and runs `prisma generate`.
+- `dev`: Starts the Next.js development server.
+- `start`: Starts the Next.js production server.
+- `type-check`: Runs TypeScript type checks.
 
 ## Getting Started
 
@@ -76,22 +76,22 @@ To get a local copy up and running, follow these simple steps.
 
 ### Database Setup
 
--   Ensure your database is running and accessible.
--   Run Prisma migrations to set up the database schema:
-    ```sh
-    npx prisma migrate dev
-    ```
--   Generate the Prisma client:
-    ```sh
-    npm run build # The build script includes prisma generate
-    # or
-    npx prisma generate
-    ```
+- Ensure your database is running and accessible.
+- Run Prisma migrations to set up the database schema:
+  ```sh
+  npx prisma migrate dev
+  ```
+- Generate the Prisma client:
+  ```sh
+  npm run build # The build script includes prisma generate
+  # or
+  npx prisma generate
+  ```
 
 ### Running the Application
 
--   To run the development server:
-    ```sh
-    npm run dev
-    ```
-    Open [http://localhost:3000](http://localhost:3000) in your browser.
+- To run the development server:
+  ```sh
+  npm run dev
+  ```
+  Open [http://localhost:3000](http://localhost:3000) in your browser.

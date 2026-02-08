@@ -7,11 +7,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Render the Edit Blog admin page that lets users load, edit, and delete a blog post.
+ *
+ * Loads blog data from the route `id`, displays a loading state while fetching,
+ * and provides form controls to update title, content, author, and level. Successful
+ * update and delete actions show user toasts and navigate back to the admin blogs list.
+ *
+ * @returns The Edit Blog page as a React element.
+ */
 export default function EditBlogPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,12 +39,17 @@ export default function EditBlogPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
       fetch(`/api/blogs/${id}`)
-        .then((res) => res.json())
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("Failed to load blog post.");
+          }
+          return res.json();
+        })
         .then((data) => {
           setTitle(data.title);
           setContent(data.content);
@@ -47,7 +67,7 @@ export default function EditBlogPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,7 +129,7 @@ export default function EditBlogPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -169,7 +189,11 @@ export default function EditBlogPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="level">Level</Label>
-              <Select onValueChange={setLevel} value={level} disabled={isUpdating || isDeleting}>
+              <Select
+                onValueChange={setLevel}
+                value={level}
+                disabled={isUpdating || isDeleting}
+              >
                 <SelectTrigger className="border border-border">
                   <SelectValue placeholder="Select level (optional)" />
                 </SelectTrigger>
@@ -181,8 +205,8 @@ export default function EditBlogPage() {
               </Select>
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -195,9 +219,9 @@ export default function EditBlogPage() {
                   "Update"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

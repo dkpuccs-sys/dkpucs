@@ -7,25 +7,50 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 
-const Select = dynamic(() => import("@/components/ui/select").then(mod => mod.Select), { ssr: false });
-const SelectContent = dynamic(() => import("@/components/ui/select").then(mod => mod.SelectContent), { ssr: false });
-const SelectItem = dynamic(() => import("@/components/ui/select").then(mod => mod.SelectItem), { ssr: false });
-const SelectTrigger = dynamic(() => import("@/components/ui/select").then(mod => mod.SelectTrigger), { ssr: false });
-const SelectValue = dynamic(() => import("@/components/ui/select").then(mod => mod.SelectValue), { ssr: false });
+const Select = dynamic(
+  () => import("@/components/ui/select").then((mod) => mod.Select),
+  { ssr: false },
+);
+const SelectContent = dynamic(
+  () => import("@/components/ui/select").then((mod) => mod.SelectContent),
+  { ssr: false },
+);
+const SelectItem = dynamic(
+  () => import("@/components/ui/select").then((mod) => mod.SelectItem),
+  { ssr: false },
+);
+const SelectTrigger = dynamic(
+  () => import("@/components/ui/select").then((mod) => mod.SelectTrigger),
+  { ssr: false },
+);
+const SelectValue = dynamic(
+  () => import("@/components/ui/select").then((mod) => mod.SelectValue),
+  { ssr: false },
+);
 
+/**
+ * Render a form for creating a new syllabus and handle its submission.
+ *
+ * The component manages local form state (title, description, PDF URL, required level),
+ * disables inputs while creating, and renders nothing until the component is mounted on the client.
+ * Submitting the form creates the syllabus via a POST to `/api/syllabus`, shows success or error toasts,
+ * and on success refreshes and navigates to `/admin/syllabus`.
+ *
+ * @returns The JSX element for the New Syllabus page.
+ */
 export default function NewSyllabusPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
-  const [level, setLevel] = useState(""); 
+  const [level, setLevel] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     setMounted(true);
@@ -33,6 +58,14 @@ export default function NewSyllabusPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!level) {
+      toast({
+        title: "Level required",
+        description: "Please select a level before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsCreating(true);
     try {
       const response = await fetch("/api/syllabus", {
@@ -40,7 +73,12 @@ export default function NewSyllabusPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, pdfUrl, level: level || null }), 
+        body: JSON.stringify({
+          title,
+          description,
+          pdfUrl,
+          level,
+        }),
       });
 
       if (!response.ok) {
@@ -52,7 +90,7 @@ export default function NewSyllabusPage() {
         description: "Syllabus created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/syllabus");
     } catch (error: any) {
       console.error("Error creating syllabus:", error);
@@ -114,8 +152,12 @@ export default function NewSyllabusPage() {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="level">Level (Optional)</Label>
-            <Select onValueChange={setLevel} value={level} disabled={isCreating}>
+            <Label htmlFor="level">Level</Label>
+            <Select
+              onValueChange={setLevel}
+              value={level}
+              disabled={isCreating}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select level" />
               </SelectTrigger>
@@ -127,8 +169,8 @@ export default function NewSyllabusPage() {
             </Select>
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

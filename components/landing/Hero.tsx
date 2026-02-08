@@ -1,5 +1,6 @@
 const Hero = () => {
-  const videoUrl = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/files-blob/dkpucs/public/videos/home-mPu9o7uMnHLCZXRLRb4dviVdR3eijx.mp4"
+  const videoUrl =
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/files-blob/dkpucs/public/videos/home-mPu9o7uMnHLCZXRLRb4dviVdR3eijx.mp4";
 
   return (
     <div className="relative h-dvh w-screen overflow-hidden bg-background">
@@ -20,7 +21,9 @@ const Hero = () => {
           <div className="container mx-auto px-5 sm:px-10">
             <div className="max-w-4xl">
               <div className="inline-block mb-4 px-3 py-1 border border-primary/30 bg-primary/10 backdrop-blur-sm">
-                <span className="text-primary font-mono text-xs uppercase tracking-widest">Official Portal v1.0</span>
+                <span className="text-primary font-mono text-xs uppercase tracking-widest">
+                  Official Portal v1.0
+                </span>
               </div>
 
               <h1 className="text-6xl sm:text-8xl font-bold text-foreground tracking-tighter mb-6">
@@ -28,7 +31,8 @@ const Hero = () => {
               </h1>
 
               <p className="mb-8 max-w-2xl font-mono text-lg text-muted-foreground border-l-2 border-primary/50 pl-6">
-                Welcome to the official website for the students of DKPUCS. <br />
+                Welcome to the official website for the students of DKPUCS.{" "}
+                <br />
                 <span className="text-primary">Initialize sequence...</span>
               </p>
             </div>
@@ -36,7 +40,7 @@ const Hero = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

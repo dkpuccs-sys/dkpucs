@@ -4,7 +4,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Question Papers",
-  description: "Access a comprehensive collection of previous year question papers for all courses. Download and practice for your exams with DKPUCS question paper repository.",
+  description:
+    "Access a comprehensive collection of previous year question papers for all courses. Download and practice for your exams with DKPUCS question paper repository.",
   keywords: [
     "question papers",
     "previous year papers",
@@ -17,7 +18,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Question Papers - DKPUCS",
-    description: "Access previous year question papers for all courses. Download and practice for your exams.",
+    description:
+      "Access previous year question papers for all courses. Download and practice for your exams.",
     url: "https://dkpucs.vercel.app/qps",
     type: "website",
   },
@@ -26,7 +28,12 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Renders the question papers page using server-fetched question paper data.
+ *
+ * @returns The React element for the question papers client page with `initialQps` set to the fetched question papers.
+ */
 export default async function QPsPage() {
   const qps = await getQuestionPapers();
-  return <QPsClientPage initialQPs={qps} />;
+  return <QPsClientPage initialQps={qps} />;
 }

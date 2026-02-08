@@ -1,69 +1,77 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect, useRef, useState } from "react"
-import { Send, X, MessageCircle } from "lucide-react"
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { Send, X, MessageCircle } from "lucide-react";
 
 interface Message {
-  id: string
-  text: string
-  sender: "user" | "bot"
-  timestamp: Date
+  id: string;
+  text: string;
+  sender: "user" | "bot";
+  timestamp: Date;
 }
 
+/**
+ * Floating chat widget component that provides a conversational UI for interacting with an AI assistant.
+ *
+ * @returns The ChatBot React element.
+ */
 export function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const savedMessages = localStorage.getItem("chatMessages")
+    const savedMessages = localStorage.getItem("chatMessages");
     if (savedMessages) {
       try {
-        const parsed = JSON.parse(savedMessages)
+        const parsed = JSON.parse(savedMessages);
         setMessages(
           parsed.map((msg: any) => ({
             ...msg,
             timestamp: new Date(msg.timestamp),
           })),
-        )
+        );
       } catch (error) {
-        console.error("Error loading chat history:", error)
+        console.error("Error loading chat history:", error);
       }
     }
-  }, [])
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem("chatMessages", JSON.stringify(messages))
-  }, [messages])
+    if (isLoaded) {
+      localStorage.setItem("chatMessages", JSON.stringify(messages));
+    }
+  }, [messages, isLoaded]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       text: input,
       sender: "user",
       timestamp: new Date(),
-    }
+    };
 
-    
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setIsLoading(true)
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
 
     try {
       const payloadMessages = [...messages, userMessage].map((msg) => ({
         role: msg.sender === "user" ? "user" : "model",
         content: msg.text,
-      }))
+      }));
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -71,58 +79,70 @@ export function ChatBot() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ messages: payloadMessages }),
-      })
+      });
 
       if (!response.ok || !response.body) {
-        throw new Error("Chat API returned an error")
+        throw new Error("Chat API returned an error");
       }
 
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
 
-      const botMessageId = (Date.now() + 1).toString()
-      let fullText = ""
+      const botMessageId = crypto.randomUUID();
+      let fullText = "";
 
-      
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: botMessageId,
-          text: "",
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ])
+      try {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: botMessageId,
+            text: "",
+            sender: "bot",
+            timestamp: new Date(),
+          },
+        ]);
 
-      
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        const chunk = decoder.decode(value, { stream: true })
-        fullText += chunk
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          fullText += chunk;
 
-        setMessages((prev) =>
-          prev.map((msg) => (msg.id === botMessageId ? { ...msg, text: fullText } : msg)),
-        )
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === botMessageId ? { ...msg, text: fullText } : msg,
+            ),
+          );
+        }
+      } catch (error) {
+        console.error("Error reading stream:", error);
+        if (botMessageId) {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === botMessageId
+                ? {
+                    ...msg,
+                    text: "Sorry, something went wrong while contacting the AI service.",
+                  }
+                : msg,
+            ),
+          );
+        }
+        throw error;
+      } finally {
+        reader?.releaseLock();
       }
     } catch (error) {
-      console.error("Error sending message:", error)
-      const botResponse: Message = {
-        id: (Date.now() + 2).toString(),
-        text: "Sorry, something went wrong while contacting the AI service.",
-        sender: "bot",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, botResponse])
+      console.error("Error sending message:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const clearChat = () => {
-    setMessages([])
-    localStorage.removeItem("chatMessages")
-  }
+    setMessages([]);
+    localStorage.removeItem("chatMessages");
+  };
 
   return (
     <>
@@ -141,9 +161,15 @@ export function ChatBot() {
           <div className="flex items-center justify-between p-4 border-b border-border">
             <div>
               <h3 className="font-semibold">Coding Club AI</h3>
-              <p className="text-xs text-muted-foreground">Always here to help</p>
+              <p className="text-xs text-muted-foreground">
+                Always here to help
+              </p>
             </div>
-            <button onClick={() => setIsOpen(false)} className="p-1 hover:opacity-70 cursor-pointer" aria-label="Close chat">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 hover:opacity-70 cursor-pointer"
+              aria-label="Close chat"
+            >
               <X size={20} />
             </button>
           </div>
@@ -152,7 +178,10 @@ export function ChatBot() {
             {messages.length === 0 ? (
               <div className="flex items-center justify-center h-full text-center">
                 <div>
-                  <MessageCircle size={40} className="text-muted-foreground mx-auto mb-3 opacity-50" />
+                  <MessageCircle
+                    size={40}
+                    className="text-muted-foreground mx-auto mb-3 opacity-50"
+                  />
                   <p className="text-muted-foreground text-sm">
                     Start a conversation! Ask me anything about the coding club.
                   </p>
@@ -161,10 +190,15 @@ export function ChatBot() {
             ) : (
               <>
                 {messages.map((msg) => (
-                  <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                  >
                     <div
                       className={`max-w-xs px-4 py-2 rounded-lg ${
-                        msg.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                        msg.sender === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       <p className="text-sm">{msg.text}</p>
@@ -186,7 +220,9 @@ export function ChatBot() {
               </button>
             )}
             {isLoading && (
-              <p className="text-xs text-muted-foreground text-center">AI is thinking...</p>
+              <p className="text-xs text-muted-foreground text-center">
+                AI is thinking...
+              </p>
             )}
             <form onSubmit={handleSendMessage} className="flex gap-2">
               <input
@@ -208,5 +244,5 @@ export function ChatBot() {
         </div>
       )}
     </>
-  )
+  );
 }

@@ -7,18 +7,35 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Page component that provides a UI for viewing and editing an existing lab manual.
+ *
+ * Loads the lab manual by route `id`, presents a form to edit title, description,
+ * difficulty, language, level and an array of code-snippet content, and handles
+ * update and delete operations with appropriate toasts and navigation.
+ *
+ * @returns The Edit Lab Manual page UI as JSX.
+ */
 export default function EditLabManualPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [language, setLanguage] = useState("");
   const [level, setLevel] = useState("");
-  const [content, setContent] = useState<Array<{ question: string; code: string; comments: string }>>([]);
+  const [content, setContent] = useState<
+    Array<{ question: string; code: string; comments: string }>
+  >([]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -26,12 +43,17 @@ export default function EditLabManualPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
       fetch(`/api/lab-manuals/${id}`)
-        .then((res) => res.json())
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("Failed to load lab manual.");
+          }
+          return res.json();
+        })
         .then((data) => {
           setTitle(data.title);
           setDescription(data.description);
@@ -51,7 +73,7 @@ export default function EditLabManualPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +84,14 @@ export default function EditLabManualPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, difficulty, language, level, content }),
+        body: JSON.stringify({
+          title,
+          description,
+          difficulty,
+          language,
+          level,
+          content,
+        }),
       });
 
       if (!response.ok) {
@@ -113,7 +142,7 @@ export default function EditLabManualPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -160,7 +189,7 @@ export default function EditLabManualPage() {
                 className="border border-border"
               />
             </div>
-            
+
             <div className="grid gap-4">
               <Label>Content (Code Snippets)</Label>
               {content.map((item, index) => (
@@ -170,8 +199,9 @@ export default function EditLabManualPage() {
                     id={`question-${index}`}
                     value={item.question}
                     onChange={(e) => {
-                      const newContent = [...content];
-                      newContent[index].question = e.target.value;
+                      const newContent = content.map((c, i) =>
+                        i === index ? { ...c, question: e.target.value } : c,
+                      );
                       setContent(newContent);
                     }}
                     placeholder="Enter question for this snippet"
@@ -183,8 +213,9 @@ export default function EditLabManualPage() {
                     id={`code-${index}`}
                     value={item.code}
                     onChange={(e) => {
-                      const newContent = [...content];
-                      newContent[index].code = e.target.value;
+                      const newContent = content.map((c, i) =>
+                        i === index ? { ...c, code: e.target.value } : c,
+                      );
                       setContent(newContent);
                     }}
                     placeholder="Enter code snippet"
@@ -197,8 +228,9 @@ export default function EditLabManualPage() {
                     id={`comments-${index}`}
                     value={item.comments}
                     onChange={(e) => {
-                      const newContent = [...content];
-                      newContent[index].comments = e.target.value;
+                      const newContent = content.map((c, i) =>
+                        i === index ? { ...c, comments: e.target.value } : c,
+                      );
                       setContent(newContent);
                     }}
                     placeholder="Enter comments for this snippet"
@@ -224,7 +256,10 @@ export default function EditLabManualPage() {
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  setContent([...content, { question: "", code: "", comments: "" }])
+                  setContent([
+                    ...content,
+                    { question: "", code: "", comments: "" },
+                  ])
                 }
                 disabled={isUpdating || isDeleting}
               >
@@ -233,9 +268,13 @@ export default function EditLabManualPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="difficulty">Difficulty</Label>
-              <Select onValueChange={setDifficulty} value={difficulty} disabled={isUpdating || isDeleting}>
+              <Select
+                onValueChange={setDifficulty}
+                value={difficulty}
+                disabled={isUpdating || isDeleting}
+              >
                 <SelectTrigger className="border border-border">
-                  <SelectValue placeholder="Select difficulty (optional)" />
+                  <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Beginner">Beginner</SelectItem>
@@ -246,9 +285,13 @@ export default function EditLabManualPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="language">Language</Label>
-              <Select onValueChange={setLanguage} value={language} disabled={isUpdating || isDeleting}>
+              <Select
+                onValueChange={setLanguage}
+                value={language}
+                disabled={isUpdating || isDeleting}
+              >
                 <SelectTrigger className="border border-border">
-                  <SelectValue placeholder="Select language (optional)" />
+                  <SelectValue placeholder="Select language" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="C++">C++</SelectItem>
@@ -261,9 +304,13 @@ export default function EditLabManualPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="level">Level</Label>
-              <Select onValueChange={setLevel} value={level} disabled={isUpdating || isDeleting}>
+              <Select
+                onValueChange={setLevel}
+                value={level}
+                disabled={isUpdating || isDeleting}
+              >
                 <SelectTrigger className="border border-border">
-                  <SelectValue placeholder="Select level (optional)" />
+                  <SelectValue placeholder="Select level" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1st PU">1st PU</SelectItem>
@@ -273,8 +320,8 @@ export default function EditLabManualPage() {
               </Select>
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -287,9 +334,9 @@ export default function EditLabManualPage() {
                   "Update"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

@@ -7,15 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Renders a form for creating a new question paper.
+ *
+ * The form collects year, subject, and hyperlink, disables inputs while submitting,
+ * shows success or error toasts, refreshes application data, and navigates to the question papers list on success.
+ *
+ * @returns The React element for the new question paper creation form.
+ */
 export default function NewQPPage() {
   const [year, setYear] = useState("");
   const [subject, setSubject] = useState("");
   const [hyperlink, setHyperlink] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +34,7 @@ export default function NewQPPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ year: parseInt(year), subject, hyperlink }),
+        body: JSON.stringify({ year: parseInt(year, 10), subject, hyperlink }),
       });
 
       if (!response.ok) {
@@ -38,7 +46,7 @@ export default function NewQPPage() {
         description: "Question paper created successfully.",
         variant: "default",
       });
-      router.refresh(); 
+      router.refresh();
       router.push("/admin/qps");
     } catch (error: any) {
       console.error("Error creating question paper:", error);
@@ -97,8 +105,8 @@ export default function NewQPPage() {
             />
           </div>
           <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isCreating}
               className="bg-foreground text-background hover:bg-foreground/90"
             >

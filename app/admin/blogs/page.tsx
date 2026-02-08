@@ -4,6 +4,13 @@ import Link from "next/link";
 import BlogCard from "@/components/admin/blog-card";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
+/**
+ * Render the admin blogs page showing all blogs in newest-first order.
+ *
+ * Fetches blogs sorted by `createdAt` descending and renders a header with the page title and controls (refresh and "New Blog"), followed by a grid of BlogCard components for each blog.
+ *
+ * @returns The page JSX containing the header with controls and a grid of blog cards ordered newest first.
+ */
 export default async function AdminBlogsPage() {
   const blogs = await prisma.blog.findMany({
     orderBy: {

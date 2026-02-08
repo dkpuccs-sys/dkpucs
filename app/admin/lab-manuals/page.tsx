@@ -4,6 +4,13 @@ import Link from "next/link";
 import LabManualCard from "@/components/admin/lab-manual-card";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
+/**
+ * Render the admin "Lab Manuals" page with controls and a list of lab manuals.
+ *
+ * The list is displayed in descending order by creation date (newest first).
+ *
+ * @returns The React element containing the page header with refresh/new controls and a grid of LabManualCard entries.
+ */
 export default async function AdminLabManualsPage() {
   const labManuals = await prisma.labManual.findMany({
     orderBy: {

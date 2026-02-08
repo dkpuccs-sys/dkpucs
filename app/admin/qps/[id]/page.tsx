@@ -8,8 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Page component for editing an existing Question Paper.
+ *
+ * Loads the question paper identified by the route `id`, displays a form to update year, subject, and hyperlink,
+ * and provides a confirmation dialog to delete the question paper. Shows loading, updating, and deleting states
+ * and presents toast notifications for success and error outcomes.
+ *
+ * @returns The React element rendering the edit form, loading spinner, and delete confirmation dialog.
+ */
 export default function EditQPPage() {
   const [year, setYear] = useState("");
   const [subject, setSubject] = useState("");
@@ -21,7 +30,7 @@ export default function EditQPPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -43,7 +52,7 @@ export default function EditQPPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,7 +114,7 @@ export default function EditQPPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -165,8 +174,8 @@ export default function EditQPPage() {
               />
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -179,9 +188,9 @@ export default function EditQPPage() {
                   "Update Question Paper"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

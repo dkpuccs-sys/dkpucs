@@ -1,10 +1,11 @@
-import { getSyllabus } from '@/lib/data';
-import SyllabusClientPage from './syllabus-client-page';
-import { Metadata } from 'next';
+import { getSyllabus } from "@/lib/data";
+import SyllabusClientPage from "./syllabus-client-page";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Syllabus",
-  description: "Access detailed syllabus for all courses and subjects. Download course outlines, curriculum, and subject syllabus for exam preparation.",
+  description:
+    "Access detailed syllabus for all courses and subjects. Download course outlines, curriculum, and subject syllabus for exam preparation.",
   keywords: [
     "syllabus",
     "course syllabus",

@@ -1,30 +1,37 @@
-"use client"
+"use client";
 
-import { useMemo, useState } from "react"
-import { EmptyState } from "@/components/ui/empty-state"
-import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { useMemo, useState } from "react";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface SyllabusItem {
-  id: string
-  title: string
-  description: string
-  pdfUrl: string
-  level: string | null
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  title: string;
+  description: string;
+  pdfUrl: string;
+  level: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface SyllabusClientPageProps {
-  initialSyllabus: SyllabusItem[]
+  initialSyllabus: SyllabusItem[];
 }
 
 const LEVEL_OPTIONS = [
   { label: "1st PU", value: "1st PU" },
   { label: "2nd PU", value: "2nd PU" },
   { label: "Other", value: "Other" },
-]
+];
 
 const ensureHttps = (url: string) => {
   if (url.startsWith("http://")) {
@@ -33,21 +40,31 @@ const ensureHttps = (url: string) => {
   return url;
 };
 
-export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusClientPageProps) {
-  const [selectedLevel, setSelectedLevel] = useState<string>("")
-  const [searchQuery, setSearchQuery] = useState<string>("")
+/**
+ * Renders a syllabus list UI with controls to search by title or description and to filter by level.
+ *
+ * @param initialSyllabus - Initial array of syllabus items to display; defaults to an empty array.
+ * @returns The rendered syllabus page element.
+ */
+export default function SyllabusClientPage({
+  initialSyllabus = [],
+}: SyllabusClientPageProps) {
+  const [selectedLevel, setSelectedLevel] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const filteredSyllabus = useMemo(() => {
-    if (!initialSyllabus || initialSyllabus.length === 0) return []
-    
+    if (!initialSyllabus || initialSyllabus.length === 0) return [];
+
+    const normalizedQuery = searchQuery.trim().toLowerCase();
     return initialSyllabus.filter((item) => {
-      const matchesLevel = !selectedLevel || item.level === selectedLevel
-      const matchesSearch = !searchQuery || 
-        item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description?.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchesLevel && matchesSearch
-    })
-  }, [initialSyllabus, selectedLevel, searchQuery])
+      const matchesLevel = !selectedLevel || item.level === selectedLevel;
+      const matchesSearch =
+        !normalizedQuery ||
+        (item.title ?? "").toLowerCase().includes(normalizedQuery) ||
+        (item.description ?? "").toLowerCase().includes(normalizedQuery);
+      return matchesLevel && matchesSearch;
+    });
+  }, [initialSyllabus, selectedLevel, searchQuery]);
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col grow">
@@ -56,14 +73,49 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
       <div className="mb-8 p-6 bg-card border border-border rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <label className="block text-sm font-medium text-card-foreground">Search Syllabus</label>
+            <label
+              htmlFor="searchQuery"
+              className="block text-sm font-medium text-card-foreground"
+            >
+              Search Syllabus
+            </label>
             <Input
+              id="searchQuery"
               type="text"
               placeholder="Search by title or description..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchQuery(e.target.value)
+              }
               className="w-full"
             />
+          </div>
+
+          <div className="grid gap-2">
+            <label
+              htmlFor="levelSelect"
+              className="block text-sm font-medium text-card-foreground"
+            >
+              Filter by Level
+            </label>
+            <Select
+              value={selectedLevel || "all"}
+              onValueChange={(value: string) =>
+                setSelectedLevel(value === "all" ? "" : value)
+              }
+            >
+              <SelectTrigger id="levelSelect" className="w-full">
+                <SelectValue placeholder="Select Level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Levels</SelectItem>
+                {LEVEL_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -72,15 +124,27 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
             {searchQuery && (
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
                 Search: {searchQuery}
-                <button onClick={() => setSearchQuery("")} className="hover:opacity-70 transition-opacity">
+                <button
+                  type="button"
+                  aria-label="Clear search"
+                  onClick={() => setSearchQuery("")}
+                  className="hover:opacity-70 transition-opacity"
+                >
                   ×
                 </button>
               </span>
             )}
             {selectedLevel && (
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
-                Level: {LEVEL_OPTIONS.find(opt => opt.value === selectedLevel)?.label || selectedLevel}
-                <button onClick={() => setSelectedLevel("")} className="hover:opacity-70 transition-opacity">
+                Level:{" "}
+                {LEVEL_OPTIONS.find((opt) => opt.value === selectedLevel)
+                  ?.label || selectedLevel}
+                <button
+                  type="button"
+                  aria-label="Clear level"
+                  onClick={() => setSelectedLevel("")}
+                  className="hover:opacity-70 transition-opacity"
+                >
                   ×
                 </button>
               </span>
@@ -94,22 +158,30 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
           filteredSyllabus.map((item) => (
             <div key={item.id} className="p-4 border rounded-lg bg-card">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-semibold text-foreground">{item.title}</h2>
+                <h2 className="text-2xl font-semibold text-foreground">
+                  {item.title}
+                </h2>
                 {item.level && (
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-primary/10 text-primary">
                     {item.level}
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-muted-foreground whitespace-pre-wrap mb-4">{item.description}</p>
+              <p className="mt-2 text-muted-foreground whitespace-pre-wrap mb-4">
+                {item.description}
+              </p>
               {item.pdfUrl && (
                 <div className="pt-4 border-t border-border">
-                  <Button asChild variant="outline" className="w-full sm:w-auto">
-                    <a 
-                      href={ensureHttps(item.pdfUrl)} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      download 
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                  >
+                    <a
+                      href={ensureHttps(item.pdfUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
                       className="inline-flex items-center gap-2"
                     >
                       <Download className="size-4" />
@@ -128,5 +200,5 @@ export default function SyllabusClientPage({ initialSyllabus = [] }: SyllabusCli
         )}
       </div>
     </div>
-  )
+  );
 }

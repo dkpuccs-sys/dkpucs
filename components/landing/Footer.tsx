@@ -1,10 +1,10 @@
-"use client"
-import { FaDiscord, FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa"
-import Link from "next/link"
-import { ArrowUp } from "lucide-react"
+"use client";
+import { FaDiscord, FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
+import Link from "next/link";
+import { ArrowUp } from "lucide-react";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const links = {
     Resources: [
@@ -21,17 +21,17 @@ const Footer = () => {
       { name: "Privacy Policy", href: "/privacy-policy" },
       { name: "Terms of Service", href: "/terms-of-service" },
     ],
-  }
+  };
 
   const socialLinks = [
     { icon: <FaDiscord />, href: "https://discord.com", label: "Discord" },
     { icon: <FaTwitter />, href: "https://twitter.com", label: "Twitter" },
     { icon: <FaGithub />, href: "https://github.com", label: "GitHub" },
     { icon: <FaLinkedin />, href: "https://linkedin.com", label: "LinkedIn" },
-  ]
+  ];
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -42,19 +42,28 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6 group">
               <div className="w-10 h-10 bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <span className="text-primary font-mono font-bold text-lg">D</span>
+                <span className="text-primary font-mono font-bold text-lg">
+                  D
+                </span>
               </div>
-              <span className="font-bold font-mono text-foreground tracking-tighter group-hover:text-primary transition-colors">DKPUCS</span>
+              <span className="font-bold font-mono text-foreground tracking-tighter group-hover:text-primary transition-colors">
+                DKPUCS
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed font-light">
-              A community for college coders to learn, share, and grow together. <br />
-              <span className="font-mono text-xs text-primary/70 mt-2 block">System Status: Online</span>
+              A community for college coders to learn, share, and grow together.{" "}
+              <br />
+              <span className="font-mono text-xs text-primary/70 mt-2 block">
+                System Status: Online
+              </span>
             </p>
           </div>
 
           {Object.entries(links).map(([category, items]) => (
             <div key={category}>
-              <h3 className="font-bold font-mono text-foreground mb-6 text-sm uppercase tracking-wider">{category}</h3>
+              <h3 className="font-bold font-mono text-foreground mb-6 text-sm uppercase tracking-wider">
+                {category}
+              </h3>
               <ul className="space-y-3">
                 {items.map((item, index) => (
                   <li key={index}>
@@ -73,8 +82,27 @@ const Footer = () => {
 
         <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs font-mono text-center md:text-left">
-            © {currentYear} DKPUCS. All rights reserved. <br className="md:hidden" />
-            Developed by <Link href={"https://gauresh.is-a.dev"} className="text-primary hover:underline" target="_blank">GP</Link> and <Link className="text-primary hover:underline" href={"https://venjix.kreekarvat.in"} target="_blank">VP</Link>.
+            © {currentYear} DKPUCS. All rights reserved.{" "}
+            <br className="md:hidden" />
+            Developed by{" "}
+            <a
+              href="https://gauresh.is-a.dev"
+              className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GP
+            </a>{" "}
+            and{" "}
+            <a
+              className="text-primary hover:underline"
+              href="https://venjix.in"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              VP
+            </a>
+            .
           </p>
 
           <div className="flex items-center gap-4">
@@ -91,7 +119,7 @@ const Footer = () => {
         <ArrowUp className="h-5 w-5 group-hover:-translate-y-1 transition-transform" />
       </button>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

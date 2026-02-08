@@ -9,8 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteConfirmDialog from "@/components/admin/delete-confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Page component that provides a form to load, edit, and delete an announcement by ID.
+ *
+ * Loads announcement data, exposes inputs for editing the announcement's title and content, shows loading/updating/deleting states, and presents a confirmation dialog for deletion. Success and error results are reported via toast notifications and successful operations navigate back to the announcements list.
+ *
+ * @returns The React element for the edit announcement page.
+ */
 export default function EditAnnouncementPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -21,7 +28,7 @@ export default function EditAnnouncementPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-  const { toast } = useToast(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -42,7 +49,7 @@ export default function EditAnnouncementPage() {
           setIsLoading(false);
         });
     }
-  }, [id, toast]); 
+  }, [id, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +111,7 @@ export default function EditAnnouncementPage() {
       });
     } finally {
       setIsDeleting(false);
-      setDeleteDialogOpen(false); 
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -152,8 +159,8 @@ export default function EditAnnouncementPage() {
               />
             </div>
             <div className="flex justify-between gap-4 pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdating || isDeleting}
                 className="bg-foreground text-background hover:bg-foreground/90"
               >
@@ -166,9 +173,9 @@ export default function EditAnnouncementPage() {
                   "Update"
                 )}
               </Button>
-              <Button 
+              <Button
                 type="button"
-                variant="destructive" 
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isUpdating || isDeleting}
                 className="bg-destructive text-destructive-background hover:bg-destructive/90"

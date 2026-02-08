@@ -1,19 +1,25 @@
-"use client"
+"use client";
 
-import { useMemo, useState } from "react"
-import { EmptyState } from "@/components/ui/empty-state"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useMemo, useState } from "react";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Textbook {
-  id: string
-  title: string
-  author: string | null
-  hyperlink: string
-  section: "PU_1" | "PU_2" | "OTHER"
-  subject: string
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  title: string;
+  author: string | null;
+  hyperlink: string;
+  section: "PU_1" | "PU_2" | "OTHER";
+  subject: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface TextbooksClientPageProps {
@@ -27,32 +33,58 @@ const SECTION_OPTIONS = [
 ];
 
 const ensureHttps = (url: string) => {
-  if (url.startsWith("http://")) {
-    return url.replace("http://", "https://");
+  if (!url) return "#";
+  try {
+    const virtualLink = document.createElement("a");
+    virtualLink.href = url;
+    if (virtualLink.protocol === "http:" || virtualLink.protocol === "https:") {
+      if (url.startsWith("http://")) {
+        return url.replace("http://", "https://");
+      }
+      return url;
+    }
+  } catch (e) {
+    // Invalid URL
   }
-  return url;
+  return "#";
 };
 
-export default function TextbooksClientPage({ initialTextbooks }: TextbooksClientPageProps) {
-  const [selectedSection, setSelectedSection] = useState<string>("")
-  const [selectedSubject, setSelectedSubject] = useState<string>("")
-  const [searchQuery, setSearchQuery] = useState<string>("")
+/**
+ * Render the textbooks client page with controls to filter by section, subject, and search.
+ *
+ * @param initialTextbooks - Initial list of textbooks to display; if omitted, the page starts empty.
+ * @returns A React element that displays the textbooks list, filter controls, and empty state when no matches are found.
+ */
+export default function TextbooksClientPage({
+  initialTextbooks,
+}: TextbooksClientPageProps) {
+  const [selectedSection, setSelectedSection] = useState<string>("");
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const textbooks = initialTextbooks ?? [];
 
-  const subjects = useMemo(() => [...new Set(textbooks.map((book) => book.subject))].sort(), [textbooks])
+  const subjects = useMemo(
+    () => [...new Set(textbooks.map((book) => book.subject))].sort(),
+    [textbooks],
+  );
 
   const filteredTextbooks = useMemo(() => {
     return textbooks.filter((book) => {
-      const matchesSection = !selectedSection || book.section === selectedSection
-      const matchesSubject = !selectedSubject || book.subject === selectedSubject
-      const matchesSearch = !searchQuery || book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (book.author && book.author.toLowerCase().includes(searchQuery.toLowerCase()))
-      return matchesSection && matchesSubject && matchesSearch
-    })
-  }, [textbooks, selectedSection, selectedSubject, searchQuery])
+      const matchesSection =
+        !selectedSection || book.section === selectedSection;
+      const matchesSubject =
+        !selectedSubject || book.subject === selectedSubject;
+      const matchesSearch =
+        !searchQuery ||
+        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (book.author &&
+          book.author.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesSection && matchesSubject && matchesSearch;
+    });
+  }, [textbooks, selectedSection, selectedSubject, searchQuery]);
 
   const textbooksBySection: { [key: string]: Textbook[] } = {};
-  filteredTextbooks.forEach(book => {
+  filteredTextbooks.forEach((book) => {
     if (!textbooksBySection[book.section]) {
       textbooksBySection[book.section] = [];
     }
@@ -60,7 +92,9 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
   });
 
   const getSectionLabel = (value: string) => {
-    return SECTION_OPTIONS.find(option => option.value === value)?.label || value;
+    return (
+      SECTION_OPTIONS.find((option) => option.value === value)?.label || value
+    );
   };
 
   return (
@@ -70,8 +104,14 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
       <div className="mb-8 p-6 bg-card border border-border rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="grid gap-2">
-            <label className="block text-sm font-medium text-card-foreground">Search by Title/Author</label>
+            <label
+              htmlFor="textbook-search"
+              className="block text-sm font-medium text-card-foreground"
+            >
+              Search by Title/Author
+            </label>
             <Input
+              id="textbook-search"
               type="text"
               placeholder="Search textbooks..."
               value={searchQuery}
@@ -81,9 +121,14 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
           </div>
 
           <div className="grid gap-2">
-            <label className="block text-sm font-medium text-card-foreground">Section</label>
+            <label
+              htmlFor="textbook-section"
+              className="block text-sm font-medium text-card-foreground"
+            >
+              Section
+            </label>
             <Select onValueChange={setSelectedSection} value={selectedSection}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger id="textbook-section" className="w-full">
                 <SelectValue placeholder="All Sections" />
               </SelectTrigger>
               <SelectContent>
@@ -98,9 +143,14 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
           </div>
 
           <div className="grid gap-2">
-            <label className="block text-sm font-medium text-card-foreground">Subject</label>
+            <label
+              htmlFor="textbook-subject"
+              className="block text-sm font-medium text-card-foreground"
+            >
+              Subject
+            </label>
             <Select onValueChange={setSelectedSubject} value={selectedSubject}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger id="textbook-subject" className="w-full">
                 <SelectValue placeholder="All Subjects" />
               </SelectTrigger>
               <SelectContent>
@@ -120,7 +170,11 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
             {searchQuery && (
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
                 Search: {searchQuery}
-                <button onClick={() => setSearchQuery("")} className="hover:opacity-70 transition-opacity">
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="hover:opacity-70 transition-opacity"
+                  aria-label="Clear search query"
+                >
                   ×
                 </button>
               </span>
@@ -128,7 +182,11 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
             {selectedSection && (
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
                 Section: {getSectionLabel(selectedSection)}
-                <button onClick={() => setSelectedSection("")} className="hover:opacity-70 transition-opacity">
+                <button
+                  onClick={() => setSelectedSection("")}
+                  className="hover:opacity-70 transition-opacity"
+                  aria-label={`Clear section filter: ${getSectionLabel(selectedSection)}`}
+                >
                   ×
                 </button>
               </span>
@@ -136,7 +194,11 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
             {selectedSubject && (
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm">
                 Subject: {selectedSubject}
-                <button onClick={() => setSelectedSubject("")} className="hover:opacity-70 transition-opacity">
+                <button
+                  onClick={() => setSelectedSubject("")}
+                  className="hover:opacity-70 transition-opacity"
+                  aria-label={`Clear subject filter: ${selectedSubject}`}
+                >
                   ×
                 </button>
               </span>
@@ -147,15 +209,26 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
 
       <div className="space-y-12 grow">
         {Object.keys(textbooksBySection).length > 0 ? (
-          Object.keys(textbooksBySection).map(section => (
+          Object.keys(textbooksBySection).map((section) => (
             <div key={section}>
-              <h2 className="text-3xl font-semibold border-b-2 pb-2 mb-6">{getSectionLabel(section)}</h2>
+              <h2 className="text-3xl font-semibold border-b-2 pb-2 mb-6">
+                {getSectionLabel(section)}
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {textbooksBySection[section].map(book => (
-                  <div key={book.id} className="p-4 border rounded-lg flex flex-col">
+                {textbooksBySection[section].map((book) => (
+                  <div
+                    key={book.id}
+                    className="p-4 border rounded-lg flex flex-col"
+                  >
                     <h3 className="text-xl font-semibold">{book.title}</h3>
-                    {book.author && <p className="text-sm text-muted-foreground mt-1">by {book.author}</p>}
-                    <p className="text-md text-muted-foreground my-2">Subject: {book.subject}</p>
+                    {book.author && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        by {book.author}
+                      </p>
+                    )}
+                    <p className="text-md text-muted-foreground my-2">
+                      Subject: {book.subject}
+                    </p>
                     <a
                       href={ensureHttps(book.hyperlink)}
                       target="_blank"
@@ -170,7 +243,10 @@ export default function TextbooksClientPage({ initialTextbooks }: TextbooksClien
             </div>
           ))
         ) : (
-          <EmptyState title="No textbooks found" description="Try adjusting your filters or check back later." />
+          <EmptyState
+            title="No textbooks found"
+            description="Try adjusting your filters or check back later."
+          />
         )}
       </div>
     </div>
