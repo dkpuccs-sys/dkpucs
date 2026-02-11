@@ -1,4 +1,4 @@
-# [DKPUCS - College Coding Club Community Platform](https://github.com/gaureshpai/dkpucs)
+# DKPUCS - College Coding Club Community Platform
 
 ## Project Description
 
