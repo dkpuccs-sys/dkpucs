@@ -18,6 +18,7 @@ interface Textbook {
   hyperlink: string;
   section: "PU_1" | "PU_2" | "OTHER";
   subject: string;
+  preventDownload: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -229,14 +230,29 @@ export default function TextbooksClientPage({
                     <p className="text-md text-muted-foreground my-2">
                       Subject: {book.subject}
                     </p>
-                    <a
-                      href={ensureHttps(book.hyperlink)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto text-center bg-primary text-primary-foreground px-4 py-2 rounded hover:opacity-90 transition-colors"
-                    >
-                      Get Book
-                    </a>
+                    <div className="mt-auto flex flex-col gap-2">
+                      {book.preventDownload && (
+                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-medium">
+                          No Download
+                        </span>
+                      )}
+                      <a
+                        href={
+                          book.preventDownload
+                            ? `/pdf-viewer/textbook/${book.id}`
+                            : ensureHttps(book.hyperlink)
+                        }
+                        target={book.preventDownload ? undefined : "_blank"}
+                        rel={
+                          book.preventDownload
+                            ? undefined
+                            : "noopener noreferrer"
+                        }
+                        className="text-center bg-primary text-primary-foreground px-4 py-2 rounded hover:opacity-90 transition-colors"
+                      >
+                        Get Book
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -2,12 +2,13 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import BlogCard from "@/components/admin/blog-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
 /**
  * Render the admin blogs page showing all blogs in newest-first order.
  *
- * Fetches blogs sorted by `createdAt` descending and renders a header with the page title and controls (refresh and "New Blog"), followed by a grid of BlogCard components for each blog.
+ * Fetches blogs sorted by `createdAt` descending and renders a header with the page title and controls (refresh and "New Blog"), followed by a grid of BlogCard components for each blog, or an empty state if none exist.
  *
  * @returns The page JSX containing the header with controls and a grid of blog cards ordered newest first.
  */
@@ -30,9 +31,19 @@ export default async function AdminBlogsPage() {
         </div>
       </div>
       <div className="grid gap-6">
-        {blogs.map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
+        {blogs.length === 0 ? (
+          <EmptyState
+            title="No blogs to show"
+            description="Create your first blog post to get started."
+            action={
+              <Button asChild>
+                <Link href="/admin/blogs/new">Create New Blog</Link>
+              </Button>
+            }
+          />
+        ) : (
+          blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
+        )}
       </div>
     </div>
   );

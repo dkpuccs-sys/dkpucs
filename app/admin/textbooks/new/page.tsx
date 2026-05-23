@@ -33,6 +33,7 @@ export default function NewTextbookPage() {
   const [hyperlink, setHyperlink] = useState("");
   const [section, setSection] = useState("PU_1");
   const [subject, setSubject] = useState("");
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -52,6 +53,7 @@ export default function NewTextbookPage() {
           hyperlink,
           section,
           subject,
+          preventDownload,
         }),
       });
 
@@ -148,6 +150,19 @@ export default function NewTextbookPage() {
               disabled={isCreating}
               className="border border-border"
             />
+          </div>
+          <div className="flex items-center gap-3 pt-2">
+            <input
+              id="preventDownload"
+              type="checkbox"
+              checked={preventDownload}
+              onChange={(e) => setPreventDownload(e.target.checked)}
+              disabled={isCreating}
+              className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+            />
+            <Label htmlFor="preventDownload" className="cursor-pointer text-sm">
+              Prevent download (show embedded viewer instead)
+            </Label>
           </div>
           <div className="flex justify-end pt-4">
             <Button

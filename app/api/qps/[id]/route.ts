@@ -57,7 +57,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await req.json();
-    const { year, subject, hyperlink } = body;
+    const { year, subject, hyperlink, preventDownload } = body;
 
     if (!year || !subject || !hyperlink) {
       return NextResponse.json(
@@ -87,6 +87,7 @@ export async function PUT(
         year: parsedYear,
         subject,
         hyperlink,
+        preventDownload: preventDownload ?? false,
       },
     });
     revalidatePath("/qps");

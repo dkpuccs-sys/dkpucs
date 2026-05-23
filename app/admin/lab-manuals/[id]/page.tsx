@@ -36,6 +36,7 @@ export default function EditLabManualPage() {
   const [content, setContent] = useState<
     Array<{ question: string; code: string; comments: string }>
   >([]);
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -61,6 +62,7 @@ export default function EditLabManualPage() {
           setLanguage(data.language || "");
           setLevel(data.level || "");
           setContent(data.content || []);
+          setPreventDownload(data.preventDownload ?? false);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -91,6 +93,7 @@ export default function EditLabManualPage() {
           language,
           level,
           content,
+          preventDownload,
         }),
       });
 
@@ -318,6 +321,22 @@ export default function EditLabManualPage() {
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <input
+                id="preventDownload"
+                type="checkbox"
+                checked={preventDownload}
+                onChange={(e) => setPreventDownload(e.target.checked)}
+                disabled={isUpdating || isDeleting}
+                className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+              />
+              <Label
+                htmlFor="preventDownload"
+                className="cursor-pointer text-sm"
+              >
+                Prevent download (show embedded viewer instead)
+              </Label>
             </div>
             <div className="flex justify-between gap-4 pt-4">
               <Button

@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import QPCard from "@/components/admin/qp-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
 export default async function AdminQPsPage() {
@@ -23,9 +24,19 @@ export default async function AdminQPsPage() {
         </div>
       </div>
       <div className="grid gap-6">
-        {qps.map((qp) => (
-          <QPCard key={qp.id} qp={qp} />
-        ))}
+        {qps.length === 0 ? (
+          <EmptyState
+            title="No question papers to show"
+            description="Create your first question paper entry to get started."
+            action={
+              <Button asChild>
+                <Link href="/admin/qps/new">Create New Question Paper</Link>
+              </Button>
+            }
+          />
+        ) : (
+          qps.map((qp) => <QPCard key={qp.id} qp={qp} />)
+        )}
       </div>
     </div>
   );

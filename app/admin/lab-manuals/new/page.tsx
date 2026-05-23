@@ -33,6 +33,7 @@ export default function NewLabManualPage() {
   const [content, setContent] = useState<
     Array<{ question: string; code: string; comments: string }>
   >([]);
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -61,6 +62,7 @@ export default function NewLabManualPage() {
           language,
           level,
           content,
+          preventDownload,
         }),
       });
 
@@ -251,6 +253,19 @@ export default function NewLabManualPage() {
                 <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex items-center gap-3 pt-2">
+            <input
+              id="preventDownload"
+              type="checkbox"
+              checked={preventDownload}
+              onChange={(e) => setPreventDownload(e.target.checked)}
+              disabled={isCreating}
+              className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+            />
+            <Label htmlFor="preventDownload" className="cursor-pointer text-sm">
+              Prevent download (show embedded viewer instead)
+            </Label>
           </div>
           <div className="flex justify-end pt-4">
             <Button

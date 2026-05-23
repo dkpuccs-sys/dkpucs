@@ -19,6 +19,7 @@ interface SyllabusItem {
   description: string;
   pdfUrl: string;
   level: string | null;
+  preventDownload: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -171,21 +172,32 @@ export default function SyllabusClientPage({
                 {item.description}
               </p>
               {item.pdfUrl && (
-                <div className="pt-4 border-t border-border">
+                <div className="pt-4 border-t border-border flex items-center gap-3">
+                  {item.preventDownload && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-medium">
+                      View Only
+                    </span>
+                  )}
                   <Button
                     asChild
                     variant="outline"
                     className="w-full sm:w-auto"
                   >
                     <a
-                      href={ensureHttps(item.pdfUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      download
+                      href={
+                        item.preventDownload
+                          ? `/pdf-viewer/syllabus/${item.id}`
+                          : ensureHttps(item.pdfUrl)
+                      }
+                      target={item.preventDownload ? undefined : "_blank"}
+                      rel={
+                        item.preventDownload ? undefined : "noopener noreferrer"
+                      }
+                      download={item.preventDownload ? undefined : true}
                       className="inline-flex items-center gap-2"
                     >
                       <Download className="size-4" />
-                      Download PDF
+                      {item.preventDownload ? "View PDF" : "Download PDF"}
                     </a>
                   </Button>
                 </div>

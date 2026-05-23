@@ -18,6 +18,7 @@ interface QuestionPaper {
   year: number;
   subject: string;
   hyperlink: string;
+  preventDownload: boolean;
   createdAt: Date | string;
 }
 
@@ -169,15 +170,26 @@ export default function QPSClientPage({ initialQps }: QPSClientPageProps) {
                 <p className="text-sm text-muted-foreground mb-6">
                   {qp.subject} Question Paper - {qp.year}
                 </p>
-                <a
-                  href={qp.hyperlink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all"
-                >
-                  View Paper
-                  <ExternalLink className="size-4" />
-                </a>
+                <div className="flex items-center gap-2">
+                  {qp.preventDownload && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-medium shrink-0">
+                      No Download
+                    </span>
+                  )}
+                  <a
+                    href={
+                      qp.preventDownload
+                        ? `/pdf-viewer/questionPaper/${qp.id}`
+                        : qp.hyperlink
+                    }
+                    target={qp.preventDownload ? undefined : "_blank"}
+                    rel={qp.preventDownload ? undefined : "noopener noreferrer"}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all"
+                  >
+                    View Paper
+                    <ExternalLink className="size-4" />
+                  </a>
+                </div>
               </div>
             ))}
           </div>

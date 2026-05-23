@@ -21,6 +21,7 @@ interface SyllabusCardProps {
     title: string;
     description: string;
     pdfUrl: string;
+    preventDownload: boolean;
     createdAt: Date;
   };
 }
@@ -91,6 +92,13 @@ export default function SyllabusCard({ syllabus }: SyllabusCardProps) {
               <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-4">
                 {syllabus.description}
               </p>
+              <div className="flex items-center gap-2 mb-2">
+                {syllabus.preventDownload && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-medium">
+                    No Download
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-4">
                 PDF URL:{" "}
                 <a

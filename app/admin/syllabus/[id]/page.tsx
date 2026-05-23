@@ -32,6 +32,7 @@ export default function EditSyllabusPage() {
   const [description, setDescription] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const [level, setLevel] = useState("");
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -50,6 +51,7 @@ export default function EditSyllabusPage() {
           setDescription(data.description);
           setPdfUrl(data.pdfUrl);
           setLevel(data.level || "");
+          setPreventDownload(data.preventDownload ?? false);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -78,6 +80,7 @@ export default function EditSyllabusPage() {
           description,
           pdfUrl,
           level: level || null,
+          preventDownload,
         }),
       });
 
@@ -206,6 +209,22 @@ export default function EditSyllabusPage() {
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <input
+                id="preventDownload"
+                type="checkbox"
+                checked={preventDownload}
+                onChange={(e) => setPreventDownload(e.target.checked)}
+                disabled={isUpdating || isDeleting}
+                className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+              />
+              <Label
+                htmlFor="preventDownload"
+                className="cursor-pointer text-sm"
+              >
+                Prevent PDF download (show embedded viewer instead)
+              </Label>
             </div>
             <div className="flex justify-between gap-4 pt-4">
               <Button

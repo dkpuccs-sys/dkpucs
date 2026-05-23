@@ -7,7 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -58,6 +58,7 @@ export default function AnalyticsDashboard({
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const isFirstRender = useRef(true);
 
   const fetchStats = useCallback(
     async (start?: Date, end?: Date, page: number = 1) => {
@@ -87,6 +88,12 @@ export default function AnalyticsDashboard({
   );
 
   useEffect(() => {
+    // Skip the initial fetch — data is already server-rendered via initialStats.
+    // Only refetch when the user changes date range, pagination, etc.
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     fetchStats(startDate, endDate, currentPage);
   }, [startDate, endDate, currentPage, fetchStats]);
 
@@ -318,7 +325,7 @@ export default function AnalyticsDashboard({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[50px]">#</TableHead>
+                    <TableHead className="w-12.5">#</TableHead>
                     <TableHead>Page Path</TableHead>
                     <TableHead className="text-right">Views</TableHead>
                   </TableRow>
@@ -365,7 +372,7 @@ export default function AnalyticsDashboard({
           </CardHeader>
           <CardContent>
             {loading ? (
-              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-75 w-full" />
             ) : (
               <DailyViewsChart data={chartData} />
             )}
@@ -378,7 +385,7 @@ export default function AnalyticsDashboard({
             <CardDescription>Complete list of page views</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-100 overflow-y-auto">
               {loading ? (
                 <div className="space-y-2">
                   {[...Array(10)].map((_, i) => (

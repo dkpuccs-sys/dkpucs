@@ -60,7 +60,15 @@ export async function PUT(
 
     const { id } = await params;
     const body = await req.json();
-    const { title, description, difficulty, language, level, content } = body;
+    const {
+      title,
+      description,
+      difficulty,
+      language,
+      level,
+      content,
+      preventDownload,
+    } = body;
 
     // Validation
     if (!title || !description || !difficulty || !language || !level) {
@@ -90,6 +98,7 @@ export async function PUT(
         language,
         level,
         content: content || [],
+        preventDownload: preventDownload ?? false,
       },
     });
 

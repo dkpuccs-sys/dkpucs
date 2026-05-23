@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import LabManualCard from "@/components/admin/lab-manual-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
 /**
@@ -9,7 +10,7 @@ import { RefreshButton } from "@/components/admin/refresh-button";
  *
  * The list is displayed in descending order by creation date (newest first).
  *
- * @returns The React element containing the page header with refresh/new controls and a grid of LabManualCard entries.
+ * @returns The React element containing the page header with refresh/new controls and a grid of LabManualCard entries, or an empty state if none exist.
  */
 export default async function AdminLabManualsPage() {
   const labManuals = await prisma.labManual.findMany({
@@ -30,9 +31,21 @@ export default async function AdminLabManualsPage() {
         </div>
       </div>
       <div className="grid gap-6">
-        {labManuals.map((labManual) => (
-          <LabManualCard key={labManual.id} labManual={labManual} />
-        ))}
+        {labManuals.length === 0 ? (
+          <EmptyState
+            title="No lab manuals to show"
+            description="Create your first lab manual to get started."
+            action={
+              <Button asChild>
+                <Link href="/admin/lab-manuals/new">Create New Lab Manual</Link>
+              </Button>
+            }
+          />
+        ) : (
+          labManuals.map((labManual) => (
+            <LabManualCard key={labManual.id} labManual={labManual} />
+          ))
+        )}
       </div>
     </div>
   );

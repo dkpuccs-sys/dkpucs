@@ -47,6 +47,7 @@ export default function NewSyllabusPage() {
   const [description, setDescription] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const [level, setLevel] = useState("");
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
@@ -78,6 +79,7 @@ export default function NewSyllabusPage() {
           description,
           pdfUrl,
           level,
+          preventDownload,
         }),
       });
 
@@ -167,6 +169,19 @@ export default function NewSyllabusPage() {
                 <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex items-center gap-3 pt-2">
+            <input
+              id="preventDownload"
+              type="checkbox"
+              checked={preventDownload}
+              onChange={(e) => setPreventDownload(e.target.checked)}
+              disabled={isCreating}
+              className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+            />
+            <Label htmlFor="preventDownload" className="cursor-pointer text-sm">
+              Prevent PDF download (show embedded viewer instead)
+            </Label>
           </div>
           <div className="flex justify-end pt-4">
             <Button

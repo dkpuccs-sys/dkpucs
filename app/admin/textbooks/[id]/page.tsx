@@ -31,6 +31,7 @@ export default function EditTextbookPage() {
   const [hyperlink, setHyperlink] = useState("");
   const [section, setSection] = useState("");
   const [subject, setSubject] = useState("");
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -55,6 +56,7 @@ export default function EditTextbookPage() {
           setHyperlink(data.hyperlink);
           setSection(data.section);
           setSubject(data.subject);
+          setPreventDownload(data.preventDownload ?? false);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -84,6 +86,7 @@ export default function EditTextbookPage() {
           hyperlink,
           section,
           subject,
+          preventDownload,
         }),
       });
 
@@ -220,6 +223,22 @@ export default function EditTextbookPage() {
                 disabled={isUpdating || isDeleting}
                 className="border border-border"
               />
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <input
+                id="preventDownload"
+                type="checkbox"
+                checked={preventDownload}
+                onChange={(e) => setPreventDownload(e.target.checked)}
+                disabled={isUpdating || isDeleting}
+                className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+              />
+              <Label
+                htmlFor="preventDownload"
+                className="cursor-pointer text-sm"
+              >
+                Prevent download (show embedded viewer instead)
+              </Label>
             </div>
             <div className="flex justify-between gap-4 pt-4">
               <Button

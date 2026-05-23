@@ -23,6 +23,7 @@ export default function EditQPPage() {
   const [year, setYear] = useState("");
   const [subject, setSubject] = useState("");
   const [hyperlink, setHyperlink] = useState("");
+  const [preventDownload, setPreventDownload] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -40,6 +41,7 @@ export default function EditQPPage() {
           setYear(data.year.toString());
           setSubject(data.subject);
           setHyperlink(data.hyperlink);
+          setPreventDownload(data.preventDownload ?? false);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -63,7 +65,12 @@ export default function EditQPPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ year: parseInt(year), subject, hyperlink }),
+        body: JSON.stringify({
+          year: parseInt(year),
+          subject,
+          hyperlink,
+          preventDownload,
+        }),
       });
 
       if (!response.ok) {
@@ -172,6 +179,22 @@ export default function EditQPPage() {
                 disabled={isUpdating || isDeleting}
                 className="border border-border"
               />
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <input
+                id="preventDownload"
+                type="checkbox"
+                checked={preventDownload}
+                onChange={(e) => setPreventDownload(e.target.checked)}
+                disabled={isUpdating || isDeleting}
+                className="size-4 rounded border-border accent-foreground cursor-pointer disabled:opacity-50"
+              />
+              <Label
+                htmlFor="preventDownload"
+                className="cursor-pointer text-sm"
+              >
+                Prevent download (show embedded viewer instead)
+              </Label>
             </div>
             <div className="flex justify-between gap-4 pt-4">
               <Button

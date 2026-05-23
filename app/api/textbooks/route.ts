@@ -32,7 +32,8 @@ export async function GET() {
  */
 export async function POST(req: Request) {
   try {
-    const { title, author, hyperlink, section, subject } = await req.json();
+    const { title, author, hyperlink, section, subject, preventDownload } =
+      await req.json();
     const textbook = await prisma.textbook.create({
       data: {
         title,
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
         hyperlink,
         section,
         subject,
+        preventDownload: preventDownload ?? false,
       },
     });
     revalidatePath("/textbooks");

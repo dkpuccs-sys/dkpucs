@@ -115,7 +115,8 @@ const Hero = () => {
 
               <div className="hero-content mb-8 max-w-2xl font-mono text-lg text-muted-foreground border-l-2 border-primary/50 pl-6">
                 <p>
-                  Welcome to the official website for the students of KarnatakaPUCCS.
+                  Welcome to the official website for the students of Karnataka
+                  PUC Computer Science.
                 </p>
                 <p className="mt-2 text-primary flex items-center">
                   <span className="mr-2">&gt;</span>

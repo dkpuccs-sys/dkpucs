@@ -22,6 +22,7 @@ interface QPCardProps {
     subject: string;
     year: number;
     hyperlink: string;
+    preventDownload: boolean;
     createdAt: Date | string;
   };
 }
@@ -93,6 +94,13 @@ export default function QPCard({ qp }: QPCardProps) {
         <CardContent className="pt-0">
           <div className="space-y-4">
             <div className="border-t border-border pt-4">
+              <div className="flex items-center gap-2 mb-2">
+                {qp.preventDownload && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 font-medium">
+                    No Download
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-4">
                 Hyperlink:{" "}
                 <a

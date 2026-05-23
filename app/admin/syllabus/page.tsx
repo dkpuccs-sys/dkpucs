@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SyllabusCard from "@/components/admin/syllabus-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
 export default async function AdminSyllabusPage() {
@@ -23,9 +24,21 @@ export default async function AdminSyllabusPage() {
         </div>
       </div>
       <div className="grid gap-6">
-        {syllabusItems.map((syllabus) => (
-          <SyllabusCard key={syllabus.id} syllabus={syllabus} />
-        ))}
+        {syllabusItems.length === 0 ? (
+          <EmptyState
+            title="No syllabus to show"
+            description="Create your first syllabus entry to get started."
+            action={
+              <Button asChild>
+                <Link href="/admin/syllabus/new">Create New Syllabus</Link>
+              </Button>
+            }
+          />
+        ) : (
+          syllabusItems.map((syllabus) => (
+            <SyllabusCard key={syllabus.id} syllabus={syllabus} />
+          ))
+        )}
       </div>
     </div>
   );

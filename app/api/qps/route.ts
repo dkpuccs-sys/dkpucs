@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { year, subject, hyperlink } = body;
+    const { year, subject, hyperlink, preventDownload } = body;
 
     if (!year || !subject || !hyperlink) {
       return NextResponse.json(
@@ -59,6 +59,7 @@ export async function POST(req: Request) {
         year: typeof year === "string" ? parseInt(year, 10) : year,
         subject,
         hyperlink,
+        preventDownload: preventDownload ?? false,
       },
     });
     revalidatePath("/qps");

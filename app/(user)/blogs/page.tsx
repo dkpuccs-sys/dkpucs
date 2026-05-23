@@ -80,10 +80,11 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
               <Link
                 key={opt.value || "all"}
                 href={href}
-                className={`px-3 py-1 rounded-full text-xs border transition-colors ${isActive
+                className={`px-3 py-1 rounded-full text-xs border transition-colors ${
+                  isActive
                     ? "bg-primary text-primary-foreground border-primary"
                     : "border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  }`}
+                }`}
               >
                 {opt.label}
               </Link>

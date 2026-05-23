@@ -34,7 +34,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, description, difficulty, language, level, content } = body;
+    const {
+      title,
+      description,
+      difficulty,
+      language,
+      level,
+      content,
+      preventDownload,
+    } = body;
 
     // Validation
     if (
@@ -59,6 +67,7 @@ export async function POST(req: Request) {
         language,
         level,
         content,
+        preventDownload: preventDownload ?? false,
       },
     });
 

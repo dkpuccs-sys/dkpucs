@@ -71,7 +71,7 @@ export async function PUT(
       throw error;
     }
 
-    const { title, description, pdfUrl, level } = body;
+    const { title, description, pdfUrl, level, preventDownload } = body;
 
     // Validation
     if (!title || !description || !pdfUrl || !level) {
@@ -99,6 +99,7 @@ export async function PUT(
         description,
         pdfUrl,
         level,
+        preventDownload: preventDownload ?? false,
       },
     });
     revalidatePath("/syllabus");

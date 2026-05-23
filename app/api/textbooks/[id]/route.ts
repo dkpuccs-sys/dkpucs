@@ -59,7 +59,8 @@ export async function PUT(
 
     const { id } = await params;
     const body = await req.json();
-    const { title, author, hyperlink, section, subject } = body;
+    const { title, author, hyperlink, section, subject, preventDownload } =
+      body;
 
     // Validation
     if (!title || !author || !hyperlink || !section || !subject) {
@@ -88,6 +89,7 @@ export async function PUT(
         hyperlink,
         section,
         subject,
+        preventDownload: preventDownload ?? false,
       },
     });
 

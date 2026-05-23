@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const { title, description, pdfUrl, level } = body;
+    const { title, description, pdfUrl, level, preventDownload } = body;
 
     // Validation
     if (!title || !description || !pdfUrl || !level) {
@@ -67,6 +67,7 @@ export async function POST(req: Request) {
         description,
         pdfUrl,
         level,
+        preventDownload: preventDownload ?? false,
       },
     });
 

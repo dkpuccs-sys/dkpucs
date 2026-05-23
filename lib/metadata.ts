@@ -60,16 +60,16 @@ export function generateMetadata({
     robots: noIndex
       ? { index: false, follow: false }
       : {
-        index: true,
-        follow: true,
-        googleBot: {
           index: true,
           follow: true,
-          "max-video-preview": -1,
-          "max-image-preview": "large",
-          "max-snippet": -1,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
         },
-      },
 
     // Open Graph
     openGraph: {

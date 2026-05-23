@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import TextbookCard from "@/components/admin/textbook-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { RefreshButton } from "@/components/admin/refresh-button";
 
 export default async function AdminTextbooksPage() {
@@ -23,9 +24,21 @@ export default async function AdminTextbooksPage() {
         </div>
       </div>
       <div className="grid gap-6">
-        {textbooks.map((textbook) => (
-          <TextbookCard key={textbook.id} textbook={textbook} />
-        ))}
+        {textbooks.length === 0 ? (
+          <EmptyState
+            title="No textbooks to show"
+            description="Create your first textbook entry to get started."
+            action={
+              <Button asChild>
+                <Link href="/admin/textbooks/new">Create New Textbook</Link>
+              </Button>
+            }
+          />
+        ) : (
+          textbooks.map((textbook) => (
+            <TextbookCard key={textbook.id} textbook={textbook} />
+          ))
+        )}
       </div>
     </div>
   );

@@ -54,7 +54,9 @@ export default function ContactPage() {
           <div className="p-6 bg-card border border-border rounded-lg text-center">
             <div className="text-2xl mb-3">📧</div>
             <h3 className="font-semibold text-card-foreground mb-2">Email</h3>
-            <p className="text-muted-foreground text-sm">karnatakapuccs@gmail.com</p>
+            <p className="text-muted-foreground text-sm">
+              karnatakapuccs@gmail.com
+            </p>
           </div>
           <div className="p-6 bg-card border border-border rounded-lg text-center">
             <div className="text-2xl mb-3">📍</div>
