@@ -60,7 +60,7 @@ const StreamingText = ({
 
 const Hero = () => {
   const videoUrl =
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/files-blob/dkpucs/public/videos/home-mPu9o7uMnHLCZXRLRb4dviVdR3eijx.mp4";
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/files-blob/karnatakapuccs/public/videos/home-mPu9o7uMnHLCZXRLRb4dviVdR3eijx.mp4";
 
   const containerRef = useRef(null);
 
@@ -109,13 +109,13 @@ const Hero = () => {
               </div>
 
               <h1 className="hero-content text-6xl sm:text-8xl font-bold text-foreground tracking-tighter mb-6 flex items-center tech-text-glow">
-                <StreamingText text="DKPUCS" />
+                <StreamingText text="KarnatakaPUCCS" />
                 <span className="text-primary animate-pulse ml-1">_</span>
               </h1>
 
               <div className="hero-content mb-8 max-w-2xl font-mono text-lg text-muted-foreground border-l-2 border-primary/50 pl-6">
                 <p>
-                  Welcome to the official website for the students of DKPUCS.
+                  Welcome to the official website for the students of KarnatakaPUCCS.
                 </p>
                 <p className="mt-2 text-primary flex items-center">
                   <span className="mr-2">&gt;</span>

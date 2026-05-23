@@ -25,7 +25,7 @@ const NavBar = () => {
             <span className="text-primary font-mono font-bold">D</span>
           </div>
           <span className="font-bold font-mono text-foreground hidden sm:inline tracking-tighter group-hover:text-primary transition-colors">
-            DKPUCS
+            KarnatakaPUCCS
           </span>
         </Link>
 

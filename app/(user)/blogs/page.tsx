@@ -7,9 +7,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Blogs",
   description:
-    "Read the latest blogs, articles, and tutorials on programming, coding, competitive programming, and computer science. Learn from the DKPUCS community.",
+    "Read the latest blogs, articles, and tutorials on programming, coding, competitive programming, and computer science. Learn from the KarnatakaPUCCS community.",
   keywords: [
-    "DKPUCS blogs",
+    "KarnatakaPUCCS blogs",
     "programming blogs",
     "coding tutorials",
     "computer science articles",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     "student blogs",
   ],
   openGraph: {
-    title: "Blogs - DKPUCS",
+    title: "Blogs - KarnatakaPUCCS",
     description:
       "Read the latest blogs and articles on programming and computer science.",
-    url: "https://dkpucs.vercel.app/blogs",
+    url: "https://karnatakapuccs.vercel.app/blogs",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/blogs",
+    canonical: "https://karnatakapuccs.vercel.app/blogs",
   },
 };
 
@@ -80,11 +80,10 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
               <Link
                 key={opt.value || "all"}
                 href={href}
-                className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                  isActive
+                className={`px-3 py-1 rounded-full text-xs border transition-colors ${isActive
                     ? "bg-primary text-primary-foreground border-primary"
                     : "border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                }`}
+                  }`}
               >
                 {opt.label}
               </Link>

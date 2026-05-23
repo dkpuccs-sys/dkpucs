@@ -10,20 +10,20 @@ export const metadata: Metadata = {
     "syllabus",
     "course syllabus",
     "curriculum",
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "subject syllabus",
     "course outline",
     "study material",
     "university syllabus",
   ],
   openGraph: {
-    title: "Syllabus - DKPUCS",
+    title: "Syllabus - KarnatakaPUCCS",
     description: "Access detailed syllabus for all courses and subjects.",
-    url: "https://dkpucs.vercel.app/syllabus",
+    url: "https://karnatakapuccs.vercel.app/syllabus",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/syllabus",
+    canonical: "https://karnatakapuccs.vercel.app/syllabus",
   },
 };
 

@@ -10,20 +10,20 @@ export const metadata: Metadata = {
     "textbooks",
     "course books",
     "reference books",
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "study material",
     "ebooks",
     "academic books",
     "university textbooks",
   ],
   openGraph: {
-    title: "Textbooks - DKPUCS",
+    title: "Textbooks - KarnatakaPUCCS",
     description: "Access and download textbooks for all your courses.",
-    url: "https://dkpucs.vercel.app/textbooks",
+    url: "https://karnatakapuccs.vercel.app/textbooks",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/textbooks",
+    canonical: "https://karnatakapuccs.vercel.app/textbooks",
   },
 };
 

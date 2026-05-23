@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
-const SITE_URL = "https://dkpucs.vercel.app";
-const SITE_NAME = "DKPUCS";
+const SITE_URL = "https://karnatakapuccs.vercel.app";
+const SITE_NAME = "KarnatakaPUCCS";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/android-chrome-512x512.png`;
 
 interface MetadataParams {
@@ -60,16 +60,16 @@ export function generateMetadata({
     robots: noIndex
       ? { index: false, follow: false }
       : {
+        index: true,
+        follow: true,
+        googleBot: {
           index: true,
           follow: true,
-          googleBot: {
-            index: true,
-            follow: true,
-            "max-video-preview": -1,
-            "max-image-preview": "large",
-            "max-snippet": -1,
-          },
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
         },
+      },
 
     // Open Graph
     openGraph: {
@@ -101,8 +101,8 @@ export function generateMetadata({
       title: fullTitle,
       description,
       images: [image],
-      creator: "@dkpucs",
-      site: "@dkpucs",
+      creator: "@karnatakapuccs",
+      site: "@karnatakapuccs",
     },
 
     // Alternative languages
@@ -124,7 +124,7 @@ export function generateMetadata({
  *
  * @param title - The blog post title
  * @param content - Full post content used to derive the meta description (trimmed to 160 characters)
- * @param author - The post author's display name (defaults to "DKPUCS Team")
+ * @param author - The post author's display name (defaults to "KarnatakaPUCCS Team")
  * @param level - Topic/section or difficulty level used as the article section and a keyword
  * @param createdAt - Publication date used as the article's publishedTime
  * @param updatedAt - Optional last-modified date used as the article's modifiedTime
@@ -134,7 +134,7 @@ export function generateMetadata({
 export function generateBlogMetadata({
   title,
   content,
-  author = "DKPUCS Team",
+  author = "KarnatakaPUCCS Team",
   level,
   createdAt,
   updatedAt,
@@ -151,7 +151,7 @@ export function generateBlogMetadata({
   const description =
     content.length > 160 ? content.substring(0, 157) + "..." : content;
   const keywords = [
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "blog",
     "programming",
     "coding",
@@ -192,7 +192,7 @@ export function generateLabManualMetadata({
   id: string;
 }): Metadata {
   const keywords = [
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "lab manual",
     "programming exercises",
     "coding practice",
@@ -228,7 +228,7 @@ export function generateQPMetadata({
   const title = `${subject} - ${semester} (${year})`;
   const description = `Previous year question paper for ${subject}, ${semester}, ${year}${university ? ` - ${university}` : ""}. Download and practice for your exams.`;
   const keywords = [
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "question papers",
     "previous year papers",
     "exam papers",

@@ -5,26 +5,26 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Question Papers",
   description:
-    "Access a comprehensive collection of previous year question papers for all courses. Download and practice for your exams with DKPUCS question paper repository.",
+    "Access a comprehensive collection of previous year question papers for all courses. Download and practice for your exams with KarnatakaPUCCS question paper repository.",
   keywords: [
     "question papers",
     "previous year papers",
     "exam papers",
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "study material",
     "exam preparation",
     "university papers",
     "semester papers",
   ],
   openGraph: {
-    title: "Question Papers - DKPUCS",
+    title: "Question Papers - KarnatakaPUCCS",
     description:
       "Access previous year question papers for all courses. Download and practice for your exams.",
-    url: "https://dkpucs.vercel.app/qps",
+    url: "https://karnatakapuccs.vercel.app/qps",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/qps",
+    canonical: "https://karnatakapuccs.vercel.app/qps",
   },
 };
 

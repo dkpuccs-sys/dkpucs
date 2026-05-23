@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
     .filter((m) => m.role === "user")
     .pop();
 
-  let systemInstruction = `You are a helpful and knowledgeable AI assistant for the DKPUCS (District Karnataka PU Computer Science) website. 
+  let systemInstruction = `You are a helpful and knowledgeable AI assistant for the KarnatakaPUCCS (District Karnataka PU Computer Science) website.
 
 Your role is to help students navigate the website, find resources, and answer questions about:
 - Blogs and educational articles
@@ -124,7 +124,7 @@ Always provide accurate, helpful information based on the website structure and 
     if (context) {
       systemInstruction += `\n\nHere is additional relevant information based on the user's query:\n\n${context}\n\nUse this context to provide a more specific and detailed answer. If the context does not fully answer the question, you may use your general knowledge.`;
     } else {
-      systemInstruction += `\n\nThe user is asking about the DKPUCS website. Provide helpful information about website features, navigation, and available resources based on the comprehensive website information provided above. You may also use your general knowledge to answer questions.`;
+      systemInstruction += `\n\nThe user is asking about the KarnatakaPUCCS website. Provide helpful information about website features, navigation, and available resources based on the comprehensive website information provided above. You may also use your general knowledge to answer questions.`;
     }
   }
 

@@ -8,9 +8,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Announcements",
   description:
-    "Stay updated with the latest announcements, events, and news from DKPUCS. Get notifications about workshops, seminars, hackathons, and community updates.",
+    "Stay updated with the latest announcements, events, and news from KarnatakaPUCCS. Get notifications about workshops, seminars, hackathons, and community updates.",
   keywords: [
-    "DKPUCS announcements",
+    "KarnatakaPUCCS announcements",
     "college announcements",
     "coding club updates",
     "events",
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "news",
   ],
   openGraph: {
-    title: "Announcements - DKPUCS",
+    title: "Announcements - KarnatakaPUCCS",
     description:
-      "Stay updated with the latest announcements and events from DKPUCS.",
-    url: "https://dkpucs.vercel.app/announcements",
+      "Stay updated with the latest announcements and events from KarnatakaPUCCS.",
+    url: "https://karnatakapuccs.vercel.app/announcements",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/announcements",
+    canonical: "https://karnatakapuccs.vercel.app/announcements",
   },
 };
 

@@ -6,11 +6,11 @@ import Contact from "@/components/landing/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "DKPUCS - Learn, Code, Grow",
+  title: "KarnatakaPUCCS - Learn, Code, Grow",
   description:
-    "Official website for DKPUCS students at Venkataramana Swamy College, Bantwal. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler.",
+    "Official website for KarnatakaPUCCS students at Venkataramana Swamy College, Bantwal. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler.",
   keywords: [
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "computer science",
     "coding club",
     "Bantwal",
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     "competitive programming",
   ],
   openGraph: {
-    title: "DKPUCS - Learn, Code, Grow",
+    title: "KarnatakaPUCCS - Learn, Code, Grow",
     description:
-      "Official website for DKPUCS students. Access academic resources and join our coding community.",
-    url: "https://dkpucs.vercel.app",
+      "Official website for KarnatakaPUCCS students. Access academic resources and join our coding community.",
+    url: "https://karnatakapuccs.vercel.app",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app",
+    canonical: "https://karnatakapuccs.vercel.app",
   },
 };
 

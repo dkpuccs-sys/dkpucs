@@ -1,8 +1,8 @@
-# DKPUCS - College Coding Club Community Platform
+# KarnatakaPUCCS - College Coding Club Community Platform
 
 ## Project Description
 
-DKPUCS is a college coding club community platform built for learning and competitive programming. This robust application integrates various cutting-edge technologies, including AI, to foster a dynamic environment for students to collaborate, learn, and engage in coding activities.
+KarnatakaPUCCS is a college coding club community platform built for learning and competitive programming. This robust application integrates various cutting-edge technologies, including AI, to foster a dynamic environment for students to collaborate, learn, and engage in coding activities.
 
 ## Features
 
@@ -65,7 +65,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  Clone the repository:
     ```sh
-    git clone https://github.com/gaureshpai/dkpucs.git
+    git clone https://github.com/gaureshpai/karnatakapuccs.git
     ```
 2.  Install NPM packages:
     ```sh

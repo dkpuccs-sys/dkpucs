@@ -47,7 +47,7 @@ export async function generateMetadata({
     title: labManual.title,
     description: labManual.description,
     keywords: [
-      "DKPUCS",
+      "KarnatakaPUCCS",
       "lab manual",
       "programming exercises",
       "coding practice",
@@ -59,7 +59,7 @@ export async function generateMetadata({
       title: labManual.title,
       description: labManual.description,
       type: "article",
-      url: `https://dkpucs.vercel.app/lab-manuals/${id}`,
+      url: `https://karnatakapuccs.vercel.app/lab-manuals/${id}`,
       section: `${labManual.language || "Programming"} Lab Manual`,
     },
     twitter: {
@@ -68,7 +68,7 @@ export async function generateMetadata({
       description: labManual.description,
     },
     alternates: {
-      canonical: `https://dkpucs.vercel.app/lab-manuals/${id}`,
+      canonical: `https://karnatakapuccs.vercel.app/lab-manuals/${id}`,
     },
   };
 }

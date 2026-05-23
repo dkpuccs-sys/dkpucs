@@ -40,21 +40,21 @@ export async function generateMetadata({
       title: blog.title,
       description,
       keywords: [
-        "DKPUCS",
+        "KarnatakaPUCCS",
         "blog",
         "programming",
         "coding",
-        blog.author || "DKPUCS Team",
+        blog.author || "KarnatakaPUCCS Team",
         blog.level,
       ].filter(Boolean) as string[],
-      authors: [{ name: blog.author || "DKPUCS Team" }],
+      authors: [{ name: blog.author || "KarnatakaPUCCS Team" }],
       openGraph: {
         title: blog.title,
         description,
         type: "article",
-        url: `https://dkpucs.vercel.app/blogs/${id}`,
+        url: `https://karnatakapuccs.vercel.app/blogs/${id}`,
         publishedTime: new Date(blog.createdAt).toISOString(),
-        authors: [blog.author || "DKPUCS Team"],
+        authors: [blog.author || "KarnatakaPUCCS Team"],
         section: blog.level || "Technology",
       },
       twitter: {
@@ -63,13 +63,13 @@ export async function generateMetadata({
         description,
       },
       alternates: {
-        canonical: `https://dkpucs.vercel.app/blogs/${id}`,
+        canonical: `https://karnatakapuccs.vercel.app/blogs/${id}`,
       },
     };
   } catch (error) {
     console.error("Error generating blog metadata:", error);
     return {
-      title: "DKPUCS Blog",
+      title: "KarnatakaPUCCS Blog",
     };
   }
 }

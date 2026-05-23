@@ -11,7 +11,7 @@ import { getAllBlogs, getAllLabManuals } from "@/lib/data";
  * @returns An array of sitemap entries for the site combining static routes, blog pages, and lab manual pages
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://dkpucs.vercel.app";
+  const baseUrl = "https://karnatakapuccs.vercel.app";
 
   let blogs: any[] = [];
   let labManuals: any[] = [];

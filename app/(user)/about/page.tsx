@@ -3,10 +3,10 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about DKPUCS - the central coding community at Venkataramana Swamy College, Bantwal. Discover our mission, vision, and activities including workshops, seminars, coding competitions, and study groups.",
+    "Learn about KarnatakaPUCCS - the central coding community at Venkataramana Swamy College, Bantwal. Discover our mission, vision, and activities including workshops, seminars, coding competitions, and study groups.",
   keywords: [
-    "DKPUCS",
-    "about DKPUCS",
+    "KarnatakaPUCCS",
+    "about KarnatakaPUCCS",
     "coding club",
     "Bantwal",
     "Karnataka",
@@ -18,19 +18,19 @@ export const metadata: Metadata = {
     "hackathons",
   ],
   openGraph: {
-    title: "About - DKPUCS",
+    title: "About - KarnatakaPUCCS",
     description:
-      "Learn about DKPUCS coding community, our mission, vision, and activities.",
-    url: "https://dkpucs.vercel.app/about",
+      "Learn about KarnatakaPUCCS coding community, our mission, vision, and activities.",
+    url: "https://karnatakapuccs.vercel.app/about",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/about",
+    canonical: "https://karnatakapuccs.vercel.app/about",
   },
 };
 
 /**
- * Render the About page for the DKPUCS site, including the header, mission & vision cards, and a "What We Do" section.
+ * Render the About page for the KarnatakaPUCCS site, including the header, mission & vision cards, and a "What We Do" section.
  *
  * @returns The About page JSX element containing the header, mission & vision cards, the "What We Do" section, and activity labels.
  */
@@ -47,7 +47,7 @@ export default function AboutPage() {
               </span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-              About <span className="text-primary">DKPUCS</span>
+              About <span className="text-primary">KarnatakaPUCCS</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               Initializing the next generation of developers. We are the central

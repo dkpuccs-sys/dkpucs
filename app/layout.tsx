@@ -12,15 +12,15 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dkpucs.vercel.app"),
+  metadataBase: new URL("https://karnatakapuccs.vercel.app"),
   title: {
-    default: "DKPUCS - Learn, Code, Grow",
-    template: "%s | DKPUCS",
+    default: "KarnatakaPUCCS - Learn, Code, Grow",
+    template: "%s | KarnatakaPUCCS",
   },
   description:
-    "Official website for DKPUCS students. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler. Join our coding community to learn, code, and grow together.",
+    "Official website for KarnatakaPUCCS students. Access previous year question papers, syllabus, textbooks, lab manuals, blogs, and online Python compiler. Join our coding community to learn, code, and grow together.",
   keywords: [
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "college",
     "coding",
     "club",
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     "Bantwal",
     "education",
   ],
-  authors: [{ name: "DKPUCS Team" }],
-  creator: "DKPUCS",
-  publisher: "DKPUCS",
+  authors: [{ name: "KarnatakaPUCCS Team" }],
+  creator: "KarnatakaPUCCS",
+  publisher: "KarnatakaPUCCS",
   formatDetection: {
     email: false,
     address: false,
@@ -60,31 +60,31 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://dkpucs.vercel.app",
-    siteName: "DKPUCS",
-    title: "DKPUCS - Learn, Code, Grow",
+    url: "https://karnatakapuccs.vercel.app",
+    siteName: "KarnatakaPUCCS",
+    title: "KarnatakaPUCCS - Learn, Code, Grow",
     description:
-      "Official website for DKPUCS students. Access previous year question papers, syllabus, textbooks, lab manuals, and online Python compiler.",
+      "Official website for KarnatakaPUCCS students. Access previous year question papers, syllabus, textbooks, lab manuals, and online Python compiler.",
     images: [
       {
-        url: "https://dkpucs.vercel.app/android-chrome-512x512.png",
+        url: "https://karnatakapuccs.vercel.app/android-chrome-512x512.png",
         width: 512,
         height: 512,
-        alt: "DKPUCS - Learn, Code, Grow",
+        alt: "KarnatakaPUCCS - Learn, Code, Grow",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DKPUCS - Learn, Code, Grow",
+    title: "KarnatakaPUCCS - Learn, Code, Grow",
     description:
-      "Official website for DKPUCS students. Access previous year question papers, syllabus, textbooks, lab manuals, and online Python compiler.",
-    images: ["https://dkpucs.vercel.app/android-chrome-512x512.png"],
-    creator: "@dkpucs",
-    site: "@dkpucs",
+      "Official website for KarnatakaPUCCS students. Access previous year question papers, syllabus, textbooks, lab manuals, and online Python compiler.",
+    images: ["https://karnatakapuccs.vercel.app/android-chrome-512x512.png"],
+    creator: "@karnatakapuccs",
+    site: "@karnatakapuccs",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app",
+    canonical: "https://karnatakapuccs.vercel.app",
   },
   category: "education",
 };

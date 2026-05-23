@@ -4,26 +4,26 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with DKPUCS. Have questions or feedback? Contact us via email at dkpucs@gmail.com or visit us at Venkataramana Swamy College, Bantwal, Karnataka. We respond within 24 hours.",
+    "Get in touch with KarnatakaPUCCS. Have questions or feedback? Contact us via email at karnatakapuccs@gmail.com or visit us at Venkataramana Swamy College, Bantwal, Karnataka. We respond within 24 hours.",
   keywords: [
-    "contact DKPUCS",
-    "DKPUCS contact",
+    "contact KarnatakaPUCCS",
+    "KarnatakaPUCCS contact",
     "get in touch",
-    "email DKPUCS",
+    "email KarnatakaPUCCS",
     "feedback",
     "Bantwal college",
     "student support",
-    "dkpucs@gmail.com",
+    "karnatakapuccs@gmail.com",
   ],
   openGraph: {
-    title: "Contact - DKPUCS",
+    title: "Contact - KarnatakaPUCCS",
     description:
-      "Get in touch with DKPUCS. Send us your questions or feedback.",
-    url: "https://dkpucs.vercel.app/contact",
+      "Get in touch with KarnatakaPUCCS. Send us your questions or feedback.",
+    url: "https://karnatakapuccs.vercel.app/contact",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/contact",
+    canonical: "https://karnatakapuccs.vercel.app/contact",
   },
 };
 
@@ -54,7 +54,7 @@ export default function ContactPage() {
           <div className="p-6 bg-card border border-border rounded-lg text-center">
             <div className="text-2xl mb-3">📧</div>
             <h3 className="font-semibold text-card-foreground mb-2">Email</h3>
-            <p className="text-muted-foreground text-sm">dkpucs@gmail.com</p>
+            <p className="text-muted-foreground text-sm">karnatakapuccs@gmail.com</p>
           </div>
           <div className="p-6 bg-card border border-border rounded-lg text-center">
             <div className="text-2xl mb-3">📍</div>

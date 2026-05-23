@@ -14,20 +14,20 @@ export const metadata: Metadata = {
     "run Python online",
     "Python IDE",
     "Python online editor",
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "code runner",
     "Python practice",
     "programming online",
   ],
   openGraph: {
-    title: "Python Compiler - DKPUCS",
+    title: "Python Compiler - KarnatakaPUCCS",
     description:
       "Free online Python compiler. Write, run, and test your Python code instantly.",
-    url: "https://dkpucs.vercel.app/runner",
+    url: "https://karnatakapuccs.vercel.app/runner",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/runner",
+    canonical: "https://karnatakapuccs.vercel.app/runner",
   },
 };
 

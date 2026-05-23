@@ -47,7 +47,7 @@ const Footer = () => {
                 </span>
               </div>
               <span className="font-bold font-mono text-foreground tracking-tighter group-hover:text-primary transition-colors">
-                DKPUCS
+                KarnatakaPUCCS
               </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed font-light">
@@ -82,7 +82,7 @@ const Footer = () => {
 
         <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs font-mono text-center md:text-left">
-            © {currentYear} DKPUCS. All rights reserved.{" "}
+            © {currentYear} KarnatakaPUCCS. All rights reserved.{" "}
             <br className="md:hidden" />
             Developed by{" "}
             <a

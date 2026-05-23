@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "lab manuals",
     "programming exercises",
     "coding practice",
-    "DKPUCS",
+    "KarnatakaPUCCS",
     "hands-on coding",
     "practical guides",
     "Python exercises",
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "programming lab",
   ],
   openGraph: {
-    title: "Lab Manuals - DKPUCS",
+    title: "Lab Manuals - KarnatakaPUCCS",
     description:
       "Hands-on coding exercises and practical guides for programming.",
-    url: "https://dkpucs.vercel.app/lab-manuals",
+    url: "https://karnatakapuccs.vercel.app/lab-manuals",
     type: "website",
   },
   alternates: {
-    canonical: "https://dkpucs.vercel.app/lab-manuals",
+    canonical: "https://karnatakapuccs.vercel.app/lab-manuals",
   },
 };
 
@@ -105,11 +105,10 @@ export default async function LabManualsPage({
                 <Link
                   key={opt.value || "all"}
                   href={href}
-                  className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                    isActive
+                  className={`px-3 py-1 rounded-full text-xs border transition-colors ${isActive
                       ? "bg-primary text-primary-foreground border-primary"
                       : "border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  }`}
+                    }`}
                 >
                   {opt.label}
                 </Link>
