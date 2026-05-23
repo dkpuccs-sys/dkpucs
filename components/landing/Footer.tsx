@@ -36,7 +36,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full bg-background border-t border-border/50 relative pt-16 pb-8">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-primary/50 to-transparent"></div>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
@@ -85,15 +85,6 @@ const Footer = () => {
             © {currentYear} DKPUCS. All rights reserved.{" "}
             <br className="md:hidden" />
             Developed by{" "}
-            <a
-              href="https://gauresh.is-a.dev"
-              className="text-primary hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GP
-            </a>{" "}
-            and{" "}
             <a
               className="text-primary hover:underline"
               href="https://venjix.in"
